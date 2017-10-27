@@ -1,13 +1,15 @@
 import datetime
-from bson import ObjectId
 
 import aiohttp_jinja2
+
 from aiohttp import web
-from aiohttp_security import remember, forget, authorized_userid, permits
+from aiohttp_security import remember, forget, authorized_userid
+from bson import ObjectId
 
 from . import db
-from .security import generate_password_hash, check_password_hash, auth_required
-from .utils import redirect
+from .security import (generate_password_hash, check_password_hash,
+                       auth_required)
+from .utils import redirect, validate_register_form
 
 
 class SiteHandler:
@@ -43,9 +45,9 @@ class SiteHandler:
                           .sort('pub_date', -1)
                           .to_list(30))
         endpoint = request.match_info.route.name
-        return {"messages": messages,
-                "user": user,
-                "endpoint": endpoint}
+        return {'messages': messages,
+                'user': user,
+                'endpoint': endpoint}
 
     @aiohttp_jinja2.template('timeline.html')
     async def public_timeline(self, request):
@@ -53,8 +55,8 @@ class SiteHandler:
                           .find()
                           .sort('pub_date', -1)
                           .to_list(30))
-        return {"messages": messages,
-                "endpoint": request.match_info.route.name}
+        return {'messages': messages,
+                'endpoint': request.match_info.route.name}
 
     @aiohttp_jinja2.template('timeline.html')
     async def user_timeline(self, request):
@@ -79,17 +81,15 @@ class SiteHandler:
                           .to_list(30))
 
         profile_user['_id'] = str(profile_user['_id'])
-        return {"messages": messages,
-                "followed": followed,
-                "profile_user": profile_user,
-                "user": user,
-                "endpoint": request.match_info.route.name}
+        return {'messages': messages,
+                'followed': followed,
+                'profile_user': profile_user,
+                'user': user,
+                'endpoint': request.match_info.route.name}
 
     @aiohttp_jinja2.template('login.html')
     async def login(self, request):
         form = await request.post()
-        username = form['username']
-        password = form['password']
         user = await self.mongo.user.find_one({'username': form['username']})
 
         if user is None:
@@ -101,11 +101,11 @@ class SiteHandler:
             await remember(request, response, str(user['_id']))
             return response
 
-        return {"error": error, "form": form}
+        return {'error': error, 'form': form}
 
     @aiohttp_jinja2.template('login.html')
     async def login_page(self, request):
-        return {"error": None, "form": None}
+        return {'error': None, 'form': None}
 
     async def logout(self, request):
         response = redirect(request, 'public_timeline')
@@ -117,32 +117,24 @@ class SiteHandler:
         user_id = await authorized_userid(request)
         if user_id:
             return redirect(request, 'timeline')
+
         form = await request.post()
-        user_id = await db.get_user_id(self.mongo.user, form['username'])
-        if not form['username']:
-            error = 'You have to enter a username'
-        elif not form['email'] or '@' not in form['email']:
-            error = 'You have to enter a valid email address'
-        elif not form['password']:
-            error = 'You have to enter a password'
-        elif form['password'] != form['password2']:
-            error = 'The two passwords do not match'
-        elif user_id is not None:
-            error = 'The username is already taken'
-        else:
+        error = await validate_register_form(self.mongo, form)
+
+        if error is None:
             await self.mongo.user.insert(
                 {'username': form['username'],
                  'email': form['email'],
                  'pw_hash': generate_password_hash(form['password'])})
             return redirect(request, 'login')
-        return {"error": error, "form": form}
+        return {'error': error, 'form': form}
 
     @aiohttp_jinja2.template('register.html')
     async def register_page(self, request):
         user_id = await authorized_userid(request)
         if user_id:
             return redirect(request, 'timeline')
-        return {"error": None, "form": None}
+        return {'error': None, 'form': None}
 
     @auth_required
     async def follow_user(self, request):
@@ -158,11 +150,10 @@ class SiteHandler:
             {'who_id': ObjectId(user_id)},
             {'$push': {'whom_id': whom_id}}, upsert=True)
 
-        return redirect(request, 'user_timeline', parts={"username": username})
+        return redirect(request, 'user_timeline', parts={'username': username})
 
     @auth_required
     async def unfollow_user(self, request):
-        """Removes the current user as follower of the given user."""
         username = request.match_info['username']
         user_id = await authorized_userid(request)
 
@@ -173,7 +164,7 @@ class SiteHandler:
         await self.mongo.follower.update(
             {'who_id': ObjectId(user_id)},
             {'$pull': {'whom_id': whom_id}})
-        return redirect(request, 'user_timeline', parts={"username": username})
+        return redirect(request, 'user_timeline', parts={'username': username})
 
     @auth_required
     async def add_message(self, request):

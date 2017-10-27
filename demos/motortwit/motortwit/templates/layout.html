@@ -4,10 +4,10 @@
 <div class=page>
   <h1>MotorTwit</h1>
   <div class=navigation>
-  {% if username %}
+  {% if user and user.username  %}
     <a href="{{ url('timeline') }}">my timeline</a> |
     <a href="{{ url('public_timeline') }}">public timeline</a> |
-    <a href="{{ url('logout') }}">logout [{{ username }}]</a>
+    <a href="{{ url('logout') }}">logout [{{ user.username }}]</a>
   {% else %}
     <a href="{{ url('public_timeline') }}">public timeline</a> |
     <a href="{{ url('register') }}">register</a> |

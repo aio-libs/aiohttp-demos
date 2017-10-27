@@ -6,6 +6,7 @@ from dateutil.parser import parse
 from aiohttp import web
 
 import motor.motor_asyncio as aiomotor
+from . import db
 
 
 def load_config(fname):
@@ -45,3 +46,20 @@ def redirect(request, name, **kw):
     router = request.app.router
     location = router[name].url(**kw)
     return web.HTTPFound(location=location)
+
+
+async def validate_register_form(mongo, form):
+    error = None
+    user_id = await db.get_user_id(mongo.user, form['username'])
+
+    if not form['username']:
+        error = 'You have to enter a username'
+    elif not form['email'] or '@' not in form['email']:
+        error = 'You have to enter a valid email address'
+    elif not form['password']:
+        error = 'You have to enter a password'
+    elif form['password'] != form['password2']:
+        error = 'The two passwords do not match'
+    elif user_id is not None:
+        error = 'The username is already taken'
+    return error

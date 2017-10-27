@@ -9,7 +9,6 @@ from aiohttp import web
 from aiohttp_session import session_middleware, SimpleCookieStorage
 from aiohttp_security import CookiesIdentityPolicy, setup as setup_security
 
-from motortwit import db
 from motortwit.routes import setup_routes
 from motortwit.security import AuthorizationPolicy
 from motortwit.views import SiteHandler
@@ -51,7 +50,6 @@ async def init(loop):
     setup_security(app,
                    CookiesIdentityPolicy(),
                    AuthorizationPolicy(mongo))
-
 
     app.router.add_static('/static', path=str(PROJ_ROOT / 'static'))
 

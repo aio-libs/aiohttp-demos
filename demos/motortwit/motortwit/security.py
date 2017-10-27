@@ -3,10 +3,10 @@ import base64
 import functools
 from enum import Enum
 
-from aiohttp_security.abc import AbstractAuthorizationPolicy
+from aiohttp import web
 from aiohttp_security import authorized_userid
-
-from . import db
+from aiohttp_security.abc import AbstractAuthorizationPolicy
+from bson import ObjectId
 
 
 def generate_password_hash(password, salt_rounds=12):
@@ -35,20 +35,15 @@ class AuthorizationPolicy(AbstractAuthorizationPolicy):
         self.mongo = mongo
 
     async def authorized_userid(self, identity):
-        # XXX
-        return identity
+        user = await self.mongo.user.find_one({'_id': ObjectId(identity)})
+        if user:
+            return identity
+        return None
 
     async def permits(self, identity, permission, context=None):
         if identity is None:
             return False
         return True
-
-
-async def check_credentials(mongo, username, password):
-    user = await self.mongo.user.find_one({'username': form['username']})
-    if user and check_password_hash(user['pw_hash'], password):
-        return user
-    return False
 
 
 def auth_required(f):
@@ -59,4 +54,3 @@ def auth_required(f):
             raise web.HTTPNotAuthorized()
         return (await f(self, request))
     return wrapped
-
