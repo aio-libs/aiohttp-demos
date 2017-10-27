@@ -7,19 +7,56 @@ similar to django one.
 Installation
 ============
 
-Install the app::
+Prepare development environment
+-------------------------------
+
+We suggest you to start by creating an isolated Python working environment::
+
+    $ python3 -m venv env
+    $ source env/bin/activate
+
+
+Install the app and it's requirements::
 
     $ cd demos/polls
     $ pip install -e .
 
-Create database for your project::
 
-    bash sql/install.sh
+Prepare database
+----------------
+Install Postgresql database server: http://www.postgresql.org/download/
+(to use postgres in more isolated way you may also use docker. We will explain how to do that
+after environment variables setup.)
 
+Create ``.env`` file in ``polls`` folder with db related configuration values. It is a common practice to not
+hardcode such settings because they differ between e.g. prod and dev environments::
+
+    DB_HOST=localhost
+    DB_PORT=5432
+    DB_NAME=aiohttpdemo_polls
+    DB_USER=aiohttpdemo_user
+    DB_PASS=aiohttpdemo_user
+
+Export these variables (to be able to use them inside db initializing script)::
+
+    $ source .env
+    $ export DB_HOST DB_PORT DB_NAME DB_USER DB_PASS
+
+If you chose to use docker - here is the command for that (sure thing you need docker installed beforehand)::
+
+    $ docker run --rm -it -p $DB_PORT:5432 postgres:10
+
+Initialize db (if you started docker container - use separate shell for further commands).
+It will create database, user, tables etc::
+
+    $ bash sql/install.sh
+
+
+Run
+---
 Run application::
 
     $ python -m aiohttpdemo_polls
-
 
 Open browser::
 

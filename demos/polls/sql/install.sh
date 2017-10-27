@@ -5,11 +5,14 @@ case "${unameOut}" in
     *)          pg_cmd="sudo -u postgres psql"
 esac
 
-${pg_cmd} -c "DROP DATABASE IF EXISTS aiohttpdemo_polls"
-${pg_cmd} -c "DROP ROLE IF EXISTS aiohttpdemo_user"
-${pg_cmd} -c "CREATE USER aiohttpdemo_user WITH PASSWORD 'aiohttpdemo_user';"
-${pg_cmd} -c "CREATE DATABASE aiohttpdemo_polls ENCODING 'UTF8';"
-${pg_cmd} -c "GRANT ALL PRIVILEGES ON DATABASE aiohttpdemo_polls TO aiohttpdemo_user;"
+pg_cmd+=" -h $DB_HOST -p $DB_PORT"
+echo "pg_cmd is '$pg_cmd'"
 
-cat sql/create_tables.sql | ${pg_cmd} -d aiohttpdemo_polls -a
-cat sql/sample_data.sql | ${pg_cmd} -d aiohttpdemo_polls -a
+${pg_cmd} -c "DROP DATABASE IF EXISTS $DB_NAME"
+${pg_cmd} -c "DROP ROLE IF EXISTS $DB_USER"
+${pg_cmd} -c "CREATE USER $DB_USER WITH PASSWORD '$DB_USER';"
+${pg_cmd} -c "CREATE DATABASE $DB_NAME ENCODING 'UTF8';"
+${pg_cmd} -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
+
+cat sql/create_tables.sql | ${pg_cmd} -d $DB_NAME -U $DB_USER -a
+cat sql/sample_data.sql | ${pg_cmd} -d $DB_NAME -U $DB_USER -a
