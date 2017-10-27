@@ -1,0 +1,8 @@
+mongo:
+  host: 127.0.0.1
+  port: 27017
+  database: "motortwit"
+  max_pool_size: 5
+
+host: 127.0.0.1
+port: 9001

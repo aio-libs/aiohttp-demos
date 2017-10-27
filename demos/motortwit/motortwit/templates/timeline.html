@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block title %}
+  {% if endpoint == 'public_timeline' %}
+    Public Timeline
+  {% elif endpoint == 'user_timeline' %}
+    {{ profile_user.username }}'s Timeline
+  {% else %}
+    My Timeline
+  {% endif %}
+{% endblock %}
+{% block body %}
+  <h2>{{ self.title() }}</h2>
+  {% if user %}
+    {% if endpoint == 'user_timeline' %}
+      <div class=followstatus>
+        {% if user._id == profile_user._id %}
+          This is you!
+        {% elif followed %}
+          You are currently following this user.
+          <a class=unfollow href="{{ url('unfollow_user', username=profile_user.username)
+                  }}">Unfollow user</a>.
+        {% else %}
+          You are not yet following this user.
+          <a class=follow href="{{ url('follow_user', username=profile_user.username)
+                  }}">Follow user</a>.
+        {% endif %}
+      </div>
+    {% elif endpoint == 'timeline' %}
+      <div class=twitbox>
+        <h3>What's on your mind {{ user.username }}?</h3>
+        <form action="{{ url('add_message') }}" method=post>
+          <p><input type=text name=text size=60><!--
+          --><input type=submit value="Share">
+        </form>
+      </div>
+    {% endif %}
+  {% endif %}
+  <ul class=messages>
+    {% for message in messages %}
+      <li><img src="{{ message.username|robo_avatar_url(size=48)}}"><p>
+          <strong><a href="{{ url('user_timeline', username=message.username)
+                }}">{{ message.username }}</a></strong>
+        {{ message.text }}
+        <small>&mdash; {{ message.pub_date|datetimeformat }}</small>
+        {% else %}
+      <li><em>There's no message so far.</em>
+    {% endfor %}
+  </ul>
+{% endblock %}

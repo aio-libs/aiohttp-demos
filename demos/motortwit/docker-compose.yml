@@ -1,0 +1,25 @@
+postgres:
+    image: postgres:9.5
+    environment:
+    environment:
+        - POSTGRES_USER=aiohttp_admin_user
+        - POSTGRES_PASSWORD=mysecretpassword
+        - POSTGRES_DB=aiohttp_admin
+    ports:
+        - 5432:5432
+
+mysql:
+    image: mysql:5.7
+    environment:
+        - MYSQL_USER=aiohttp_admin_user
+        - MYSQL_PASSWORD=mysecretpassword
+        - MYSQL_DATABASE=aiohttp_admin
+        - MYSQL_ROOT_PASSWORD=mysecretpassword
+    ports:
+        - 3306:3306
+
+mongo:
+    image: mongo:3.4
+    ports:
+        - 27017:27017
+    command: [--smallfiles]
