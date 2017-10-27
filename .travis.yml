@@ -1,0 +1,12 @@
+language: python
+
+
+python:
+  - '3.6'
+
+install:
+    - pip install --upgrade setuptools
+    - pip install -r requirements-dev.txt
+
+script:
+    flake8 demos
