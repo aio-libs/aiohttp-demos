@@ -9,10 +9,8 @@ Installation
 
 Clone repo and install library::
 
-    $ git clone git@github.com:aio-libs/aiohttp_admin.git
-    $ cd aiohttp_admin
-    $ pip install -e .
-    $ pip install -r requirements-dev.txt
+    $ git clone git@github.com:aio-libs/aiohttp-demos.git
+    $ cd aiohttp-demos
 
 Install the app::
 
@@ -31,7 +29,7 @@ Run application::
 
 Open browser::
 
-    http://127.0.0.1:9001/admin
+    http://127.0.0.1:9001
 
 
 Requirements
