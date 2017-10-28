@@ -1,5 +1,4 @@
 import trafaret as t
-
 from trafaret.contrib.object_id import MongoId
 from trafaret.contrib.rfc_3339 import DateTime
 

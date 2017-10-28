@@ -1,7 +1,7 @@
 import base64
-import bcrypt
 import functools
 
+import bcrypt
 from aiohttp import web
 from aiohttp_security import authorized_userid
 from aiohttp_security.abc import AbstractAuthorizationPolicy

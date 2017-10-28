@@ -1,14 +1,13 @@
 import datetime
 
 import aiohttp_jinja2
-
 from aiohttp import web
-from aiohttp_security import remember, forget, authorized_userid
+from aiohttp_security import authorized_userid, forget, remember
 from bson import ObjectId
 
 from . import db
-from .security import (generate_password_hash, check_password_hash,
-                       auth_required)
+from .security import (auth_required, check_password_hash,
+                       generate_password_hash)
 from .utils import redirect, validate_register_form
 
 

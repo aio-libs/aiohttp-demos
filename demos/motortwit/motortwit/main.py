@@ -5,14 +5,14 @@ import pathlib
 import aiohttp_jinja2
 import jinja2
 from aiohttp import web
-
-from aiohttp_security import CookiesIdentityPolicy, setup as setup_security
+from aiohttp_security import setup as setup_security
+from aiohttp_security import CookiesIdentityPolicy
 
 from motortwit.routes import setup_routes
 from motortwit.security import AuthorizationPolicy
+from motortwit.utils import (format_datetime, init_mongo, load_config,
+                             robo_avatar_url)
 from motortwit.views import SiteHandler
-from motortwit.utils import (load_config, init_mongo, robo_avatar_url,
-                             format_datetime)
 
 
 PROJ_ROOT = pathlib.Path(__file__).parent.parent
