@@ -28,6 +28,7 @@ follower = t.Dict({
 
 
 async def get_user_id(user_collection, username):
-    rv = await (user_collection
-                .find_one({'username': username}, {'_id': 1}))
+    rv = await (user_collection.find_one(
+        {'username': username},
+        {'_id': 1}))
     return rv['_id'] if rv else None
