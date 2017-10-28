@@ -6,7 +6,6 @@ import aiohttp_jinja2
 import jinja2
 from aiohttp import web
 
-from aiohttp_session import session_middleware, SimpleCookieStorage
 from aiohttp_security import CookiesIdentityPolicy, setup as setup_security
 
 from motortwit.routes import setup_routes
@@ -42,21 +41,14 @@ async def init(loop):
     conf = load_config(str(PROJ_ROOT / 'config' / 'config.yml'))
 
     app = web.Application(loop=loop)
-    cookie_storage = SimpleCookieStorage()
-    app = web.Application(middlewares=[session_middleware(cookie_storage)])
     mongo = await setup_mongo(app, conf, loop)
 
     setup_jinja(app)
-    setup_security(app,
-                   CookiesIdentityPolicy(),
-                   AuthorizationPolicy(mongo))
-
-    app.router.add_static('/static', path=str(PROJ_ROOT / 'static'))
+    setup_security(app, CookiesIdentityPolicy(), AuthorizationPolicy(mongo))
 
     # setup views and routes
     handler = SiteHandler(mongo)
     setup_routes(app, handler, PROJ_ROOT)
-
     host, port = conf['host'], conf['port']
     return app, host, port
 

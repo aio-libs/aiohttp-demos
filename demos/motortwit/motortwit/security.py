@@ -1,7 +1,6 @@
-import bcrypt
 import base64
+import bcrypt
 import functools
-from enum import Enum
 
 from aiohttp import web
 from aiohttp_security import authorized_userid
@@ -23,11 +22,6 @@ def check_password_hash(encoded, password):
     hashed = base64.b64decode(encoded)
     is_correct = bcrypt.hashpw(password, hashed) == hashed
     return is_correct
-
-
-class Permissions(str, Enum):
-    view = 'public'
-    add = 'private'
 
 
 class AuthorizationPolicy(AbstractAuthorizationPolicy):

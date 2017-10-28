@@ -21,7 +21,7 @@ def read_version():
 install_requires = ['aiohttp',
                     'pytz',
                     'bcrypt',
-                    'aiohttp_session',
+                    'aiohttp_security',
                     'trafaret',
                     'aiohttp_jinja2',
                     'pyyaml',

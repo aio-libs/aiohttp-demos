@@ -31,7 +31,7 @@ async def generate_users(mongo, schema, rows, fake):
     for i in range(rows):
         values.append(schema({
             '_id': ObjectId(),
-            'username': fake.word()[:50].lower(),
+            'username': fake.user_name()[:50],
             'email': fake.email(),
             'pw_hash': pw_hash,
         }))

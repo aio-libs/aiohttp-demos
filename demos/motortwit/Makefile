@@ -4,8 +4,7 @@ FLAGS=
 
 
 flake:
-	pyflakes motortwit
-	pep8 motortwit setup.py
+	flake8 motortwit setup.py
 
 clean:
 	rm -rf `find . -name __pycache__`
