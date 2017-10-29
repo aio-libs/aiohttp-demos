@@ -10,6 +10,7 @@ Welcome to aiohttp-demos's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   tutorial
 
 
 Indices and tables

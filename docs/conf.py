@@ -34,6 +34,7 @@
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
+    'alabaster',
 ]
 
 try:
@@ -48,6 +49,8 @@ intersphinx_mapping = {
     'python': ('http://docs.python.org/3', None),
     'aiohttpjinja2':
         ('https://aiohttp-jinja2.readthedocs.io/en/stable/', None),
+    'aiohttp':
+        ('http://aiohttp.readthedocs.io/en/stable/', None),
 }
 
 # Add any paths that contain templates here, relative to this directory.
@@ -133,11 +136,9 @@ html_static_path = ['_static']
 # to template names.
 #
 # This is required for the alabaster theme
-# refs: http://alabaster.readthedocs.io/en/latest/installation.html#sidebars
 html_sidebars = {
     '**': [
-        'relations.html',  # needs 'show_related': True theme option to display
-        'searchbox.html',
+        'about.html', 'navigation.html', 'searchbox.html',
     ]
 }
 
