@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>shortify - aiohttp url shortener</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+    <link rel=stylesheet type=text/css href="{{ url('static', filename='css/custom.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+
+<script type="text/javascript">
+ $(function() {
+     $('#submitButton').click(function() {
+         $.ajax({
+             type: "POST",
+             url: "/shortify",
+             data: JSON.stringify({'url' : $('#url').val()}),
+             success: returnSuccess,
+             dataType: 'json',
+             contentType: "application/json",
+         });
+     });
+});
+
+function returnSuccess(data, textStatus, jqXHR) {
+    if(data.url) {
+        $('#url-result').text(data.url);
+        $('#url').val("");
+        $("a").attr("href", data.url)
+    } else {
+        $('#url-result').text("Please enter a URL!");
+    }
+}
+</script>
+
+<body>
+    <div id="wrap">
+        <header>
+           <h1><a href="">shortify</a></h1>
+           <p>aiohttp URL shortener demo</p>
+        </header>
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    <input type="text" name="url" id="url" class="form-control input-sm" placeholder="http://www.google.com" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s4 offset-s4">
+                    <button id="submitButton" class="waves-effect waves-light btn-large blue darken-1">Shorten</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <div class="panel-footer">
+                        <h4>
+                            <a href="#" id="url-result">Enter URL</a>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer><a href="https://github.com/aio-libs">https://github.com/aio-libs</a></footer>
+</body>
+</html>
