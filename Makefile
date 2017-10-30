@@ -10,7 +10,7 @@ doc-spelling:
 	@make -C docs spelling SPHINXOPTS="-W -E"
 
 install:
-	@pip install -U pip
+	@pip install -U pip setuptools
 	@pip install -Ur requirements-dev.txt
 
 .PHONY: clean doc
