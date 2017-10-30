@@ -3,6 +3,11 @@ language: python
 
 python:
   - '3.6'
+  
+addons:
+  apt:
+    packages:
+    - libenchant-dev
 
 install:
   - pip install --upgrade setuptools
