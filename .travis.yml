@@ -3,10 +3,16 @@ language: python
 
 python:
   - '3.6'
+  
+addons:
+  apt:
+    packages:
+    - libenchant-dev
 
 install:
-    - pip install --upgrade setuptools
-    - pip install -r requirements-dev.txt
+  - pip install --upgrade setuptools
+  - pip install -r requirements-dev.txt
 
 script:
-    flake8 demos
+  - flake8 demos
+  - make doc-spelling
