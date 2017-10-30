@@ -1,6 +1,5 @@
 clean:
 	@rm -rf `find . -name __pycache__`
-	@rm -f `find . -type f -name '*.py[co]' `
 	@make -C docs clean
 
 doc:
