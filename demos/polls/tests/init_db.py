@@ -39,6 +39,10 @@ def create_tables():
     meta = MetaData()
     meta.create_all(bind=engine_user, tables=[question, choice])
 
+def drop_tables():
+    meta = MetaData()
+    meta.drop_all(bind=engine_user, tables=[question, choice])
+
 
 def sample_data():
     conn = engine_user.connect()
@@ -62,4 +66,5 @@ if __name__ == '__main__':
     setup_db(db_name, db_user, db_pass)
     create_tables()
     sample_data()
+    drop_tables()
     teardown_db(db_name, db_user)
