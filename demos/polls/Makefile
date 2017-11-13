@@ -4,8 +4,7 @@ FLAGS=
 
 
 flake:
-	pyflakes aiohttpdemo_polls
-	pep8 aiohttpdemo_polls setup.py
+	flake8 aiohttpdemo_polls
 
 test:
 	pytest tests

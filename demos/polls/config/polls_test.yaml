@@ -1,6 +1,6 @@
 postgres:
-  database: aiohttpdemo_polls
-  user: aiohttpdemo_user
+  database: test_aiohttpdemo_polls
+  user: test_aiohttpdemo_user
   password: aiohttpdemo_pass
   host: localhost
   port: 5432

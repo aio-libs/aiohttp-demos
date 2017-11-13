@@ -1,30 +1,40 @@
 import pathlib
-import subprocess
 
 import pytest
 
 from aiohttpdemo_polls.main import init
+from .init_db import (
+    get_config,
+    setup_db,
+    teardown_db,
+    create_tables,
+    sample_data,
+    drop_tables
+)
 
 
 BASE_DIR = pathlib.Path(__file__).parent.parent
+CONFIG_PATH = BASE_DIR / 'config' / 'polls_test.yaml'
 
 
 @pytest.fixture
-def config_path():
-    path = BASE_DIR / 'config' / 'polls.yaml'
-    return path.as_posix()
-
-
-@pytest.fixture
-def cli(loop, test_client, config_path):
-    app = init(loop, ['-c', config_path])
+def cli(loop, test_client, db):
+    app = init(loop, ['-c', CONFIG_PATH.as_posix()])
     return loop.run_until_complete(test_client(app))
 
 
+@pytest.fixture(scope='module')
+def db():
+    test_config = get_config(CONFIG_PATH)
+
+    setup_db(test_config)
+    yield
+    teardown_db(test_config)
+
+
 @pytest.fixture
-def app_db():
-    subprocess.call(
-        [(BASE_DIR / 'sql' / 'install.sh').as_posix()],
-        shell=True,
-        cwd=BASE_DIR.as_posix()
-    )
+def tables_and_data():
+    create_tables()
+    sample_data()
+    yield
+    drop_tables()
