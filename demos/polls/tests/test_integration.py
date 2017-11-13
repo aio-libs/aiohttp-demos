@@ -4,7 +4,6 @@ from aiohttpdemo_polls.db import question, choice
 
 
 async def test_index(cli, tables_and_data):
-    print('in test_index test')
     response = await cli.get('/poll/1')
     assert response.status == 200
     assert 'What\'s new?' in await response.text()
@@ -32,7 +31,7 @@ async def test_vote(cli, tables_and_data):
         votes_before = not_much_choice.votes
 
         response = await cli.post(
-            '/poll/1/vote',
+            f'/poll/{question_id}/vote',
             data={'choice': not_much_choice_id}
         )
         assert response.status == 200

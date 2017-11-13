@@ -1,20 +1,42 @@
-from sqlalchemy import create_engine, MetaData
-from aiohttpdemo_polls.db import question, choice
+import pathlib
 
-from aiohttpdemo_polls.config import DB_CONFIG_ADMIN, DB_CONFIG_USER
+from sqlalchemy import create_engine, MetaData
+import yaml
+
+from aiohttpdemo_polls.db import question, choice
 
 
 DSN = "postgresql://{user}:{password}@{host}:{port}/{database}"
+BASE_DIR = pathlib.Path(__file__).parent.parent
 
-DB_URL = DSN.format(**DB_CONFIG_ADMIN)
-engine = create_engine(DB_URL, isolation_level='AUTOCOMMIT')
+def get_config(path):
+    with open(path) as f:
+        config = yaml.load(f)['postgres']
+    return config
 
-DB_URL_USER = DSN.format(**DB_CONFIG_USER)
-engine_user = create_engine(DB_URL_USER)
+
+ADMIN_DB_URL = DSN.format(
+    user='postgres', password='postgres', database='postgres',
+    host='localhost', port=5432
+)
+admin_engine = create_engine(ADMIN_DB_URL, isolation_level='AUTOCOMMIT')
+
+USER_CONFIG = get_config(BASE_DIR / 'config' / 'polls.yaml')
+USER_DB_URL = DSN.format(**USER_CONFIG)
+user_engine = create_engine(USER_DB_URL)
+
+TEST_CONFIG = get_config(BASE_DIR / 'config' / 'polls_test.yaml')
+TEST_DB_URL = DSN.format(**TEST_CONFIG)
+test_engine = create_engine(TEST_DB_URL)
 
 
-def setup_db(db_name, db_user, db_pass):
-    conn = engine.connect()
+def setup_db(config):
+
+    db_name = config['database']
+    db_user = config['user']
+    db_pass = config['password']
+
+    conn = admin_engine.connect()
     conn.execute("DROP DATABASE IF EXISTS %s" % db_name)
     conn.execute("DROP ROLE IF EXISTS %s" % db_user)
     conn.execute("CREATE USER %s WITH PASSWORD '%s'" % (db_user, db_pass))
@@ -23,8 +45,12 @@ def setup_db(db_name, db_user, db_pass):
     conn.close()
 
 
-def teardown_db(db_name, db_user):
-    conn = engine.connect()
+def teardown_db(config):
+
+    db_name = config['database']
+    db_user = config['user']
+
+    conn = admin_engine.connect()
     conn.execute("""
       SELECT pg_terminate_backend(pg_stat_activity.pid)
       FROM pg_stat_activity
@@ -35,17 +61,17 @@ def teardown_db(db_name, db_user):
     conn.close()
 
 
-def create_tables():
+def create_tables(engine=test_engine):
     meta = MetaData()
-    meta.create_all(bind=engine_user, tables=[question, choice])
+    meta.create_all(bind=engine, tables=[question, choice])
 
-def drop_tables():
+def drop_tables(engine=test_engine):
     meta = MetaData()
-    meta.drop_all(bind=engine_user, tables=[question, choice])
+    meta.drop_all(bind=engine, tables=[question, choice])
 
 
-def sample_data():
-    conn = engine_user.connect()
+def sample_data(engine=test_engine):
+    conn = engine.connect()
     conn.execute(question.insert(), [
         {'question_text': 'What\'s new?', 'pub_date': '2015-12-15 17:17:49.629+02'}
     ])
@@ -59,12 +85,8 @@ def sample_data():
 
 if __name__ == '__main__':
 
-    db_name = DB_CONFIG_USER['database']
-    db_user = DB_CONFIG_USER['user']
-    db_pass = DB_CONFIG_USER['password']
-
-    setup_db(db_name, db_user, db_pass)
-    create_tables()
-    sample_data()
-    drop_tables()
-    teardown_db(db_name, db_user)
+    setup_db(USER_CONFIG)
+    create_tables(engine=user_engine)
+    sample_data(engine=user_engine)
+    # drop_tables()
+    # teardown_db(config)

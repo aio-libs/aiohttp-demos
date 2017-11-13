@@ -3,40 +3,33 @@ import pathlib
 import pytest
 
 from aiohttpdemo_polls.main import init
-from aiohttpdemo_polls.config import DB_CONFIG_USER
 from .init_db import (
+    get_config,
     setup_db,
     teardown_db,
-    create_tables, 
+    create_tables,
     sample_data,
     drop_tables
 )
 
 
 BASE_DIR = pathlib.Path(__file__).parent.parent
+CONFIG_PATH = BASE_DIR / 'config' / 'polls_test.yaml'
 
 
 @pytest.fixture
-def config_path():
-    path = BASE_DIR / 'config' / 'polls.yaml'
-    return path.as_posix()
-
-
-@pytest.fixture
-def cli(loop, test_client, config_path, db):
-    app = init(loop, ['-c', config_path])
+def cli(loop, test_client, db):
+    app = init(loop, ['-c', CONFIG_PATH.as_posix()])
     return loop.run_until_complete(test_client(app))
 
 
 @pytest.fixture(scope='module')
 def db():
-    db_name = DB_CONFIG_USER['database']
-    db_user = DB_CONFIG_USER['user']
-    db_pass = DB_CONFIG_USER['password']
+    test_config = get_config(CONFIG_PATH)
 
-    setup_db(db_name, db_user, db_pass)
+    setup_db(test_config)
     yield
-    teardown_db(db_name, db_user)
+    teardown_db(test_config)
 
 
 @pytest.fixture
