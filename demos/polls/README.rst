@@ -2,24 +2,26 @@ Polls (demo for aiohttp)
 ========================
 
 Example of polls project using aiohttp_, aiopg_ and aiohttp_jinja2_,
-similar to django one.
+similar to Django one.
 
-Installation
-============
 
-Install the app::
+Preparations
+------------
 
-    $ cd demos/polls
-    $ pip install -e .
+Run Postgres DB server::
 
-Create database for your project::
+    $ docker run --rm -it -p 5432:5432 postgres:10
 
-    bash sql/install.sh
+Create db and populate it with sample data::
 
+    $ python tests/init_db.py
+
+
+Run
+---
 Run application::
 
     $ python -m aiohttpdemo_polls
-
 
 Open browser::
 
@@ -29,10 +31,17 @@ Open browser::
     :align: center
 
 
+Tests
+-----
+
 Run integration tests::
 
-  pip install tox
-  tox
+    $ pytest tests/test_integration.py
+
+or::
+
+    $ pip install tox
+    $ tox
 
 
 Requirements
