@@ -17,8 +17,8 @@ Improvement plan
 
 - Update `polls` app and related `tutorial.rst` sections
 
-  - [ ] create configuration steps (venv, pip install, db initialization)
-  - [ ] fix or recreate tests
+  - [x] create configuration steps (venv, pip install, db initialization)
+  - [x] fix or recreate tests
   - [ ] revise `tutorial.rst`
 
 - `tutorial.rst`
