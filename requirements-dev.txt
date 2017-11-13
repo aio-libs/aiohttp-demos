@@ -1,0 +1,7 @@
+flake8==3.4.1
+
+# docs
+sphinx==1.6.5
+sphinxcontrib-asyncio==0.2.0
+pygments==2.2.0
+sphinxcontrib-spelling==4.0.1; platform_system!="Windows"  # We only use it in Travis CI

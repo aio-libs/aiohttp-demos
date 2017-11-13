@@ -2,54 +2,19 @@ Polls (demo for aiohttp)
 ========================
 
 Example of polls project using aiohttp_, aiopg_ and aiohttp_jinja2_,
-similar to django one.
-
-Installation
-============
-
-Prepare development environment
--------------------------------
-
-We suggest you to start by creating an isolated Python working environment::
-
-    $ python3 -m venv env
-    $ source env/bin/activate
+similar to Django one.
 
 
-Install the app and it's requirements::
+Preparations
+------------
 
-    $ cd demos/polls
-    $ pip install -e .
+Run Postgres DB server::
 
+    $ docker run --rm -it -p 5432:5432 postgres:10
 
-Prepare database
-----------------
-Install Postgresql database server: http://www.postgresql.org/download/
-(to use postgres in more isolated way you may also use docker. We will explain how to do that
-after environment variables setup.)
+Create db and populate it with sample data::
 
-Create ``.env`` file in ``polls`` folder with db related configuration values. It is a common practice to not
-hardcode such settings because they differ between e.g. prod and dev environments::
-
-    DB_HOST=localhost
-    DB_PORT=5432
-    DB_NAME=aiohttpdemo_polls
-    DB_USER=aiohttpdemo_user
-    DB_PASS=aiohttpdemo_user
-
-Export these variables (to be able to use them inside db initializing script)::
-
-    $ source .env
-    $ export DB_HOST DB_PORT DB_NAME DB_USER DB_PASS
-
-If you chose to use docker - here is the command for that (sure thing you need docker installed beforehand)::
-
-    $ docker run --rm -it -p $DB_PORT:5432 postgres:10
-
-Initialize db (if you started docker container - use separate shell for further commands).
-It will create database, user, tables etc::
-
-    $ bash sql/install.sh
+    $ python tests/init_db.py
 
 
 Run
@@ -66,10 +31,17 @@ Open browser::
     :align: center
 
 
+Tests
+-----
+
 Run integration tests::
 
-  pip install tox
-  tox
+    $ pytest tests/test_integration.py
+
+or::
+
+    $ pip install tox
+    $ tox
 
 
 Requirements

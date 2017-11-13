@@ -4,10 +4,7 @@ FLAGS=
 
 
 flake:
-	flake8 aiohttpdemo_polls
-
-test:
-	pytest tests
+	flake8 motortwit setup.py
 
 clean:
 	rm -rf `find . -name __pycache__`
@@ -24,4 +21,16 @@ clean:
 	rm -rf htmlcov
 	rm -rf dist
 
-.PHONY: flake clean test
+run:
+	python -m motortwit
+
+fake_data:
+	python ./motortwit/generate_data.py
+
+docker_start_mongo:
+	docker-compose -f docker-compose.yml up -d mongo
+
+docker_stop_mogo:
+	docker-compose -f docker-compose.yml stop mongo
+
+.PHONY: flake clean

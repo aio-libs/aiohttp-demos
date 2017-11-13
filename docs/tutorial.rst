@@ -1,85 +1,17 @@
 .. _aiohttp-tutorial:
 
-Server Tutorial
-===============
+Tutorial
+========
 
-Are you going to learn *aiohttp* but don't know where to start? We have
-example for you. Polls application is a great example for getting
-started with aiohttp.
-
-If you want the full source code in advance or for comparison, check out
-the `demo source`_.
-
-.. _demo source:
-   https://github.com/aio-libs/aiohttp/tree/master/demos/polls/
+Are you willing to learn *aiohttp* but don't know where to start?
+Polls application, which is similar to the one in Django tutorial,
+is a great example.
 
 
-.. _aiohttp-tutorial-setup:
+Getting started
+---------------
 
-Setup your environment
-----------------------
-
-First of all check you python version:
-
-.. code-block:: shell
-
- $ python -V
- Python 3.5.0
-
-Tutorial requires Python 3.5.0 or newer.
-
-We’ll assume that you have already installed *aiohttp* library. You can check
-aiohttp is installed and which version by running the following
-command:
-
-.. code-block:: shell
-
- $ python3 -c 'import aiohttp; print(aiohttp.__version__)'
- 2.0.5
-
-Project structure looks very similar to other python based web projects:
-
-.. code-block:: none
-
-    .
-    ├── README.rst
-    └── polls
-        ├── Makefile
-        ├── README.rst
-        ├── aiohttpdemo_polls
-        │   ├── __init__.py
-        │   ├── __main__.py
-        │   ├── db.py
-        │   ├── main.py
-        │   ├── routes.py
-        │   ├── templates
-        │   ├── utils.py
-        │   └── views.py
-        ├── config
-        │   └── polls.yaml
-        ├── images
-        │   └── example.png
-        ├── setup.py
-        ├── sql
-        │   ├── create_tables.sql
-        │   ├── install.sh
-        │   └── sample_data.sql
-        └── static
-            └── style.css
-
-
-.. _aiohttp-tutorial-introduction:
-
-Getting started with aiohttp first app
---------------------------------------
-
-This tutorial based on Django polls tutorial.
-
-
-Application
------------
-
-All aiohttp server is built around :class:`aiohttp.web.Application` instance.
+aiohttp server is built around :class:`aiohttp.web.Application` instance.
 It is used for registering *startup*/*cleanup* signals, connecting routes etc.
 
 The following code creates an application::
@@ -217,12 +149,6 @@ Load config and push into application::
 
 Database
 --------
-
-Setup
-^^^^^
-
-In this tutorial we will use the latest PostgreSQL database.  You can install
-PostgreSQL using this instruction http://www.postgresql.org/download/
 
 Database schema
 ^^^^^^^^^^^^^^^
