@@ -81,7 +81,7 @@ We could have created this tutorial based on local ``sqlite`` solution,
 but it is almost never used in real-world applications.
 So we decided to use Postgres.
 
-Install and run Postgresql database server: http://www.postgresql.org/download/
+Install and run PostgreSQL database server: http://www.postgresql.org/download/
 To use Postgres in more isolated way you may also use Docker::
 
     $ docker run --rm -it -p 5432:5432 postgres:10
