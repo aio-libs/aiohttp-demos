@@ -7,6 +7,9 @@ aiohttp-demos
 .. image:: https://badges.gitter.im/Join%20Chat.svg
     :target: https://gitter.im/aio-libs/Lobby
     :alt: Chat on Gitter
+.. image:: https://readthedocs.org/projects/aiohttp-demos/badge/?version=latest
+   :target: http://aiohttp-demos.readthedocs.io/en/latest/
+   :alt: Latest Read The Docs
 
 
 Demos for aiohttp project
