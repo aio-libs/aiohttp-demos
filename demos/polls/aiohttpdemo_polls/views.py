@@ -3,11 +3,14 @@ from aiohttp import web
 
 from . import db
 
+from sqlalchemy.sql import select
+from aiohttpdemo_polls.db import Question
+
 
 @aiohttp_jinja2.template('index.html')
 async def index(request):
     async with request.app['db'].acquire() as conn:
-        cursor = await conn.execute(db.question.select())
+        cursor = await conn.execute(select([Question]))
         records = await cursor.fetchall()
         questions = [dict(q) for q in records]
         return {'questions': questions}
