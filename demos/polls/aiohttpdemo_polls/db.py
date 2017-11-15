@@ -1,34 +1,35 @@
 import aiopg.sa
 import sqlalchemy as sa
+from sqlalchemy.sql import select
+
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, Date, ForeignKey
 
 
 __all__ = ['question', 'choice']
 
 meta = sa.MetaData()
 
+Base = declarative_base()
 
-question = sa.Table(
-    'question', meta,
-    sa.Column('id', sa.Integer, nullable=False),
-    sa.Column('question_text', sa.String(200), nullable=False),
-    sa.Column('pub_date', sa.Date, nullable=False),
 
-    # Indexes #
-    sa.PrimaryKeyConstraint('id', name='question_id_pkey'))
+class Question(Base):
+    __tablename__ = 'question'
 
-choice = sa.Table(
-    'choice', meta,
-    sa.Column('id', sa.Integer, nullable=False),
-    sa.Column('question_id', sa.Integer, nullable=False),
-    sa.Column('choice_text', sa.String(200), nullable=False),
-    sa.Column('votes', sa.Integer, server_default="0", nullable=False),
+    id = Column(Integer, primary_key=True)
+    question_text = Column(String(200), nullable=False)
+    pub_date = Column(Date, nullable=False)
 
-    # Indexes #
-    sa.PrimaryKeyConstraint('id', name='choice_id_pkey'),
-    sa.ForeignKeyConstraint(['question_id'], [question.c.id],
-                            name='choice_question_id_fkey',
-                            ondelete='CASCADE'),
-)
+
+class Choice(Base):
+    __tablename__ = 'choice'
+
+    id = Column(Integer, primary_key=True)
+    choice_text = Column(String(200), nullable=False)
+    votes = Column(Integer, server_default="0", nullable=False)
+
+    question_id = Column(Integer,
+                         ForeignKey('question.id', ondelete='CASCADE'))
 
 
 class RecordNotFound(Exception):
@@ -56,16 +57,16 @@ async def close_pg(app):
 
 async def get_question(conn, question_id):
     result = await conn.execute(
-        question.select()
-        .where(question.c.id == question_id))
+        select([Question])
+        .where(Question.id == question_id))
     question_record = await result.first()
     if not question_record:
         msg = "Question with id: {} does not exists"
         raise RecordNotFound(msg.format(question_id))
     result = await conn.execute(
-        choice.select()
-        .where(choice.c.question_id == question_id)
-        .order_by(choice.c.id))
+        select([Choice])
+        .where(Choice.question_id == question_id)
+        .order_by(Choice.id))
     choice_recoreds = await result.fetchall()
     return question_record, choice_recoreds
 
