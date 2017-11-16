@@ -1,33 +1,29 @@
 import aiopg.sa
-import sqlalchemy as sa
-
+from sqlalchemy import (
+    MetaData, Table, Column, ForeignKey,
+    Integer, String, Date
+)
 
 __all__ = ['question', 'choice']
 
-meta = sa.MetaData()
+meta = MetaData()
 
 
-question = sa.Table(
-    'question', meta,
-    sa.Column('id', sa.Integer, nullable=False),
-    sa.Column('question_text', sa.String(200), nullable=False),
-    sa.Column('pub_date', sa.Date, nullable=False),
+question = Table('question', meta,
+    Column('id', Integer, primary_key=True),
+    Column('question_text', String(200), nullable=False),
+    Column('pub_date', Date, nullable=False)
+)
 
-    # Indexes #
-    sa.PrimaryKeyConstraint('id', name='question_id_pkey'))
+choice = Table('choice', meta,
+    Column('id', Integer, primary_key=True),
+    Column('question_id', Integer, nullable=False),
+    Column('choice_text', String(200), nullable=False),
+    Column('votes', Integer, server_default="0", nullable=False),
 
-choice = sa.Table(
-    'choice', meta,
-    sa.Column('id', sa.Integer, nullable=False),
-    sa.Column('question_id', sa.Integer, nullable=False),
-    sa.Column('choice_text', sa.String(200), nullable=False),
-    sa.Column('votes', sa.Integer, server_default="0", nullable=False),
-
-    # Indexes #
-    sa.PrimaryKeyConstraint('id', name='choice_id_pkey'),
-    sa.ForeignKeyConstraint(['question_id'], [question.c.id],
-                            name='choice_question_id_fkey',
-                            ondelete='CASCADE'),
+    Column('question_id',
+           Integer,
+           ForeignKey('question.id', ondelete='CASCADE'))
 )
 
 
@@ -66,8 +62,8 @@ async def get_question(conn, question_id):
         choice.select()
         .where(choice.c.question_id == question_id)
         .order_by(choice.c.id))
-    choice_recoreds = await result.fetchall()
-    return question_record, choice_recoreds
+    choice_records = await result.fetchall()
+    return question_record, choice_records
 
 
 async def vote(conn, question_id, choice_id):
