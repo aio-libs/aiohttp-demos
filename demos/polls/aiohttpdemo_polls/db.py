@@ -44,7 +44,7 @@ async def init_pg(app):
         port=conf['port'],
         minsize=conf['minsize'],
         maxsize=conf['maxsize'],
-        loop=app.loop)
+    )
     app['db'] = engine
 
 

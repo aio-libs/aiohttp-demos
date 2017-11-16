@@ -1,5 +1,4 @@
 import argparse
-import asyncio
 import logging
 import sys
 
@@ -14,7 +13,7 @@ from aiohttpdemo_polls.utils import TRAFARET
 from trafaret_config import commandline
 
 
-def init(loop, argv):
+def init(argv):
     ap = argparse.ArgumentParser()
     commandline.standard_argparse_options(ap,
                                           default_config='./config/polls.yaml')
@@ -26,7 +25,7 @@ def init(loop, argv):
     config = commandline.config_from_options(options, TRAFARET)
 
     # setup application and extensions
-    app = web.Application(loop=loop)
+    app = web.Application()
 
     # load config from yaml file in current dir
     app['config'] = config
@@ -50,9 +49,7 @@ def main(argv):
     # init logging
     logging.basicConfig(level=logging.DEBUG)
 
-    loop = asyncio.get_event_loop()
-
-    app = init(loop, argv)
+    app = init(argv)
     web.run_app(app,
                 host=app['config']['host'],
                 port=app['config']['port'])
