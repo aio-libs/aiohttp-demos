@@ -19,7 +19,7 @@ CONFIG_PATH = BASE_DIR / 'config' / 'polls_test.yaml'
 
 @pytest.fixture
 def cli(loop, test_client, db):
-    app = init(loop, ['-c', CONFIG_PATH.as_posix()])
+    app = init(['-c', CONFIG_PATH.as_posix()])
     return loop.run_until_complete(test_client(app))
 
 
