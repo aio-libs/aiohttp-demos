@@ -4,8 +4,12 @@ Tutorial
 ========
 
 Are you willing to learn *aiohttp* but don't know where to start?
-Polls application, which is similar to the one in Django tutorial,
+**Polls** application, which is similar to the one in Django tutorial,
 is a great example.
+We will build something like:
+
+.. image:: ../demos/polls/images/example.png
+    :align: center
 
 
 Getting started
@@ -16,32 +20,21 @@ It is used for registering *startup*/*cleanup* signals, connecting routes etc.
 
 The following code creates an application::
 
-   from aiohttp import web
+    # main.py
+    from aiohttp import web
 
-
-   app = web.Application()
-   web.run_app(app, host='127.0.0.1', port=8080)
+    app = web.Application()
+    web.run_app(app, host='127.0.0.1', port=8080)
 
 Save it under ``aiohttpdemo_polls/main.py`` and start the server:
 
 .. code-block:: shell
 
-   $ python3 main.py  
-   
-You'll see the following output on the command line:
+    $ python3 main.py
+    ======== Running on http://127.0.0.1:8080 ========
+    (Press CTRL+C to quit)
 
-.. code-block:: shell
-
-   ======== Running on http://127.0.0.1:8080 ========
-   (Press CTRL+C to quit)
-
-Open ``http://127.0.0.1:8080`` in browser or do
-
-.. code-block:: shell
-
-   $ curl -X GET localhost:8080
-
-Alas, for now both return only ``404: Not Found``.
+Open ``http://127.0.0.1:8080`` in browser... and it returns ``404: Not Found``.
 To show something more meaningful let's create a route and a view.
 
 .. _aiohttp-tutorial-views:
@@ -49,39 +42,40 @@ To show something more meaningful let's create a route and a view.
 Views
 -----
 
-Let's start from first views. Create the file ``aiohttpdemo_polls/views.py`` with the following::
+Let's start from first views. Create the file ``aiohttpdemo_polls/views.py``
+with the following::
 
+    # views.py
     from aiohttp import web
-
 
     async def index(request):
         return web.Response(text='Hello Aiohttp!')
 
-This is the simplest view possible in Aiohttp. 
-Now we should create a route for this ``index`` view. Put this into ``aiohttpdemo_polls/routes.py`` (it is a good practice to separate views, routes, models etc. You'll have more of each, and it is nice to have them in different places)::
+This is the simplest view possible in Aiohttp. Now we should create a route
+for this ``index`` view. Put this into ``aiohttpdemo_polls/routes.py``.
+It is a good practice to separate views, routes, models etc.
+You'll have more of each, and it is nice to have them in different places::
 
+    # routes.py
     from views import index
-
 
     def setup_routes(app):
         app.router.add_get('/', index)
 
 
-Also, we should call ``setup_routes`` function somewhere, and the best place is in the ``main.py`` ::
+Also, we should call ``setup_routes`` function somewhere, and the best place
+is in the ``main.py`` ::
 
+   # main.py
    from aiohttp import web
    from routes import setup_routes
-
 
    app = web.Application()
    setup_routes(app)
    web.run_app(app, host='127.0.0.1', port=8080)
 
-Start server again. Now if we open browser we can see:
+Start server again. Now if we open browser we can see::
 
-.. code-block:: shell
-
-    $ curl -X GET localhost:8080
     Hello Aiohttp!
 
 Success! For now your working directory should look like this:
@@ -91,127 +85,215 @@ Success! For now your working directory should look like this:
     .
     ├── ..
     └── polls
-        ├── aiohttpdemo_polls
-        │   ├── main.py
-        │   ├── routes.py
-        │   └── views.py
+        └── aiohttpdemo_polls
+            ├── main.py
+            ├── routes.py
+            └── views.py
+
 
 .. _aiohttp-tutorial-config:
 
 Configuration files
 -------------------
 
-aiohttp is configuration agnostic. It means the library does not
-require any configuration approach and does not have builtin support
-for any config schema.
+.. note::
 
-But please take into account these facts:
+    aiohttp is configuration agnostic. It means the library does not
+    require any configuration approach and does not have builtin support
+    for any config schema.
 
-   1. 99% of servers have configuration files.
+    But please take into account these facts:
 
-   2. Every product (except Python-based solutions like Django and
-      Flask) does not store config files as part as source code.
+       1. 99% of servers have configuration files.
 
-      For example Nginx has own configuration files stored by default
-      under ``/etc/nginx`` folder.
+       2. Most products (except Python-based solutions like Django and
+          Flask) do not store configs with source code.
 
-      Mongo pushes config as ``/etc/mongodb.conf``.
+          For example Nginx has own configuration files stored by default
+          under ``/etc/nginx`` folder.
 
-   3. Config files validation is good idea, strong checks may prevent
-      silly errors during product deployment.
+          Mongo pushes config as ``/etc/mongodb.conf``.
 
-Thus we **suggest** to use the following approach:
+       3. Config files validation is good idea, strong checks may prevent
+          silly errors during product deployment.
 
-   1. Pushing configs as ``yaml`` files (``json`` or ``ini`` is also
-      good but ``yaml`` is the best).
+    Thus we **suggest** to use the following approach:
 
-   2. Loading ``yaml`` config from a list of predefined locations,
-      e.g. ``./config/app_cfg.yaml``, ``/etc/app_cfg.yaml``.
+       1. Pushing configs as ``yaml`` files (``json`` or ``ini`` is also
+          good but ``yaml`` is the best).
 
-   3. Keeping ability to override config file by command line
-      parameter, e.g. ``./run_app --config=/opt/config/app_cfg.yaml``.
+       2. Loading ``yaml`` config from a list of predefined locations,
+          e.g. ``./config/app_cfg.yaml``, ``/etc/app_cfg.yaml``.
 
-   4. Applying strict validation checks to loaded dict. `trafaret
-      <http://trafaret.readthedocs.io/en/latest/>`_, `colander
-      <http://docs.pylonsproject.org/projects/colander/en/latest/>`_
-      or `JSON schema
-      <http://python-jsonschema.readthedocs.io/en/latest/>`_ are good
-      candidates for such job.
+       3. Keeping ability to override config file by command line
+          parameter, e.g. ``./run_app --config=/opt/config/app_cfg.yaml``.
+
+       4. Applying strict validation checks to loaded dict. `trafaret
+          <http://trafaret.readthedocs.io/en/latest/>`_, `colander
+          <http://docs.pylonsproject.org/projects/colander/en/latest/>`_
+          or `JSON schema
+          <http://python-jsonschema.readthedocs.io/en/latest/>`_ are good
+          candidates for such job.
 
 
-Load config and push into application::
+One way to store your config is in folder at the same level as `aiohttpdemo_polls`.
+Create config folder and config file at desired location. E.g.:
 
-    # load config from yaml file in current dir
-    conf = load_config(str(pathlib.Path('.') / 'config' / 'polls.yaml'))
-    app['config'] = conf
+.. code-block:: none
+
+    .
+    ├── ..
+    └── polls                   <-- [BASE_DIR]
+        │
+        ├── aiohttpdemo_polls
+        │   ├── main.py
+        │   ├── routes.py
+        │   └── views.py
+        │
+        └── config
+            └── polls.yaml      <-- [config file]
+
+Create ``config/polls.yaml`` file with database schemas
+
+.. code-block:: yaml
+
+    # polls.yaml
+    postgres:
+      database: aiohttpdemo_polls
+      user: aiohttpdemo_user
+      password: aiohttpdemo_pass
+      host: localhost
+      port: 5432
+      minsize: 1
+      maxsize: 5
+
+    host: 127.0.0.1
+    port: 8080
+
+Install ``pyyaml``::
+
+    $ pip install pyyaml
+
+And now load config into the application::
+
+    # main.py
+    import pathlib
+
+    from aiohttp import web
+    import yaml
+    from routes import setup_routes
+
+
+    BASE_DIR = pathlib.Path(__file__).parent.parent
+    config_path = BASE_DIR / 'config' / 'polls.yaml'
+    with open(config_path) as f:
+        config = yaml.load(f)
+
+    app = web.Application()
+    setup_routes(app)
+    app['config'] = config
+    web.run_app(app, host='127.0.0.1', port=8080)
+
+
+Try to run your app again. Make sure you are running it from ``BASE_DIR``::
+
+    $ python aiohttpdemo_polls/main.py
+    ======== Running on http://127.0.0.1:8080 ========
+    (Press CTRL+C to quit)
+
+For the moment nothing should have changed in application's behavior. But at
+least we know how to configure our application.
+
 
 .. _aiohttp-tutorial-database:
 
 Database
 --------
 
-Database schema
-^^^^^^^^^^^^^^^
+Schema
+^^^^^^
 
-We use SQLAlchemy to describe database schemas.
-For this tutorial we can use two simple models ``question`` and ``choice``::
+We will use SQLAlchemy to describe database schema for two related models,
+``question`` and ``choice``::
 
-    import sqlalchemy as sa
+    +---------------+               +---------------+
+    | question      |               | choice        |
+    +===============+               +===============+
+    | id            | <---+         | id            |
+    +---------------+     |         +---------------+
+    | question_text |     |         | choice_text   |
+    +---------------+     |         +---------------+
+    | pub_date      |     |         | votes         |
+    +---------------+     |         +---------------+
+                          +-------- | question_id   |
+                                    +---------------+
 
-    meta = sa.MetaData()
+Create ``db.py`` file with database schemas ::
 
-    question = sa.Table(
+    # db.py
+    from sqlalchemy import (
+        MetaData, Table, Column, ForeignKey,
+        Integer, String, Date
+    )
+
+    meta = MetaData()
+
+    question = Table(
         'question', meta,
-        sa.Column('id', sa.Integer, nullable=False),
-        sa.Column('question_text', sa.String(200), nullable=False),
-        sa.Column('pub_date', sa.Date, nullable=False),
 
-        # Indexes #
-        sa.PrimaryKeyConstraint('id', name='question_id_pkey'))
+        Column('id', Integer, primary_key=True),
+        Column('question_text', String(200), nullable=False),
+        Column('pub_date', Date, nullable=False)
+    )
 
-    choice = sa.Table(
+    choice = Table(
         'choice', meta,
-        sa.Column('id', sa.Integer, nullable=False),
-        sa.Column('question_id', sa.Integer, nullable=False),
-        sa.Column('choice_text', sa.String(200), nullable=False),
-        sa.Column('votes', sa.Integer, server_default="0", nullable=False),
 
-        # Indexes #
-        sa.PrimaryKeyConstraint('id', name='choice_id_pkey'),
-        sa.ForeignKeyConstraint(['question_id'], [question.c.id],
-                                name='choice_question_id_fkey',
-                                ondelete='CASCADE'),
+        Column('id', Integer, primary_key=True),
+        Column('question_id', Integer, nullable=False),
+        Column('choice_text', String(200), nullable=False),
+        Column('votes', Integer, server_default="0", nullable=False),
+
+        Column('question_id',
+               Integer,
+               ForeignKey('question.id', ondelete='CASCADE'))
     )
 
 
+.. note::
 
-You can find below description of tables in database:
+    It is possible to configure tables in declarative style like so:
 
-First table is question:
+    .. code-block:: python
 
-+---------------+
-| question      |
-+===============+
-| id            |
-+---------------+
-| question_text |
-+---------------+
-| pub_date      |
-+---------------+
+        class Question(Base):
+            __tablename__ = 'question'
 
-and second table is choice table:
+            id = Column(Integer, primary_key=True)
+            question_text = Column(String(200), nullable=False)
+            pub_date = Column(Date, nullable=False)
 
-+---------------+
-| choice        |
-+===============+
-| id            |
-+---------------+
-| choice_text   |
-+---------------+
-| votes         |
-+---------------+
-| question_id   |
-+---------------+
+
+    But it doesn't give much benefits later on. SQLAlchemy ORM doesn't work in
+    asynchronous style and as a result ``aiopg.sa`` doesn't support related ORM
+    expressions such as ``Question.query.filter_by(question_text='Why').first()``
+    or ``session.query(TableName).all()``.
+
+    You still can make select queries after little code modifications:
+
+    .. code-block:: python
+
+        from sqlalchemy.sql import select
+        result = await conn.execute(select([Question]))
+
+    instead of
+
+    .. code-block:: python
+
+            result = await conn.execute(question.select())
+
+    But it is not so easy to deal with update/delete queries.
+
 
 Creating connection engine
 ^^^^^^^^^^^^^^^^^^^^^^^^^^

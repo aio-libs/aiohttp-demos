@@ -3,7 +3,16 @@ Preparations
 
 You may start with empty folder and create files alongside with the
 tutorial.
-In the end project structure will look very similar to other python based
+If you want the full source code in advance or for comparison,
+check out the `demo source`_.
+
+.. _demo source:
+   https://github.com/aio-libs/aiohttp-demos/tree/master/demos/polls/
+
+Project structure
+-----------------
+
+In the end project structure should look very similar to other python based
 web projects:
 
 .. code-block:: none
@@ -32,8 +41,6 @@ web projects:
     ├── config
     │   ├── polls.yaml
     │   └── polls_test.yaml
-    ├── images
-    │   └── example.png
     ├── requirements.txt
     ├── setup.py
     └── tests
@@ -43,36 +50,39 @@ web projects:
         └── test_integration.py
 
 
-If you want the full source code in advance or for comparison,
-check out the `demo source`_.
-
-.. _demo source:
-   https://github.com/aio-libs/aiohttp-demos/tree/master/demos/polls/
-
-
 Environment
 -----------
-We suggest you to start by creating an isolated Python environment::
+We suggest you to create an isolated Python environment::
 
     $ python3 -m venv env
     $ source env/bin/activate
 
+During tutorial you will be instructed to install some packages inside created
+environment. For example, ``$ pip install aiopg`` before database related sections.
 
-Install the app and it's requirements::
+.. note::
 
-    $ cd demos/polls
-    $ pip install -e .
+    If you decided to run the application from the repo - install the app and
+    it's requirements like so:
 
+    .. code-block:: shell
+
+        $ cd demos/polls
+        $ pip install -e .
 
 Check you python version (tutorial requires Python 3.5 or newer)::
 
    $ python -V
    Python 3.6.3
 
-Also check the aiohttp version by running the following command::
+Install ``aiohttp`` ::
 
-   $ python3 -c 'import aiohttp; print(aiohttp.__version__)'
-   2.3.1
+    $ pip install aiohttp
+
+Check the aiohttp version (tutorial requires v2.0 or newer)::
+
+    $ python3 -c 'import aiohttp; print(aiohttp.__version__)'
+    2.3.1
 
 
 Database
