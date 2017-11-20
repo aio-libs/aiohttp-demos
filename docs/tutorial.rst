@@ -153,7 +153,7 @@ Create config folder and config file at desired location. E.g.:
         └── config
             └── polls.yaml      <-- [config file]
 
-Create ``config/polls.yaml`` file with database schemas :::
+Create ``config/polls.yaml`` file with database schemas
 
 .. code-block:: yaml
 
