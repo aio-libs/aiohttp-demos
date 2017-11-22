@@ -1,3 +1,5 @@
+.. _preparations-beginning:
+
 Preparations
 ============
 
@@ -8,6 +10,9 @@ check out the `demo source`_.
 
 .. _demo source:
    https://github.com/aio-libs/aiohttp-demos/tree/master/demos/polls/
+
+
+.. _preparations-project-structure:
 
 Project structure
 -----------------
@@ -50,6 +55,8 @@ web projects:
         └── test_integration.py
 
 
+.. _preparations-environment:
+
 Environment
 -----------
 We suggest you to create an isolated Python environment::
@@ -85,18 +92,46 @@ Check the aiohttp version (tutorial requires v2.0 or newer)::
     2.3.1
 
 
+.. _preparations-database:
+
 Database
 --------
+
+Running server
+^^^^^^^^^^^^^^
 We could have created this tutorial based on local ``sqlite`` solution,
 but it is almost never used in real-world applications.
 So we decided to use Postgres.
 
-Install and run PostgreSQL database server: http://www.postgresql.org/download/
-To use Postgres in more isolated way you may also use Docker::
+Install and run PostgreSQL database server: http://www.postgresql.org/download/ .
+Alternatively, to use Postgres in more isolated way you may also use Docker::
 
     $ docker run --rm -it -p 5432:5432 postgres:10
 
-Create db at running server, create tables and populate them with sample data::
+Initial setup
+^^^^^^^^^^^^^
+We will need running database and user with write access.
+For these and other db related actions consider some options:
 
-    $ python tests/init_db.py
+- do preparations manually within database's interactive prompt;
+- prepare and execute '.sql' files;
+- use migration tool;
+- use default database/user `postgres`;
 
+Whichever option you choose - make sure you remember corresponding values to put them
+into config file. Here are example commands to run manually ::
+
+    $ psql -U postgres -h localhost
+    > CREATE DATABASE aiohttpdemo_polls;
+    > CREATE USER aiohttpdemo_user WITH PASSWORD 'aiohttpdemo_pass';
+    > GRANT ALL PRIVILEGES ON DATABASE aiohttpdemo_polls TO aiohttpdemo_user;
+
+Use ``\l`` and ``\du`` *psql* commands to check results.
+
+.. note::
+
+    If you decided to run the application from the repo - this script
+    ( :download:`init_db.py <../demos/polls/tests/init_db.py>` ) will create db
+    at running server, create tables and populate them with sample data ::
+
+        $ python tests/init_db.py
