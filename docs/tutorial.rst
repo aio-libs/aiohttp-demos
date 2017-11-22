@@ -1,4 +1,4 @@
-.. _aiohttp-tutorial:
+.. _tutorial-beginning:
 
 Tutorial
 ========
@@ -12,6 +12,8 @@ We will build something like:
     :align: center
 
 
+.. _tutorial-getting-started:
+
 Getting started
 ---------------
 
@@ -24,20 +26,21 @@ The following code creates an application::
     from aiohttp import web
 
     app = web.Application()
-    web.run_app(app, host='127.0.0.1', port=8080)
+    web.run_app(app)
 
 Save it under ``aiohttpdemo_polls/main.py`` and start the server:
 
 .. code-block:: shell
 
     $ python3 main.py
-    ======== Running on http://127.0.0.1:8080 ========
+    ======== Running on http://0.0.0.0:8080 ========
     (Press CTRL+C to quit)
 
-Open ``http://127.0.0.1:8080`` in browser... and it returns ``404: Not Found``.
+Open the link in browser... and it returns ``404: Not Found``.
 To show something more meaningful let's create a route and a view.
 
-.. _aiohttp-tutorial-views:
+
+.. _tutorial-views:
 
 Views
 -----
@@ -64,7 +67,7 @@ You'll have more of each, and it is nice to have them in different places::
 
 
 Also, we should call ``setup_routes`` function somewhere, and the best place
-is in the ``main.py`` ::
+is in the ``main.py``::
 
    # main.py
    from aiohttp import web
@@ -72,7 +75,7 @@ is in the ``main.py`` ::
 
    app = web.Application()
    setup_routes(app)
-   web.run_app(app, host='127.0.0.1', port=8080)
+   web.run_app(app)
 
 Start server again. Now if we open browser we can see::
 
@@ -91,7 +94,7 @@ Success! For now your working directory should look like this:
             └── views.py
 
 
-.. _aiohttp-tutorial-config:
+.. _tutorial-config:
 
 Configuration files
 -------------------
@@ -153,7 +156,7 @@ Create config folder and config file at desired location. E.g.:
         └── config
             └── polls.yaml      <-- [config file]
 
-Create ``config/polls.yaml`` file with database schemas
+Create ``config/polls.yaml`` file with meaningful option names:
 
 .. code-block:: yaml
 
@@ -167,48 +170,59 @@ Create ``config/polls.yaml`` file with database schemas
       minsize: 1
       maxsize: 5
 
-    host: 127.0.0.1
-    port: 8080
-
 Install ``pyyaml``::
 
     $ pip install pyyaml
 
-And now load config into the application::
+Let's also create separate settings file. It helps to leave ``main.py`` clean and short::
 
-    # main.py
+    # settings.py
     import pathlib
-
-    from aiohttp import web
     import yaml
-    from routes import setup_routes
-
 
     BASE_DIR = pathlib.Path(__file__).parent.parent
     config_path = BASE_DIR / 'config' / 'polls.yaml'
-    with open(config_path) as f:
-        config = yaml.load(f)
+
+    def get_config(path):
+        with open(path) as f:
+            config = yaml.load(f)
+        return config
+
+    config = get_config(config_path)
+
+
+And now load config into the application::
+
+    # main.py
+    from aiohttp import web
+
+    from settings import config
+    from routes import setup_routes
 
     app = web.Application()
     setup_routes(app)
     app['config'] = config
-    web.run_app(app, host='127.0.0.1', port=8080)
-
+    web.run_app(app)
 
 Try to run your app again. Make sure you are running it from ``BASE_DIR``::
 
     $ python aiohttpdemo_polls/main.py
-    ======== Running on http://127.0.0.1:8080 ========
+    ======== Running on http://0.0.0.0:8080 ========
     (Press CTRL+C to quit)
 
 For the moment nothing should have changed in application's behavior. But at
 least we know how to configure our application.
 
 
-.. _aiohttp-tutorial-database:
+.. _tutorial-database:
 
 Database
 --------
+
+Server
+^^^^^^
+Here we assume that you have running database and user with write access.
+Refer to :ref:`preparations-database` for details.
 
 Schema
 ^^^^^^
@@ -228,7 +242,7 @@ We will use SQLAlchemy to describe database schema for two related models,
                           +-------- | question_id   |
                                     +---------------+
 
-Create ``db.py`` file with database schemas ::
+Create ``db.py`` file with database schemas::
 
     # db.py
     from sqlalchemy import (
@@ -292,8 +306,68 @@ Create ``db.py`` file with database schemas ::
 
             result = await conn.execute(question.select())
 
-    But it is not so easy to deal with update/delete queries.
+    But it is not as easy to deal with update/delete queries.
 
+
+Now we need to create tables in database as it was described with sqlalchemy.
+Helper script can do that for you. Create new file::
+
+    # init_db.py
+    from sqlalchemy import create_engine, MetaData
+
+    from settings import config
+    from models import question, choice
+
+
+    DSN = "postgresql://{user}:{password}@{host}:{port}/{database}"
+
+    def create_tables(engine):
+        meta = MetaData()
+        meta.create_all(bind=engine, tables=[question, choice])
+
+
+    def sample_data(engine):
+        conn = engine.connect()
+        conn.execute(question.insert(), [
+            {'question_text': 'What\'s new?',
+             'pub_date': '2015-12-15 17:17:49.629+02'}
+        ])
+        conn.execute(choice.insert(), [
+            {'choice_text': 'Not much', 'votes': 0, 'question_id': 1},
+            {'choice_text': 'The sky', 'votes': 0, 'question_id': 1},
+            {'choice_text': 'Just hacking again', 'votes': 0, 'question_id': 1},
+        ])
+        conn.close()
+
+
+    if __name__ == '__main__':
+        db_url = DSN.format(**config['postgres'])
+        engine = create_engine(db_url)
+
+        create_tables(engine)
+        sample_data(engine)
+
+.. note::
+
+    More advanced version of this script is mentioned in :ref:`preparations-database` notes.
+
+
+Install ``aiopg[sa]`` package to interact with database and run the script::
+
+    $ pip install aiopg[sa]
+    $ python aiohttpdemo_polls/init_db.py
+
+.. note::
+
+    At this point we are not using any async features of the package. For the same
+    reason you could have installed ``psycopg2`` package. Actually, because we use
+    sqlalchemy - we also could switch type of database server.
+
+Now there should be one record for *question* with related *choice* options stored in
+corresponding tables in db.
+
+
+.. _tutorial-creating-connection-engine:
 
 Creating connection engine
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -311,6 +385,8 @@ The best place for connecting to DB is
    app.on_startup.append(init_pg)
 
 
+.. _tutorial-graceful-shutdown:
+
 Graceful shutdown
 ^^^^^^^^^^^^^^^^^
 
@@ -325,7 +401,7 @@ Let's close DB connection in :attr:`~aiohtp.web.Application.on_cleanup` signal::
   :pyobject: close_pg
 
 
-.. _aiohttp-tutorial-templates:
+.. _tutorial-templates:
 
 Templates
 ---------
@@ -359,7 +435,7 @@ In the tutorial we push template files under
 ``polls/aiohttpdemo_polls/templates`` folder.
 
 
-.. _aiohttp-tutorial-static:
+.. _tutorial-static-files:
 
 Static files
 ------------
@@ -379,7 +455,7 @@ Fortunately it can be done easy by single call:
 where ``project_root`` is the path to root folder.
 
 
-.. _aiohttp-tutorial-middlewares:
+.. _tutorial-middlewares:
 
 Middlewares
 -----------

@@ -179,6 +179,7 @@ pre
 programmatically
 proxied
 PRs
+psql
 pubsub
 Punycode
 py
@@ -240,6 +241,8 @@ symlinks
 syscall
 syscalls
 Systemd
+sql
+sqlalchemy
 TCP
 teardown
 Teardown
