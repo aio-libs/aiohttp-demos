@@ -242,6 +242,7 @@ syscall
 syscalls
 Systemd
 sql
+sqlalchemy
 TCP
 teardown
 Teardown
