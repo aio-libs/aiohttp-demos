@@ -264,7 +264,6 @@ Create ``db.py`` file with database schemas::
         'choice', meta,
 
         Column('id', Integer, primary_key=True),
-        Column('question_id', Integer, nullable=False),
         Column('choice_text', String(200), nullable=False),
         Column('votes', Integer, server_default="0", nullable=False),
 
@@ -460,38 +459,44 @@ where ``project_root`` is the path to root folder.
 Middlewares
 -----------
 
-Middlewares are stacked around every web-handler.  They are called
-*before* handler for pre-processing request and *after* getting
+Middlewares are stacked around every web-handler. They are called
+before handler for pre-processing request and after getting
 response back for post-processing given response.
 
-Here we'll add a simple middleware for displaying pretty looking pages
+A common use of middlewares is to implement custom error pages. Example from :ref:`aiohttp-web-middlewares`
+documentation will render 404 errors using a JSON response, as might be appropriate for a REST service.
+
+Here we'll create a little bit more complex middleware displaying custom pages
 for *404 Not Found* and *500 Internal Error*.
 
-Middlewares could be registered in ``app`` by adding new middleware to
-``app.middlewares`` list:
+Every middleware should accept two parameters, a *request* and a *handler*, and return the *response*.
+Middleware itself is a *coroutine* that can modify either request or response:
+
+Create new ``middlewares.py`` file:
 
 .. literalinclude:: ../demos/polls/aiohttpdemo_polls/middlewares.py
-  :pyobject: setup_middlewares
 
-Middleware itself is a factory which accepts *application* and *next
-handler* (the following middleware or *web-handler* in case of the
-latest middleware in the list).
+As you can see, we do nothing *before* web handler, we choose Jinja2 template renderer
+based on ``response.status`` - *after* request was handled.
+In case of exceptions - we do something similar, based on ``ex.status``.
+We could have done the same without ``create_error_middleware`` function, but it
+would take us many more if statements.
 
-The factory returns *middleware handler* which has the same signature
-as regular *web-handler* -- it accepts *request* and returns
-*response*.
+Then we registered middleware in ``app`` by adding it to ``app.middlewares``.
 
-Middleware for processing HTTP exceptions:
+Now add ``setup_middlewares`` step to the main file::
 
-.. literalinclude:: ../demos/polls/aiohttpdemo_polls/middlewares.py
-  :pyobject: error_pages
+    # main.py
+    from aiohttp import web
 
-Registered overrides are trivial Jinja2 template renderers:
+    from settings import config
+    from routes import setup_routes
+    from middlewares import setup_middlewares
 
-.. literalinclude:: ../demos/polls/aiohttpdemo_polls/middlewares.py
-  :pyobject: handle_404
+    app = web.Application()
+    setup_routes(app)
+    setup_middlewares(app)
+    app['config'] = config
+    web.run_app(app)
 
-.. literalinclude:: ../demos/polls/aiohttpdemo_polls/middlewares.py
-  :pyobject: handle_500
-
-.. seealso:: :ref:`aiohttp-web-middlewares`
+Run the app and try some invalid url to test.

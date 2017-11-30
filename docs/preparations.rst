@@ -110,13 +110,13 @@ Alternatively, to use Postgres in more isolated way you may also use Docker::
 
 Initial setup
 ^^^^^^^^^^^^^
-We will need running database and user with write access.
+We need running database and user with write access.
 For these and other db related actions consider some options:
 
-- do preparations manually within database's interactive prompt;
-- prepare and execute '.sql' files;
-- use migration tool;
-- use default database/user `postgres`;
+- do preparations manually within database's interactive prompt
+- prepare and execute '.sql' files
+- use migration tool
+- use default database/user `postgres`
 
 Whichever option you choose - make sure you remember corresponding values to put them
 into config file. Here are example commands to run manually ::

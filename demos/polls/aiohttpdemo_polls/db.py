@@ -20,7 +20,6 @@ choice = Table(
     'choice', meta,
 
     Column('id', Integer, primary_key=True),
-    Column('question_id', Integer, nullable=False),
     Column('choice_text', String(200), nullable=False),
     Column('votes', Integer, server_default="0", nullable=False),
 
