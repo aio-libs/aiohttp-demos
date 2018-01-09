@@ -6,17 +6,26 @@
 Welcome to aiohttp-demos's documentation!
 =========================================
 
+.. _aiohttp-demos-polls-beginning:
+
+Are you willing to learn *aiohttp* but don't know where to start?
+*Polls* application, which is similar to the one in Django tutorial,
+is a great example. It lets people view polls and vote in them.
+
+It will look something like this:
+
+.. image:: ../demos/polls/images/example.png
+    :align: center
+    :width: 460px
+
+
+-------------------------------------------------------------------------
+
+Contents
+========
+
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
    preparations
    tutorial
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
