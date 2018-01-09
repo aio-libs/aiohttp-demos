@@ -1,18 +1,4 @@
-.. _tutorial-beginning:
-
-Tutorial
-========
-
-Are you willing to learn *aiohttp* but don't know where to start?
-**Polls** application, which is similar to the one in Django tutorial,
-is a great example.
-We will build something like:
-
-.. image:: ../demos/polls/images/example.png
-    :align: center
-
-
-.. _tutorial-getting-started:
+.. _aiohttp-demos-polls-getting-started:
 
 Getting started
 ---------------
@@ -40,7 +26,7 @@ Open the link in browser... and it returns ``404: Not Found``.
 To show something more meaningful let's create a route and a view.
 
 
-.. _tutorial-views:
+.. _aiohttp-demos-polls-views:
 
 Views
 -----
@@ -94,7 +80,7 @@ Success! For now your working directory should look like this:
             └── views.py
 
 
-.. _tutorial-config:
+.. _aiohttp-demos-polls-configuration-files:
 
 Configuration files
 -------------------
@@ -214,7 +200,7 @@ For the moment nothing should have changed in application's behavior. But at
 least we know how to configure our application.
 
 
-.. _tutorial-database:
+.. _aiohttp-demos-polls-database:
 
 Database
 --------
@@ -222,7 +208,7 @@ Database
 Server
 ^^^^^^
 Here we assume that you have running database and user with write access.
-Refer to :ref:`preparations-database` for details.
+Refer to :ref:`aiohttp-demos-polls-preparations-database` for details.
 
 Schema
 ^^^^^^
@@ -348,7 +334,7 @@ Helper script can do that for you. Create new file::
 
 .. note::
 
-    More advanced version of this script is mentioned in :ref:`preparations-database` notes.
+    More advanced version of this script is mentioned in :ref:`aiohttp-demos-polls-preparations-database` notes.
 
 
 Install ``aiopg[sa]`` package to interact with database and run the script::
@@ -366,7 +352,7 @@ Now there should be one record for *question* with related *choice* options stor
 corresponding tables in db.
 
 
-.. _tutorial-creating-connection-engine:
+.. _aiohttp-demos-polls-creating-connection-engine:
 
 Creating connection engine
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -384,7 +370,7 @@ The best place for connecting to DB is
    app.on_startup.append(init_pg)
 
 
-.. _tutorial-graceful-shutdown:
+.. _aiohttp-demos-polls-graceful-shutdown:
 
 Graceful shutdown
 ^^^^^^^^^^^^^^^^^
@@ -400,7 +386,7 @@ Let's close DB connection in :attr:`~aiohtp.web.Application.on_cleanup` signal::
   :pyobject: close_pg
 
 
-.. _tutorial-templates:
+.. _aiohttp-demos-polls-templates:
 
 Templates
 ---------
@@ -434,7 +420,7 @@ In the tutorial we push template files under
 ``polls/aiohttpdemo_polls/templates`` folder.
 
 
-.. _tutorial-static-files:
+.. _aiohttp-demos-polls-static-files:
 
 Static files
 ------------
@@ -454,7 +440,7 @@ Fortunately it can be done easy by single call:
 where ``project_root`` is the path to root folder.
 
 
-.. _tutorial-middlewares:
+.. _aiohttp-demos-polls-middlewares:
 
 Middlewares
 -----------

@@ -1,4 +1,4 @@
-.. _preparations-beginning:
+.. _aiohttp-demos-polls-preparations-beginning:
 
 Preparations
 ============
@@ -12,7 +12,7 @@ check out the `demo source`_.
    https://github.com/aio-libs/aiohttp-demos/tree/master/demos/polls/
 
 
-.. _preparations-project-structure:
+.. _aiohttp-demos-polls-preparations-project-structure:
 
 Project structure
 -----------------
@@ -55,7 +55,7 @@ web projects:
         └── test_integration.py
 
 
-.. _preparations-environment:
+.. _aiohttp-demos-polls-preparations-environment:
 
 Environment
 -----------
@@ -92,7 +92,7 @@ Check the aiohttp version (tutorial requires v2.0 or newer)::
     2.3.1
 
 
-.. _preparations-database:
+.. _aiohttp-demos-polls-preparations-database:
 
 Database
 --------
