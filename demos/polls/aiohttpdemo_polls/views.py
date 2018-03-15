@@ -59,5 +59,5 @@ async def vote(request):
         except db.RecordNotFound as e:
             raise web.HTTPNotFound(text=str(e))
         router = request.app.router
-        url = router['results'].url(parts={'question_id': question_id})
+        url = router['results'].url_for(question_id=str(question_id))
         return web.HTTPFound(location=url)
