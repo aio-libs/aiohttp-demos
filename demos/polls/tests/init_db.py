@@ -1,20 +1,10 @@
-import pathlib
-
 from sqlalchemy import create_engine, MetaData
-import yaml
 
 from aiohttpdemo_polls.db import question, choice
+from aiohttpdemo_polls.settings import BASE_DIR, get_config
 
 
 DSN = "postgresql://{user}:{password}@{host}:{port}/{database}"
-BASE_DIR = pathlib.Path(__file__).parent.parent
-
-
-def get_config(path):
-    with open(path) as f:
-        config = yaml.load(f)['postgres']
-    return config
-
 
 ADMIN_DB_URL = DSN.format(
     user='postgres', password='postgres', database='postgres',
@@ -23,12 +13,14 @@ ADMIN_DB_URL = DSN.format(
 
 admin_engine = create_engine(ADMIN_DB_URL, isolation_level='AUTOCOMMIT')
 
-USER_CONFIG = get_config(BASE_DIR / 'config' / 'polls.yaml')
-USER_DB_URL = DSN.format(**USER_CONFIG)
+USER_CONFIG_PATH = BASE_DIR / 'config' / 'polls.yaml'
+USER_CONFIG = get_config(['-c', USER_CONFIG_PATH.as_posix()])
+USER_DB_URL = DSN.format(**USER_CONFIG['postgres'])
 user_engine = create_engine(USER_DB_URL)
 
-TEST_CONFIG = get_config(BASE_DIR / 'config' / 'polls_test.yaml')
-TEST_DB_URL = DSN.format(**TEST_CONFIG)
+TEST_CONFIG_PATH = BASE_DIR / 'config' / 'polls_test.yaml'
+TEST_CONFIG = get_config(['-c', TEST_CONFIG_PATH.as_posix()])
+TEST_DB_URL = DSN.format(**TEST_CONFIG['postgres'])
 test_engine = create_engine(TEST_DB_URL)
 
 
