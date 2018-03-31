@@ -16,7 +16,7 @@ Demos for aiohttp project
 
 URL shortener
 -------------
-.. image:: https://raw.githubusercontent.com/aio-libs/aiohtp-demos/master/docs/_static/shorty.png
+.. image:: https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/docs/_static/shorty.png
 
 Simple URL shortener with redis storage.
 
@@ -24,14 +24,14 @@ Simple URL shortener with redis storage.
 
 Twitter clone
 -------------
-.. image:: https://raw.githubusercontent.com/aio-libs/aiohtp-demos/master/docs/_static/motortwit.png
+.. image:: https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/docs/_static/motortwit.png
 
 Twitter clone with mongodb storage.
 
 
 Simple Chat
 -----------
-.. image:: https://raw.githubusercontent.com/aio-libs/aiohtp-demos/master/docs/_static/chat.png
+.. image:: https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/docs/_static/chat.png
 
 Simple chat using websockets.
 
