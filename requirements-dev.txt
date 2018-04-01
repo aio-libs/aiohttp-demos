@@ -1,5 +1,7 @@
+# test
 flake8==3.5.0
 pytest==3.5.0
+pytest-aiohttp
 
 # docs
 sphinx==1.7.2
