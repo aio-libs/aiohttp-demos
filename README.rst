@@ -12,7 +12,35 @@ aiohttp-demos
    :alt: Latest Read The Docs
 
 
-Demos for aiohttp project
+Demos for aiohttp project.
+
+URL shortener
+-------------
+Simple URL shortener with redis storage.
+
+.. image:: https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/docs/_static/shorty.png
+
+
+Twitter clone
+-------------
+Twitter clone with mongodb storage.
+
+.. image:: https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/docs/_static/motortwit.png
+
+
+Simple Chat
+-----------
+Simple chat using websockets.
+
+.. image:: https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/docs/_static/chat.png
+
+
+Simple polls app
+----------------
+
+Simple polls application with postgresql storage.
+
+
 
 Improvement plan
 -------------------
