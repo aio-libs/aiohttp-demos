@@ -14,5 +14,4 @@ install:
   - pip install -r requirements-dev.txt
 
 script:
-  - flake8 demos
-  - make doc-spelling
+  - make ci

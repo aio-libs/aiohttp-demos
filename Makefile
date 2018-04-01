@@ -2,6 +2,14 @@ clean:
 	@rm -rf `find . -name __pycache__`
 	@make -C docs clean
 
+lint:
+	@flake8 demos
+
+test:
+	@pytest -q demos/polls/tests
+
+ci: lint test doc-spelling
+
 doc:
 	@make -C docs html SPHINXOPTS="-W -E"
 	@echo "open file://`pwd`/docs/_build/html/index.html"
