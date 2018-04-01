@@ -12,6 +12,9 @@ addons:
 install:
   - pip install --upgrade setuptools
   - pip install -r requirements-dev.txt
+  - pip install demos/polls
 
 script:
-  - make ci
+  - make lint
+  - make test
+  - make doc-spelling
