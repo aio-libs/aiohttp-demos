@@ -27,9 +27,9 @@ Open browser::
 
     http://localhost:8080/
 
-.. image:: https://raw.githubusercontent.com/andriisoldatenko/aiohttp_polls/master/images/example.png
+.. image:: https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/docs/_static/polls.png
     :align: center
-
+    :width: 460px
 
 Tests
 -----

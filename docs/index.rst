@@ -14,7 +14,7 @@ is a great example. It lets people view polls and vote in them.
 
 It will look something like this:
 
-.. image:: ../demos/polls/images/example.png
+.. image:: https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/docs/_static/polls.png
     :align: center
     :width: 460px
 
