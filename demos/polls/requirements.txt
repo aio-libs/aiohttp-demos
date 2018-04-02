@@ -1,3 +1,10 @@
+# Install project in editable mode from current directory.
+# `setup.py` contains instructions to install dependencies, such as
+# aiohttp / aiopg / aiohttp-jinja2 / etc
+
 -e .
+
+# For testing
+pytest
 pytest-aiohttp
 flake8

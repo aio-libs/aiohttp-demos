@@ -1,7 +1,10 @@
-flake8==3.4.1
+# test
+flake8==3.5.0
+pytest==3.5.0
+pytest-aiohttp
 
 # docs
-sphinx==1.6.5
+sphinx==1.7.2
 sphinxcontrib-asyncio==0.2.0
 pygments==2.2.0
-sphinxcontrib-spelling==4.0.1; platform_system!="Windows"  # We only use it in Travis CI
+sphinxcontrib-spelling==4.1.0; platform_system!="Windows"  # We only use it in Travis CI
