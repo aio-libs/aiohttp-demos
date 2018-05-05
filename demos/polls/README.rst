@@ -1,5 +1,5 @@
-Polls (demo for aiohttp)
-========================
+Polls
+=====
 
 Example of polls project using aiohttp_, aiopg_ and aiohttp_jinja2_,
 similar to Django one.
@@ -8,7 +8,8 @@ similar to Django one.
 Preparations
 ------------
 
-Details could be found in :ref:`aiohttp-demos-polls-preparations-database`.
+Details could be found in `Preparations <https://github.com/aio-libs/aiohttp-demos/blob/master/docs/preparations.rst#environment>`_.
+
 In short.
 
 Run Postgres DB server::
@@ -51,12 +52,12 @@ or:
 
 Development
 -----------
-Please review general contribution info at `README <https://github.com/aio-libs/aiohttp-demos#contributing>_`.
+Please review general contribution info at `README <https://github.com/aio-libs/aiohttp-demos#contributing>`_.
 
 
 Also for illustration purposes it is useful to show project structure when it changes,
-like in :ref:`aiohttp-demos-polls-preparations-project-structure`. Here is how you
-can do that::
+like `here <https://github.com/aio-libs/aiohttp-demos/blob/master/docs/preparations.rst#project-structure>`_.
+Here is how you can do that::
 
     $ tree -I "__pycache__|aiohttpdemo_polls.egg-info" --dirsfirst
 
