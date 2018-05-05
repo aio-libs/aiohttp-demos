@@ -2,7 +2,7 @@ import pytest
 
 from aiohttpdemo_polls.main import init_app
 from aiohttpdemo_polls.settings import BASE_DIR, get_config
-from .init_db import (
+from init_db import (
     setup_db,
     teardown_db,
     create_tables,

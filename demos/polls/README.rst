@@ -8,13 +8,16 @@ similar to Django one.
 Preparations
 ------------
 
+Details could be found in :ref:`aiohttp-demos-polls-preparations-database`.
+In short.
+
 Run Postgres DB server::
 
     $ docker run --rm -it -p 5432:5432 postgres:10
 
 Create db and populate it with sample data::
 
-    $ python tests/init_db.py
+    $ python init_db.py
 
 
 Run
@@ -34,14 +37,28 @@ Open browser::
 Tests
 -----
 
-Run integration tests::
+.. code-block:: shell
 
-    $ pytest tests/test_integration.py
+    $ pytest tests
 
-or::
+or:
+
+.. code-block:: shell
 
     $ pip install tox
     $ tox
+
+
+Development
+-----------
+Please review general contribution info at `README <https://github.com/aio-libs/aiohttp-demos#contributing>_`.
+
+
+Also for illustration purposes it is useful to show project structure when it changes,
+like in :ref:`aiohttp-demos-polls-preparations-project-structure`. Here is how you
+can do that::
+
+    $ tree -I "__pycache__|aiohttpdemo_polls.egg-info" --dirsfirst
 
 
 Requirements
