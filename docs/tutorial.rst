@@ -340,7 +340,7 @@ Helper script can do that for you. Create new file::
 Install ``aiopg[sa]`` package to interact with database and run the script::
 
     $ pip install aiopg[sa]
-    $ python aiohttpdemo_polls/init_db.py
+    $ python init_db.py
 
 .. note::
 

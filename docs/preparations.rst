@@ -23,10 +23,10 @@ web projects:
 .. code-block:: none
 
     .
-    ├── Makefile
-    ├── README.rst
     ├── aiohttpdemo_polls
     │   ├── static
+    │   │   ├── images
+    │   │   │   └── background.png
     │   │   └── style.css
     │   ├── templates
     │   │   ├── 404.html
@@ -35,24 +35,28 @@ web projects:
     │   │   ├── detail.html
     │   │   ├── index.html
     │   │   └── results.html
+    │   ├── db.py
     │   ├── __init__.py
     │   ├── __main__.py
-    │   ├── db.py
     │   ├── main.py
     │   ├── middlewares.py
     │   ├── routes.py
+    │   ├── settings.py
     │   ├── utils.py
     │   └── views.py
     ├── config
-    │   ├── polls.yaml
-    │   └── polls_test.yaml
+    │   ├── polls_test.yaml
+    │   └── polls.yaml
+    ├── tests
+    │   ├── conftest.py
+    │   ├── __init__.py
+    │   └── test_integration.py
+    ├── init_db.py
+    ├── Makefile
+    ├── README.rst
     ├── requirements.txt
     ├── setup.py
-    └── tests
-        ├── __init__.py
-        ├── conftest.py
-        ├── init_db.py
-        └── test_integration.py
+    └── tox.ini
 
 
 .. _aiohttp-demos-polls-preparations-environment:
@@ -80,16 +84,16 @@ environment. For example, ``$ pip install aiopg`` before database related sectio
 Check you python version (tutorial requires Python 3.5 or newer)::
 
    $ python -V
-   Python 3.6.3
+   Python 3.6.5
 
 Install ``aiohttp`` ::
 
     $ pip install aiohttp
 
-Check the aiohttp version (tutorial requires v2.0 or newer)::
+Check the aiohttp version::
 
     $ python3 -c 'import aiohttp; print(aiohttp.__version__)'
-    2.3.1
+    3.1.3
 
 
 .. _aiohttp-demos-polls-preparations-database:
@@ -131,7 +135,7 @@ Use ``\l`` and ``\du`` *psql* commands to check results.
 .. note::
 
     If you decided to run the application from the repo - this script
-    ( :download:`init_db.py <../demos/polls/tests/init_db.py>` ) will create db
+    ( :download:`init_db.py <../demos/polls/init_db.py>` ) will create db
     at running server, create tables and populate them with sample data ::
 
-        $ python tests/init_db.py
+        $ python init_db.py

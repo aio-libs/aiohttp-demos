@@ -48,27 +48,35 @@ Simple polls application with postgresql storage.
     :width: 460px
 
 
+Contributing
+------------
+Things you need for local development::
+
+    $ pip install -r requirements-dev.txt
+
+After that - follow setup instructions from particular demo project.
+
+To check documentation locally click the ``open file`` link from the output
+of this command::
+
+    $ make doc
+
+To make sure everything is ok before committing::
+
+    $ make ci
+
+
 Improvement plan
 ----------------
-(in no particular order)
 
-- Update `polls` app and related `tutorial.rst` sections
+Polls:
 
-  - [x] create configuration steps (venv, pip install, db initialization)
-  - [x] fix or recreate tests
-  - [ ] revise `tutorial.rst`
-
-- `tutorial.rst`
-
-  - add "What's next" section
-
-- add Issues
-
-- engage community
-
-  - [ ] setup communication channels (gitter?)
-  - [ ] discuss roadmap
-  - [ ] issues
-  - [ ] examples
-
-- in case of success - fix urls from `aiohttp/tutorial`
+- [+] create configuration steps (venv, pip install, db initialization)
+- [+] fix or recreate tests
+- [~] revise `tutorial.rst`
+- [+] fix urls from `aiohttp/tutorial`
+- [x] setup communication channels (aio-libs gitter channel is enough)
+- [~] create missing issues
+- [+] add "Contributing" section
+- [ ] add "What's next" section
+- [ ] discuss roadmap
