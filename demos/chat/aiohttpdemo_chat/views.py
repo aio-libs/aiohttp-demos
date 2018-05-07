@@ -46,7 +46,3 @@ async def index(request):
         await ws.send_str(json.dumps({'action': 'disconnect',
                                       'name': name}))
     return ws_current
-
-
-def setup(app):
-    app.router.add_get('/', index)
