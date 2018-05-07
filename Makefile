@@ -7,6 +7,7 @@ lint:
 
 test:
 	@pytest -q demos/polls/tests
+	@pytest -q demos/chat/tests
 
 ci: lint test doc-spelling
 
