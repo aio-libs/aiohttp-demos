@@ -1,13 +1,16 @@
 import logging
-import random
-import string
 
-import aiohttp_jinja2
 import aiohttp
+import aiohttp_jinja2
 from aiohttp import web
-
+from faker import Faker
 
 log = logging.getLogger(__name__)
+
+
+def random_name():
+    fake = Faker()
+    return fake.name()
 
 
 async def index(request):
@@ -18,9 +21,7 @@ async def index(request):
 
     await ws_current.prepare(request)
 
-    name = (random.choice(string.ascii_uppercase) +
-            ''.join(random.sample(string.ascii_lowercase*10, 10)))
-
+    name = random_name()
     log.info('%s joined.', name)
 
     await ws_current.send_json({'action': 'connect', 'name': name})
