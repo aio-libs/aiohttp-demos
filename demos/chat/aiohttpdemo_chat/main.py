@@ -1,22 +1,24 @@
-import asyncio
 import logging
 
 import jinja2
 
 import aiohttp_jinja2
 from aiohttp import web
-from aiohttpdemo_chat.views import setup as setup_routes
+from aiohttpdemo_chat.views import index
 
 
-async def init(loop):
-    app = web.Application(loop=loop)
+async def init_app():
+
+    app = web.Application()
+
     app['websockets'] = {}
+
     app.on_shutdown.append(shutdown)
 
     aiohttp_jinja2.setup(
         app, loader=jinja2.PackageLoader('aiohttpdemo_chat', 'templates'))
 
-    setup_routes(app)
+    app.router.add_get('/', index)
 
     return app
 
@@ -28,11 +30,9 @@ async def shutdown(app):
 
 
 def main():
-    # init logging
     logging.basicConfig(level=logging.DEBUG)
 
-    loop = asyncio.get_event_loop()
-    app = loop.run_until_complete(init(loop))
+    app = init_app()
     web.run_app(app)
 
 

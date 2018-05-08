@@ -10,16 +10,18 @@
        var name = "UNKNOWN";
        function log(msg) {
          var control = $('#log');
-         control.html(control.html() + msg + '<br/>');
+         var date = new Date();
+         var date_prompt = '(' + date.toISOString().split('T')[1].slice(0,8) + ') ';
+         control.html(control.html() + date_prompt + msg + '<br/>');
          control.scrollTop(control.scrollTop() + 1000);
        }
        function connect() {
          disconnect();
          var wsUri = (window.location.protocol=='https:'&&'wss://'||'ws://')+window.location.host;
          conn = new WebSocket(wsUri);
-         log('Connecting...');
+         //log('Connecting...');
          conn.onopen = function() {
-           log('Connected.');
+           //log('Connected.');
            update_ui();
          };
          conn.onmessage = function(e) {
@@ -51,7 +53,7 @@
        }
        function disconnect() {
          if (conn != null) {
-           log('Disconnecting...');
+           //log('Disconnecting...');
            conn.close();
            conn = null;
            name = 'UNKNOWN';
@@ -62,9 +64,11 @@
          if (conn == null) {
            $('#status').text('disconnected');
            $('#connect').html('Connect');
+           $('#send').prop("disabled", true);
          } else {
            $('#status').text('connected (' + conn.protocol + ')');
            $('#connect').html('Disconnect');
+           $('#send').prop("disabled", false);
          }
          $('#name').text(name);
        }
@@ -79,7 +83,8 @@
        });
        $('#send').on('click', function() {
          var text = $('#text').val();
-         log('Sending: ' + text);
+         // log('Sending: ' + text);
+         log(text);
          conn.send(text);
          $('#text').val('').focus();
          return false;
@@ -105,7 +110,7 @@
     </div>
     <form id="chatform" onsubmit="return false;">
       <input id="text" type="text" />
-      <input id="send" type="button" value="Send" />
+      <input id="send" type="button" value="Send" disabled/>
     </form>
   </body>
 </html>

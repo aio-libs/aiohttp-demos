@@ -19,7 +19,8 @@ def read_version():
 
 
 install_requires = ['aiohttp',
-                    'aiohttp_jinja2']
+                    'aiohttp_jinja2',
+                    'faker']
 
 
 setup(name='aiohttpdemo_chat',
