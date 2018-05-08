@@ -1,6 +1,6 @@
-async def test_msg_sending(cli):
-    ws1 = await cli.ws_connect('/')
-    ws2 = await cli.ws_connect('/')
+async def test_msg_sending(client):
+    ws1 = await client.ws_connect('/')
+    ws2 = await client.ws_connect('/')
 
     ack_msg1 = await ws1.receive()
     assert ack_msg1.json()['action'] == 'connect'
