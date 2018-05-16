@@ -1,0 +1,15 @@
+version: '3.1'
+
+postgres:
+    image: postgres:10
+    environment:
+        - POSTGRES_USER=graphql
+        - POSTGRES_PASSWORD=graphql
+        - POSTGRES_DB=graphql
+    ports:
+        - 5432:5432
+
+redis:
+  image: redis:4
+  ports:
+      - 6379:6379
