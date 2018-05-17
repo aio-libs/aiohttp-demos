@@ -9,7 +9,7 @@ REGEXP = re.compile(r"^__version__\W*=\W*'([\d.abrc]+)'")
 
 def read_version():
 
-    init_py = os.path.join(os.path.dirname(__file__), 'graphql', '__init__.py')
+    init_py = os.path.join(os.path.dirname(__file__), 'graph', '__init__.py')
 
     with open(init_py) as f:
         for line in f:
@@ -20,7 +20,12 @@ def read_version():
             msg = f'Cannot find version in ${init_py}'
             raise RuntimeError(msg)
 
-install_requires = ['aiohttp', 'aiohttp_jinja2', ]
+install_requires = [
+    'aiohttp',
+    'aiohttp_jinja2',
+    'aiohttp_graphql',
+    'graphene',
+]
 
 
 setup(

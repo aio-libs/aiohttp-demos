@@ -1,6 +1,6 @@
 export PYTHONPATH=.
 
-PROJECT_NAME=graphql
+PROJECT_NAME=graph
 
 all: run
 
