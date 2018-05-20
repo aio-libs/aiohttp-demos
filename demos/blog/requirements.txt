@@ -1,0 +1,15 @@
+aiohttp
+aiohttp_jinja2
+
+#database
+sqlalchemy
+asyncpg
+gino
+aiocontextvars
+
+#sessions
+aiohttp_security[session]
+aioredis
+
+#dev
+psycopg2
