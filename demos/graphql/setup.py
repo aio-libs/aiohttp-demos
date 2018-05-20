@@ -28,6 +28,7 @@ install_requires = [
     'aiohttp_graphql',
     'trafaret_config',
     'graphene',
+    'aiodataloader',
     'psycopg2-binary',
     'Faker',
 ]

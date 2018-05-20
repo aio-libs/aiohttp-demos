@@ -1,11 +1,11 @@
 import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
-from ..db import metadata
-from .enums import UserGender
+from graph.db import metadata
+from graph.auth.enums import UserGender
 
 
-__all__ = ['users', ]
+__all__ = ['users', 'gender_enum', ]
 
 
 gender_enum = postgresql.ENUM(UserGender)

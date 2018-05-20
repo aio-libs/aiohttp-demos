@@ -2,8 +2,8 @@ from sqlalchemy.sql import func
 from sqlalchemy.dialects import postgresql
 import sqlalchemy as sa
 
-from ..db import metadata
-from ..auth.tables import users
+from graph.db import metadata
+from graph.auth.tables import users
 
 
 __all__ = ['rooms', 'messages', ]

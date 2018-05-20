@@ -1,5 +1,5 @@
-from .api.views import gql
-from .main.views import index
+from graph.api.views import gql
+from graph.main.views import index
 
 
 def init_routes(app):

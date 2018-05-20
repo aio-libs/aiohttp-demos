@@ -1,5 +1,5 @@
-from .user import UserQuery
-from .rooms import RoomsQuery
+from graph.api.queries.user import UserQuery
+from graph.api.queries.rooms import RoomsQuery
 
 
 class Query(UserQuery, RoomsQuery):

@@ -4,7 +4,10 @@ import graphene
 from graphql.execution.executors.asyncio import AsyncioExecutor
 from aiohttp_graphql import GraphQLView
 
-from .queries import Query
+from graph.api.queries import Query
+
+
+__all__ = ['gql', ]
 
 
 gql = GraphQLView(

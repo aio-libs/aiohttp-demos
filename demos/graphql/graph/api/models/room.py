@@ -1,6 +1,6 @@
 import graphene
 
-from ..models.user import User
+from graph.api.models.user import User
 
 
 class Room(graphene.ObjectType):
@@ -13,6 +13,16 @@ class Room(graphene.ObjectType):
     name = graphene.String(
         description="A name of room",
     )
+
+    owner = graphene.Field(
+        User,
+        description='The user who create the current room',
+    )
+
+    async def resolve_owner(self, info):
+        app = info.context['request'].app
+
+        return await app['loaders'].users.load(self['owner_id'])
 
 
 class Message(graphene.ObjectType):

@@ -1,6 +1,7 @@
 import graphene
 
-from ..models.room import Room
+from graph.api.models.room import Room
+from graph.chat.db_utils import select_rooms
 
 
 class RoomsQuery(graphene.ObjectType):
@@ -12,3 +13,9 @@ class RoomsQuery(graphene.ObjectType):
         Room,
         description='A room object',
     )
+
+    async def resolve_rooms(self, info):
+        app = info.context['request'].app
+
+        async with app['db'].acquire() as conn:
+            return await select_rooms(conn)

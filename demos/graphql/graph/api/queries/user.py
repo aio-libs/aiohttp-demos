@@ -1,6 +1,6 @@
 import graphene
 
-from ..models.user import User
+from graph.api.models.user import User
 
 
 class UserQuery(graphene.ObjectType):
