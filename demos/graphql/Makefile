@@ -19,3 +19,5 @@ test: lint
 start_database:
 	@docker-compose up postgres -d
 
+prepare_database:
+	@python prepare_database.py

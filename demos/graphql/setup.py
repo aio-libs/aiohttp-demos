@@ -29,6 +29,7 @@ install_requires = [
     'trafaret_config',
     'graphene',
     'psycopg2-binary',
+    'Faker',
 ]
 
 

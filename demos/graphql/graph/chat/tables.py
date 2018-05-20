@@ -13,7 +13,7 @@ rooms = sa.Table(
     'rooms', metadata,
 
     sa.Column('id', sa.Integer, primary_key=True, index=True),
-    sa.Column('name', sa.Integer, unique=True),
+    sa.Column('name', sa.String(20), unique=True),
 
     # ForeignKey
     sa.Column(
@@ -29,7 +29,6 @@ messages = sa.Table(
 
     sa.Column('id', sa.Integer, primary_key=True, index=True),
     sa.Column('body', sa.Text, nullable=False),
-    sa.Column('favourite_count', sa.Integer, server_default='0'),
     sa.Column('created_at', sa.DateTime, server_default=func.now()),
 
     # ForeignKey

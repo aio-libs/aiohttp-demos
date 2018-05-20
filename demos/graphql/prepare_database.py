@@ -1,8 +1,9 @@
 import asyncio
+import random
+from typing import List
 
 import aiopg.sa
 from aiopg.sa import SAConnection
-import psycopg2
 from sqlalchemy.dialects.postgresql import (
     CreateEnumType,
     DropEnumType,
@@ -11,8 +12,11 @@ from sqlalchemy.schema import (
     CreateTable,
     DropTable,
 )
+import psycopg2
+from faker import Faker
 
 from graph.utils import get_config
+from graph.auth.enums import UserGender
 from graph.auth.tables import (
     users,
     gender_enum,
@@ -25,9 +29,11 @@ from graph.chat.tables import (
 
 tables = [users, rooms, messages, ]
 enums = [gender_enum, ]
+faker = Faker()
 
 
 async def drop_tables(conn: SAConnection) -> None:
+
     for table in reversed(tables):
         try:
             await conn.execute(DropTable(table))
@@ -42,6 +48,7 @@ async def drop_tables(conn: SAConnection) -> None:
 
 
 async def create_tables(conn: SAConnection) -> None:
+
     for enum in enums:
         await conn.execute(CreateEnumType(enum))
 
@@ -50,6 +57,7 @@ async def create_tables(conn: SAConnection) -> None:
 
 
 async def create_engine():
+
     config = get_config()
     config = config['postgres']
     engine = await aiopg.sa.create_engine(**config)
@@ -57,14 +65,82 @@ async def create_engine():
     return engine
 
 
+async def generate_users(conn: SAConnection, count: int) -> List[int]:
+
+    values = []
+    for number in range(count):
+        values.append({
+            'username': faker.name(),
+            'password': 'password',
+            'avatar_url': (
+                'https://cdn.pixabay.com/photo/2016/08/08/09/17/'
+                'avatar-1577909_960_720.png')
+            ,
+            'gender': random.choice(list(UserGender)).value
+        })
+
+    response = await conn.execute(
+        users.insert().values(values).returning(users.c.id)
+    )
+
+
+    return [user[0] for user in response]
+
+
+async def generate_rooms(
+        conn: SAConnection,
+        count: int,
+        users: List[int],
+) -> List[int]:
+
+    values = []
+    for number in range(count):
+        values.append({
+            'name': f'room#{number}',
+            'owner_id': random.choice(users),
+        })
+
+    response = await conn.execute(
+        rooms.insert().values(values).returning(rooms.c.id)
+    )
+
+    return [room[0] for room in response]
+
+
+async def generate_messages(
+        conn: SAConnection,
+        users: List[int],
+        rooms: List[int]
+) -> None:
+
+    values = []
+    for room in rooms:
+        for i in range(20):
+            values.append({
+                'body': faker.text(max_nb_chars=200),
+                'who_like': random.sample(users, random.randint(0, 5)),
+                'owner_id': random.choice(users),
+                'room_id': room,
+            })
+
+    await conn.execute(messages.insert().values(values))
+
+
 async def main():
-    print("Start to generate new data..")
+
+    print("Start to generate a new data...")
     engine = await create_engine()
 
     try:
         async with engine.acquire() as conn:
+            # create schema
             await drop_tables(conn)
             await create_tables(conn)
+
+            # generate data
+            users = await generate_users(conn, 20)
+            rooms = await generate_rooms(conn, 20, users)
+            await generate_messages(conn, users, rooms)
     finally:
         engine.close()
 
