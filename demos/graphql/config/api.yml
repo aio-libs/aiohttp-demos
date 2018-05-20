@@ -1,7 +1,7 @@
 postgres:
-  user: graphql
-  password: graphql
-  db: graphql
+  user: postgres
+  password: postgres
+  database: postgres
   port: 5432
   host: localhost
 

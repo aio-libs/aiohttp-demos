@@ -20,18 +20,22 @@ def read_version():
             msg = f'Cannot find version in ${init_py}'
             raise RuntimeError(msg)
 
+
 install_requires = [
     'aiohttp',
+    'aiopg[sa]',
     'aiohttp_jinja2',
     'aiohttp_graphql',
+    'trafaret_config',
     'graphene',
+    'psycopg2-binary',
 ]
 
 
 setup(
-    name='graphql',
+    name='graph',
     version=read_version(),
-    description='Graphql example from aiohttp',
+    description='GraphQL example from aiohttp',
     platforms=['POSIX'],
     packages=find_packages(),
     include_package_data=True,
