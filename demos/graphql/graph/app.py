@@ -7,7 +7,7 @@ import jinja2
 
 from graph.routes import init_routes
 from graph.utils import init_config
-from graph.api.dataloaders import UserLoader
+from graph.api.dataloaders import UserDataLoader
 
 
 path = Path(__file__).parent
@@ -46,7 +46,7 @@ async def init_graph_loaders(app: web.Application) -> None:
     engine = app['db']
 
     class Loaders:
-        users = UserLoader(engine)
+        users = UserDataLoader(engine, max_batch_size=100)
 
     app['loaders'] = Loaders()
 

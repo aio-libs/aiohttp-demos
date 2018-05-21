@@ -15,6 +15,7 @@ users = sa.Table(
     'users', metadata,
     sa.Column('id', sa.Integer, primary_key=True, index=True),
     sa.Column('username', sa.String(200), unique=True, nullable=False),
+    sa.Column('email', sa.String(200), unique=True, nullable=False),
     sa.Column('password', sa.String(10), nullable=False),
     sa.Column('avatar_url', sa.Text),
     sa.Column(

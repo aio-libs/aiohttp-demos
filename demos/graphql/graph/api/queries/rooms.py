@@ -1,7 +1,14 @@
+from typing import List
+
 import graphene
+from graphql import ResolveInfo
+from aiopg.sa.result import RowProxy
 
 from graph.api.models.room import Room
 from graph.chat.db_utils import select_rooms
+
+
+__all__ = ['RoomsQuery', ]
 
 
 class RoomsQuery(graphene.ObjectType):
@@ -9,12 +16,8 @@ class RoomsQuery(graphene.ObjectType):
         Room,
         description='A list of all available rooms',
     )
-    room = graphene.Field(
-        Room,
-        description='A room object',
-    )
 
-    async def resolve_rooms(self, info):
+    async def resolve_rooms(self, info: ResolveInfo) -> List[RowProxy]:
         app = info.context['request'].app
 
         async with app['db'].acquire() as conn:

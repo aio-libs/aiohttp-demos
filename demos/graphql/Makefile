@@ -17,7 +17,7 @@ test: lint
 	@py.test --cov=graphql
 
 start_database:
-	@docker-compose up postgres -d
+	@docker-compose up postgres
 
 prepare_database:
 	@python prepare_database.py

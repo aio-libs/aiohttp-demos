@@ -69,8 +69,10 @@ async def generate_users(conn: SAConnection, count: int) -> List[int]:
 
     values = []
     for number in range(count):
+        name = faker.name()
         values.append({
-            'username': faker.name(),
+            'username': name,
+            'email': f'{name.replace(" ", ".").lower()}@gmail.com',
             'password': 'password',
             'avatar_url': (
                 'https://cdn.pixabay.com/photo/2016/08/08/09/17/'

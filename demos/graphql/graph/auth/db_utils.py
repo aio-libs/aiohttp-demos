@@ -1,14 +1,14 @@
 from typing import List
 from aiopg.sa import SAConnection
-from aiopg.sa.result import ResultProxy
 
 from graph.auth.tables import users
+from graph.types import RowsProxy
 
 
 __all__ = ['select_users', ]
 
 
-async def select_users(conn: SAConnection, keys: List[int]) -> ResultProxy:
+async def select_users(conn: SAConnection, keys: List[int]) -> RowsProxy:
     cursor = await conn.execute(
         users
             .select()
