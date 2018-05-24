@@ -25,7 +25,9 @@ class BaseAIODataLoader(DataLoader):
         In `aiodataloader` ordering of returning items is very inportant and
         this function halp to do it.
         '''
-        items_dict = {key: value for key, value in zip(sorted(keys), items)}
+        items_dict = {
+            key: value for key, value in zip(sorted(set(keys)), items)
+        }
 
         return [items_dict[key] for key in keys]
 
