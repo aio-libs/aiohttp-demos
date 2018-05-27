@@ -5,6 +5,7 @@ from aiohttp import web
 from trafaret_config import commandline
 import trafaret
 
+
 PATH = pathlib.Path(__file__).parent.parent
 DEFAULT_CONFIG_PATH = PATH / 'config' / 'api.yml'
 
