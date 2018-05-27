@@ -6,10 +6,10 @@ from graph.chat.db_utils import (
 )
 
 
-__all__ = ['AddMessage', 'RemoveMessage', ]
+__all__ = ['AddMessageMutation', 'RemoveMessageMutation', ]
 
 
-class AddMessage(graphene.Mutation):
+class AddMessageMutation(graphene.Mutation):
     '''
     Gives interface for create new messages.
     '''
@@ -27,10 +27,10 @@ class AddMessage(graphene.Mutation):
         async with app['db'].acquire() as conn:
             await create_message(conn, room_id, owner_id, body)
 
-        return AddMessage(is_created=True)
+        return AddMessageMutation(is_created=True)
 
 
-class RemoveMessage(graphene.Mutation):
+class RemoveMessageMutation(graphene.Mutation):
     '''
     Gives interface for create new message by id.
     '''
@@ -46,6 +46,4 @@ class RemoveMessage(graphene.Mutation):
         async with app['db'].acquire() as conn:
             await delete_message(conn, id)
 
-        return RemoveMessage(is_removed=True)
-
-# todo: remove room
+        return RemoveMessageMutation(is_removed=True)
