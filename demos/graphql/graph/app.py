@@ -2,6 +2,7 @@ from pathlib import Path
 
 import aiopg.sa
 from aiohttp import web
+import aioredis
 import aiohttp_jinja2
 import jinja2
 
@@ -30,12 +31,37 @@ async def init_database(app: web.Application) -> None:
     app['db'] = engine
 
 
+async def init_redis(app: web.Application) -> None:
+    '''
+    This is signal for success creating connection with redis
+    '''
+    config = app['config']['redis']
+
+    sub = await aioredis.create_redis(
+        f'redis://{config["host"]}:{config["port"]}'
+    )
+    pub = await aioredis.create_redis(
+        f'redis://{config["host"]}:{config["port"]}'
+    )
+
+    app['redis_sub'] = sub
+    app['redis_pub'] = pub
+
+
 async def close_database(app: web.Application) -> None:
     '''
     This is signal for success closing connection with database before shutdown
     '''
     app['db'].close()
     await app['db'].wait_closed()
+
+
+async def close_redis(app: web.Application) -> None:
+    '''
+    This is signal for success closing connection with redis before shutdown
+    '''
+    app['redis_sub'].close()
+    app['redis_pub'].close()
 
 
 async def init_graph_loaders(app: web.Application) -> None:
@@ -58,7 +84,7 @@ def init_app() -> web.Application:
     init_config(app)
     init_routes(app)
 
-    app.on_startup.extend([init_database, init_graph_loaders])
-    app.on_cleanup.append(close_database)
+    app.on_startup.extend([init_redis, init_database, init_graph_loaders])
+    app.on_cleanup.extend([close_redis, close_database])
 
     return app

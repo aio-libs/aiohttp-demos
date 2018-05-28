@@ -2,13 +2,15 @@ import asyncio
 
 import graphene
 from graphql.execution.executors.asyncio import AsyncioExecutor
-from graphql_ws.aiohttp import AiohttpSubscriptionServer
 from aiohttp import web
 
 from graph.api.queries import Query
 from graph.api.mutations import Mutation
 from graph.api.subscriptions import Subscription
-from graph.api.contrib import CustomGraphQLView
+from graph.api.contrib import (
+    CustomGraphQLView,
+    CustomAiohttpSubscriptionServer,
+)
 
 
 __all__ = ['GQL', 'subscriptions', ]
@@ -19,7 +21,7 @@ schema = graphene.Schema(
     mutation=Mutation,
     subscription=Subscription,
 )
-subscription_server = AiohttpSubscriptionServer(schema)
+subscription_server = CustomAiohttpSubscriptionServer(schema)
 
 
 
@@ -35,10 +37,7 @@ def GQL(graphiql: bool = False) -> CustomGraphQLView:
     '''
 
     view = CustomGraphQLView(
-        schema=graphene.Schema(
-            query=Query,
-            mutation=Mutation,
-        ),
+        schema=schema,
         # TODO: make global loop
         executor=AsyncioExecutor(loop=asyncio.get_event_loop()),
         graphiql=graphiql,
@@ -57,5 +56,8 @@ async def subscriptions(request: web.Request) -> web.WebSocketResponse:
     ws = web.WebSocketResponse(protocols=('graphql-ws',))
     await ws.prepare(request)
 
-    await subscription_server.handle(ws)
+    await subscription_server.handle(
+        ws,
+        request_context={"request": request}
+    )
     return ws

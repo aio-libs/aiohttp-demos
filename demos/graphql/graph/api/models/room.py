@@ -15,7 +15,7 @@ class Message(graphene.ObjectType):
     '''
     A messages is main object that representation data of user message.
     '''
-    id = graphene.String(
+    id = graphene.Int(
         description="An id of message, it's unique for all message",
     )
     body = graphene.String(
@@ -40,7 +40,7 @@ class Room(graphene.ObjectType):
     '''
     A room is point where users can have conversations.
     '''
-    id = graphene.String(
+    id = graphene.Int(
         description="An id of room, it's unique for all rooms",
     )
     name = graphene.String(

@@ -2,7 +2,9 @@ import React from 'react';
 import gql from 'graphql-tag';
 import {compose, mapProps} from 'recompose';
 import {graphql} from 'react-apollo';
+
 import ChatroomRow from './Row';
+
 
 const chatrooms = gql`
 {

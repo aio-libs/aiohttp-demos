@@ -4,7 +4,9 @@ import {get} from 'lodash';
 import update from 'immutability-helper';
 import {compose, mapProps, lifecycle} from 'recompose';
 import {graphql} from 'react-apollo';
+
 import MessageBox from './MessageBox';
+
 
 const room = gql`
   query room($id: Int!) {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { compose, withState, withHandlers } from 'recompose';
+
 import ChatMessages from './ChatMessages';
 
 function ChatroomRow({

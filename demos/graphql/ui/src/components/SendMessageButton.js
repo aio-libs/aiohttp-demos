@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import {compose, withHandlers} from 'recompose';
 import {graphql} from 'react-apollo';
 
+
 function SendMessageButton({sendMessage}) {
   return (
     <button className="button-item" onClick={sendMessage}>Send Message</button>

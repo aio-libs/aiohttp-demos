@@ -27,6 +27,8 @@ class AddMessageMutation(graphene.Mutation):
         async with app['db'].acquire() as conn:
             await create_message(conn, room_id, owner_id, body)
 
+        await app['redis_pub'].publish_json(f'chat:{room_id}', body)
+
         return AddMessageMutation(is_created=True)
 
 

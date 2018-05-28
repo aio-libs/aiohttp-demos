@@ -21,3 +21,6 @@ start_database:
 
 prepare_database:
 	@python prepare_database.py
+
+run_ui:
+	@cd ui && yarn start

@@ -1,5 +1,6 @@
 from aiohttp import web
 from aiohttp_graphql import GraphQLView
+from graphql_ws.aiohttp import AiohttpSubscriptionServer
 from aiohttp_graphql.render_graphiql import (
     GRAPHIQL_VERSION,
     process_var,
@@ -161,3 +162,12 @@ class CustomGraphQLView(GraphQLView):
         source = simple_renderer(GQPHIQL_TEMPLATE, **template_vars)
 
         return web.Response(text=source, content_type='text/html')
+
+
+class CustomAiohttpSubscriptionServer(AiohttpSubscriptionServer):
+
+    def get_graphql_params(self, connection_context, *args, **kwargs):
+        params = super().get_graphql_params(connection_context, *args, **kwargs)
+        params.update({'context_value': connection_context.request_context})
+
+        return params

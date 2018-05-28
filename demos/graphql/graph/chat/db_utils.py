@@ -40,10 +40,13 @@ async def select_room(conn: SAConn, id: int) -> RowProxy:
 
 async def select_messages_by_room_id(conn: SAConn, room_id: int) -> RowsProxy:
     cursor = await conn.execute(
-        messages.select().where(messages.c.room_id == room_id)
+        messages
+            .select()
+            .where(messages.c.room_id == room_id)
+            .order_by(messages.c.id)
     )
 
-    return await cursor.fetchone()
+    return await cursor.fetchall()
 
 
 # create

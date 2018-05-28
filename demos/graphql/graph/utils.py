@@ -22,6 +22,7 @@ CONFIG_TRAFARET = trafaret.Dict({
     trafaret.Key('redis'):
         trafaret.Dict({
             'port': trafaret.Int(),
+            'host': trafaret.String(),
         }),
     trafaret.Key('app'):
         trafaret.Dict({
