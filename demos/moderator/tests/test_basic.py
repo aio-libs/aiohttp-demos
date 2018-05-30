@@ -1,12 +1,9 @@
-import pytest
-from aiohttp import web
-
 
 async def test_index_page(api):
     resp = await api.get('/')
     assert resp.status == 200
     body = await resp.text()
-    assert "" in body
+    assert len(body) > 0
 
 
 async def test_moderate(api):
