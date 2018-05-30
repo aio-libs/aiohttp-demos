@@ -1,0 +1,25 @@
+{
+  "root": true,
+  "env": {
+    "browser": true
+  },
+  "extends": [
+    "airbnb-base",
+    "prettier"
+  ],
+  "plugins": [
+    "json",
+    "react",
+    "prettier"
+  ],
+  "rules": {
+    "no-unused-vars": [0, { "varsIgnorePattern": "^h$" }],
+    "prettier/prettier": "error"
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+        "jsx": true,
+        "modules": true
+    }
+  }
+}

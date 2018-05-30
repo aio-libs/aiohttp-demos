@@ -1,0 +1,43 @@
+$base-font-size:  14px;
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: $base-font-size;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main {
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.textarea {
+  padding: 10px;
+  width: 100%;
+  min-height: 100px;
+  resize: vertical;
+  border: 1px solid black;
+  border-radius: 2px;
+}
+
+.submit {
+  margin: 20px 0;
+  padding: 10px 20px;
+  border: 1px solid black;
+  color: black;
+  text-transform: uppercase;
+  background-color: white;
+  border-radius: 2px;
+}
