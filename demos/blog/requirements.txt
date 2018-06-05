@@ -1,15 +1,21 @@
+-e .
+
 aiohttp
 aiohttp_jinja2
+bcrypt
+pytoml
+aiohttp_security[session]
+aioredis
 
-#database
+# database
 sqlalchemy
 asyncpg
 gino
 aiocontextvars
 
-#sessions
-aiohttp_security[session]
-aioredis
-
-#dev
+# dev
 psycopg2
+
+# testing
+pytest
+pytest-aiohttp

@@ -1,5 +1,5 @@
 from aiohttp_security.abc import AbstractAuthorizationPolicy
-from db import User
+from aiohttpdemo_blog.models import User
 
 
 class DBAuthorizationPolicy(AbstractAuthorizationPolicy):

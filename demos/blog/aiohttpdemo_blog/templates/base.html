@@ -11,11 +11,15 @@
         <div>
             Microblog:
             <a href="{{ url('index') }}">Home</a>
-            <a href="{{ url('login') }}">Login</a>
+            {% if current_user.is_anonymous %}
+                <a href="{{ url('login') }}">Login</a>
+            {% else %}
+                <a href="{{ url('logout') }}">Logout</a>
+            {% endif %}
         </div>
         <hr>
 
-        {% block content %}{% endblock %}
+    {% block content %}{% endblock %}
 
     </body>
 </html>
