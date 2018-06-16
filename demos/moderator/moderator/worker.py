@@ -1,5 +1,5 @@
 import pickle
-
+import numpy as np
 
 _model = None
 
@@ -13,9 +13,6 @@ def warm(model_path):
     return True
 
 
-def predict(comment):
-    return _model.predict(comment)
-
-
-def predict_proba(comment):
-    return _model.predict_proba(comment)
+def predict_probability(comments):
+    results = _model.predict_proba(np.array(comments))
+    return np.array(results).T[1].tolist()
