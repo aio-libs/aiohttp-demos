@@ -1,0 +1,20 @@
+.results {
+  display: flex;
+  justify-content: space-between;
+  margin: 50px 0;
+
+  dt, dd {
+    margin: 0;
+  }
+}
+
+.result {
+  display: flex;
+  flex: 1;
+  flex-direction: column-reverse;
+  align-items: center;
+
+  dd {
+    font-size: 3rem;
+  }
+}
