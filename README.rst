@@ -25,6 +25,14 @@ Simple URL shortener with redis storage.
 .. image:: https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/docs/_static/shorty.png
 
 
+Toxic Comments Classifier 
+-------------------------
+UI and API for classification of offensive and toxic comments using kaggle data and simple 
+logistic regression.
+
+.. image:: https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/docs/_static/moderator.png
+
+
 Twitter clone
 -------------
 Twitter clone with mongodb storage.
