@@ -19,7 +19,6 @@ def load_config(fname):
 
 Comment = t.Dict({
     t.Key('comment'): t.String,
-    t.Key('model_type', optional=True): t.Enum('LR', 'SVM', 'NN'),
 })
 CommentList = t.List(Comment, max_length=10)
 
@@ -65,9 +64,4 @@ async def setup_executor(app, conf):
 
     app.on_cleanup.append(close_executor)
     app['executor'] = executor
-    return executor
-
-
-def get_executor(request):
-    executor = request.app['executor']
     return executor
