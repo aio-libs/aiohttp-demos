@@ -56,11 +56,16 @@ async def create_message(
         room_id: int,
         owner_id: int,
         body: str,
-) -> None:
+) -> int:
 
-    await conn.execute(
-        messages.insert().values(body=body, owner_id=owner_id, room_id=room_id)
+    res = await conn.execute(
+        messages
+            .insert()
+            .values(body=body, owner_id=owner_id, room_id=room_id)
+            .returning(messages.c.id, messages.c.owner_id)
     )
+
+    return await res.fetchone()
 
 
 # delete

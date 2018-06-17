@@ -1,12 +1,13 @@
 import React from 'react';
 import gql from 'graphql-tag';
-import {compose, mapProps} from 'recompose';
-import {graphql} from 'react-apollo';
+import { graphql } from 'react-apollo';
+import {compose, mapProps, withHandlers} from 'recompose';
+import { withState } from 'recompose';
 
-import ChatroomRow from './Row';
+import ChatRoomRow from './Row/Row';
 
 
-const chatrooms = gql`
+const chatRoomsQuery = gql`
 {
   rooms {
     id
@@ -15,24 +16,42 @@ const chatrooms = gql`
 }
 `;
 
-function Chatroom({chatrooms = []}) {
+
+function ChatRoom({chatRooms = [], openMessages, active}) {
   return (
-    <section>
-      <h1 className="title">Chatrooms</h1>
-      {chatrooms.map(room => {
-        return <ChatroomRow key={room.id} title={room.name} id={room.id} />;
+    <section className="bar">
+      {chatRooms.map(room => {
+        return (
+          <ChatRoomRow
+            key={room.id}
+            title={room.name}
+            id={room.id}
+            active={active}
+            onClick={() => openMessages(room.id)}
+          />
+        );
       })}
     </section>
   );
 }
 
 export default compose(
-  graphql(chatrooms),
+  withState('active', 'setActive', 1),
+  withHandlers({
+    openMessages: ({setActive, clickHandler}) => {
+      return (id) => {
+        clickHandler(id);
+
+        return setActive(id);
+      };
+    }}),
+  graphql(chatRoomsQuery),
   mapProps(({data, ...rest}) => {
-    const chatrooms = (data && data.rooms) || [];
+    const chatRooms = (data && data.rooms) || [];
     return {
-      chatrooms,
+      chatRooms,
       ...rest,
     };
   })
-)(Chatroom);
+)(ChatRoom);
+

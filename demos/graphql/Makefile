@@ -19,6 +19,9 @@ test: lint
 start_database:
 	@docker-compose up postgres
 
+start_redis:
+	@docker-compose up redis
+
 prepare_database:
 	@python prepare_database.py
 

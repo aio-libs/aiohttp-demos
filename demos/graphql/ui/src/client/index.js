@@ -4,7 +4,6 @@ import {
   addGraphQLSubscriptions
 } from 'subscriptions-transport-ws';
 
-
 const wsClient = new SubscriptionClient('ws://localhost:8080/subscriptions');
 const baseNetworkInterface = createNetworkInterface({
   uri: '/graphql',

@@ -24,7 +24,6 @@ schema = graphene.Schema(
 subscription_server = CustomAiohttpSubscriptionServer(schema)
 
 
-
 def GQL(graphiql: bool = False) -> CustomGraphQLView:
     '''
     The main view for give access to GraphQl. The view cat work in two modes:
@@ -43,7 +42,8 @@ def GQL(graphiql: bool = False) -> CustomGraphQLView:
         graphiql=graphiql,
         enable_async=True,
         # TODO: remove static url
-        socket="ws://localhost:8080/subscriptions",
+        # socket="ws://localhost:8080/subscriptions"
+        subscriptions="ws://localhost:8080/subscriptions",
     )
     return view
 
@@ -60,4 +60,5 @@ async def subscriptions(request: web.Request) -> web.WebSocketResponse:
         ws,
         request_context={"request": request}
     )
+
     return ws

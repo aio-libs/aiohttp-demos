@@ -1,4 +1,5 @@
 from pathlib import Path
+from functools import partial
 
 import aiopg.sa
 from aiohttp import web
@@ -44,8 +45,14 @@ async def init_redis(app: web.Application) -> None:
         f'redis://{config["host"]}:{config["port"]}'
     )
 
+    create_redis = partial(
+        aioredis.create_redis,
+        f'redis://{config["host"]}:{config["port"]}'
+    )
+
     app['redis_sub'] = sub
     app['redis_pub'] = pub
+    app['create_redis'] = create_redis
 
 
 async def close_database(app: web.Application) -> None:
