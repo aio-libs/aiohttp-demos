@@ -43,7 +43,7 @@ def GQL(graphiql: bool = False) -> CustomGraphQLView:
         enable_async=True,
         # TODO: remove static url
         # socket="ws://localhost:8080/subscriptions"
-        subscriptions="ws://localhost:8080/subscriptions",
+        socket="ws://localhost:8080/subscriptions",
     )
     return view
 

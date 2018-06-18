@@ -17,10 +17,10 @@ test: lint
 	@py.test --cov=graphql
 
 start_database:
-	@docker-compose up postgres
+	@docker-compose up -d postgres
 
 start_redis:
-	@docker-compose up redis
+	@docker-compose up -d redis
 
 prepare_database:
 	@python prepare_database.py
