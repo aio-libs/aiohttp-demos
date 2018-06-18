@@ -20,13 +20,23 @@ GQPHIQL_TEMPLATE = '''
     }
   </style>
   <meta name="referrer" content="no-referrer">
-  <link href="//cdn.jsdelivr.net/graphiql/{{graphiql_version}}/graphiql.css" rel="stylesheet" />
+  <link
+    href="//cdn.jsdelivr.net/graphiql/{{graphiql_version}}/graphiql.css"
+    rel="stylesheet"
+  />
   <script src="//cdn.jsdelivr.net/fetch/0.9.0/fetch.min.js"></script>
   <script src="//cdn.jsdelivr.net/react/15.0.0/react.min.js"></script>
   <script src="//cdn.jsdelivr.net/react/15.0.0/react-dom.min.js"></script>
-  <script src="//cdn.jsdelivr.net/graphiql/{{graphiql_version}}/graphiql.min.js"></script>
-  <script src="//unpkg.com/subscriptions-transport-ws@0.7.0/browser/client.js"></script>
-  <script src="//unpkg.com/graphiql-subscriptions-fetcher@0.0.2/browser/client.js"></script>
+  <script
+    src="//cdn.jsdelivr.net/graphiql/{{graphiql_version}}/graphiql.min.js"
+  >
+  </script>
+  <script src="//unpkg.com/subscriptions-transport-ws@0.7.0/browser/client.js">
+  </script>
+  <script
+    src="//unpkg.com/graphiql-subscriptions-fetcher@0.0.2/browser/client.js"
+  >
+  </script>
 </head>
 <body>
   <script>
@@ -62,10 +72,13 @@ GQPHIQL_TEMPLATE = '''
       }
     }
 
-    var subscriptionsClient = new window.SubscriptionsTransportWs.SubscriptionClient('{{socket}}', {
-      reconnect: true
-    });
-    var fetcher = window.GraphiQLSubscriptionsFetcher.graphQLFetcher(subscriptionsClient, graphQLFetcher);
+    var subscriptionsClient =
+        new window.SubscriptionsTransportWs.SubscriptionClient('{{socket}}', {
+            reconnect: true
+        });
+    var fetcher = window.GraphiQLSubscriptionsFetcher.graphQLFetcher(
+        subscriptionsClient, graphQLFetcher
+    );
     var fetchURL = locationQuery(otherParams);
 
     // Defines a GraphQL fetcher using the fetch API.
@@ -131,7 +144,7 @@ GQPHIQL_TEMPLATE = '''
 
 
 def simple_renderer(template, **values):
-    replace = ['graphiql_version', 'socket',]
+    replace = ['graphiql_version', 'socket', ]
     replace_jsonify = ['query', 'result', 'variables', 'operation_name']
 
     for rep in replace:
@@ -167,7 +180,11 @@ class CustomGraphQLView(GraphQLView):
 class CustomAiohttpSubscriptionServer(AiohttpSubscriptionServer):
 
     def get_graphql_params(self, connection_context, *args, **kwargs):
-        params = super().get_graphql_params(connection_context, *args, **kwargs)
+        params = super().get_graphql_params(
+            connection_context,
+            *args,
+            **kwargs,
+        )
         params.update({'context_value': connection_context.request_context})
 
         return params

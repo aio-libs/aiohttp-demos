@@ -21,7 +21,7 @@ __all__ = [
 # selects
 
 async def select_rooms(conn: SAConn) -> RowsProxy:
-    cursor =  await conn.execute(
+    cursor = await conn.execute(
         rooms.select().order_by(rooms.c.id)
     )
 
@@ -29,22 +29,22 @@ async def select_rooms(conn: SAConn) -> RowsProxy:
 
 
 async def select_room(conn: SAConn, id: int) -> RowProxy:
-    cursor =  await conn.execute(
+    cursor = await conn.execute(
         rooms.select().where(rooms.c.id == id)
     )
     item = await cursor.fetchone()
     assert item, OBJECT_NOT_FOUND_ERROR
 
-    return  item
+    return item
 
 
 async def select_messages_by_room_id(conn: SAConn, room_id: int) -> RowsProxy:
-    cursor = await conn.execute(
-        messages
-            .select()
-            .where(messages.c.room_id == room_id)
-            .order_by(messages.c.id)
-    )
+    query = messages\
+        .select()\
+        .where(messages.c.room_id == room_id)\
+        .order_by(messages.c.id)
+
+    cursor = await conn.execute(query)
 
     return await cursor.fetchall()
 
@@ -56,14 +56,14 @@ async def create_message(
         room_id: int,
         owner_id: int,
         body: str,
-) -> int:
+) -> RowProxy:
 
-    res = await conn.execute(
-        messages
-            .insert()
-            .values(body=body, owner_id=owner_id, room_id=room_id)
-            .returning(messages.c.id, messages.c.owner_id)
-    )
+    query = messages\
+        .insert()\
+        .values(body=body, owner_id=owner_id, room_id=room_id)\
+        .returning(messages.c.id, messages.c.owner_id)
+
+    res = await conn.execute(query)
 
     return await res.fetchone()
 
