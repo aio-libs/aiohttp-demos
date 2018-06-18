@@ -2,7 +2,7 @@
 
 The simple realization of GraphQl api.
 
-![Image of Application](/aio-libs/aiohttp-demos/master/docs/_static/graph.gif)
+![Image of Application](/docs/_static/graph.gif)
 
 
 ### Install requirements:
