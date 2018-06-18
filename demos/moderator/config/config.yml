@@ -1,0 +1,5 @@
+host: 127.0.0.1
+port: 9001
+
+max_workers: 1
+model_path: "model/pipeline_0.9730676749114942.dat"
