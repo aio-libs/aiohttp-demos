@@ -15,11 +15,6 @@ async def client(aiohttp_client):
     return await aiohttp_client(app)
 
 
-@pytest.fixture
-async def gino_db(client):
-    return client.app['db']
-
-
 @pytest.fixture(scope='session')
 def database():
     admin_db_config = load_config(BASE_DIR / 'config' / 'admin_config.toml')['database']
@@ -31,10 +26,12 @@ def database():
 
 
 @pytest.fixture
-async def tables_and_data(database, gino_db):
-    await create_tables(gino_db)
-    await create_sample_data()
+def tables_and_data(database):
+    test_db_config = load_config(BASE_DIR / 'config' / 'test_config.toml')['database']
+
+    create_tables(target_config=test_db_config)
+    create_sample_data(target_config=test_db_config)
 
     yield
 
-    await drop_tables(gino_db)
+    drop_tables(target_config=test_db_config)

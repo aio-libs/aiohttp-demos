@@ -1,8 +1,8 @@
-from aiohttpdemo_blog.models import User, Post
-from aiohttpdemo_blog.models import construct_db_url
+from aiohttpdemo_blog.db import construct_db_url
+from aiohttpdemo_blog.db import users, posts
 from aiohttpdemo_blog.security import generate_password_hash
 from aiohttpdemo_blog.settings import load_config
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, MetaData
 
 
 def setup_db(executor_config=None, target_config=None):
@@ -44,28 +44,37 @@ def get_engine(db_config):
     return engine
 
 
-async def create_tables(gino_db):
-    await gino_db.gino.create_all()
+def create_tables(target_config=None):
+    engine = get_engine(target_config)
+
+    meta = MetaData()
+    meta.create_all(bind=engine, tables=[users, posts])
 
 
-async def drop_tables(gino_db):
-    await gino_db.gino.drop_all()
+def drop_tables(target_config=None):
+    engine = get_engine(target_config)
+
+    meta = MetaData()
+    meta.drop_all(bind=engine, tables=[users, posts])
 
 
-async def create_sample_data():
-    await User.create(username='Adam',
-                      email='adam@one.com',
-                      password_hash=generate_password_hash('adam'))
-    await User.create(username='Bob',
-                      email='bob@two.com',
-                      password_hash=generate_password_hash('bob'))
+def create_sample_data(target_config=None):
+    engine = get_engine(target_config)
 
-    u1 = await User.query.where(User.username == 'Adam').gino.first()
-    u2 = await User.query.where(User.username == 'Bob').gino.first()
-
-    await Post.create(user_id=u1.id, body='Lovely day')
-    await Post.create(user_id=u1.id, body='Roses are red')
-    await Post.create(user_id=u2.id, body='Lorem ipsum')
+    with engine.connect() as conn:
+        conn.execute(users.insert(), [
+            {'username': 'Adam',
+             'email': 'adam@one.com',
+             'password_hash': generate_password_hash('adam')},
+            {'username': 'Bob',
+             'email': 'bob@two.com',
+             'password_hash': generate_password_hash('bob')},
+        ])
+        conn.execute(posts.insert(), [
+            {'user_id': 1, 'body': 'Lovely day'},
+            {'user_id': 2, 'body': 'Roses are red'},
+            {'user_id': 2, 'body': 'Lorem ipsum'},
+        ])
 
 
 if __name__ == '__main__':
@@ -90,14 +99,7 @@ if __name__ == '__main__':
     elif args.all:
         teardown_db(executor_config=admin_db_config, target_config=user_db_config)
         setup_db(executor_config=admin_db_config, target_config=user_db_config)
-
-        import asyncio
-        from aiohttpdemo_blog.models import db as gino_db
-        loop = asyncio.get_event_loop()
-
-        db_url = construct_db_url(user_db_config)
-        loop.run_until_complete(gino_db.set_bind(db_url))
-        loop.run_until_complete(create_tables(gino_db))
-        loop.run_until_complete(create_sample_data())
+        create_tables(target_config=user_db_config)
+        create_sample_data(target_config=user_db_config)
     else:
         parser.print_help()

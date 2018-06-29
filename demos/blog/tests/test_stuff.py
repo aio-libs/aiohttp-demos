@@ -1,8 +1,6 @@
 from aiohttpdemo_blog.security import generate_password_hash, check_password_hash
 from aiohttpdemo_blog.forms import validate_login_form
 
-from aiohttpdemo_blog.models import User, Post
-
 
 def test_security():
     user_password = 'qwer'
@@ -10,16 +8,12 @@ def test_security():
     assert check_password_hash(user_password, hashed)
 
 
-async def test_creation_with_gino(tables_and_data, gino_db):
-    assert 2 == await gino_db.func.count(User.id).gino.scalar()
-
-    await User.create(username='Clark',
-                      password_hash=generate_password_hash('clark'))
-
-    assert 3 == await gino_db.func.count(User.id).gino.scalar()
+async def test_index_view(tables_and_data, client):
+    resp = await client.get('/')
+    assert resp.status == 200
 
 
-async def test_login_form(tables_and_data):
+async def test_login_form(tables_and_data, client):
     invalid_form = {
         'username': 'Joe',
         'password': '123'
@@ -29,11 +23,12 @@ async def test_login_form(tables_and_data):
         'password': 'adam'
     }
 
-    error = await validate_login_form(invalid_form)
-    assert error
+    async with client.server.app['db_pool'].acquire() as conn:
+        error = await validate_login_form(conn, invalid_form)
+        assert error
 
-    no_error = await validate_login_form(valid_form)
-    assert not no_error
+        no_error = await validate_login_form(conn, valid_form)
+        assert not no_error
 
 
 async def test_login_view(tables_and_data, client):

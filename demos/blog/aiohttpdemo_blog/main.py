@@ -10,7 +10,7 @@ from aiohttp_session import setup as setup_session
 from aiohttp_session.redis_storage import RedisStorage
 import aioredis
 from aiohttpdemo_blog.db_auth import DBAuthorizationPolicy
-from aiohttpdemo_blog.models import init_db
+from aiohttpdemo_blog.db import init_db
 from aiohttpdemo_blog.routes import setup_routes
 from aiohttpdemo_blog.settings import load_config, PACKAGE_NAME
 
@@ -35,19 +35,22 @@ async def setup_redis(app):
 
 
 async def current_user_ctx_processor(request):
+    # import pdb; pdb.set_trace()
     username = await authorized_userid(request)
+    # print('111111 username after authorized_userid', username)
     is_anonymous = not bool(username)
     return {'current_user': {'is_anonymous': is_anonymous}}
 
 
 async def init_app(config):
+
     app = web.Application()
 
     app['config'] = config
 
     setup_routes(app)
 
-    init_db(app)
+    db_pool = await init_db(app)
 
     redis_pool = await setup_redis(app)
     setup_session(app, RedisStorage(redis_pool))
@@ -62,7 +65,7 @@ async def init_app(config):
     setup_security(
         app,
         SessionIdentityPolicy(),
-        DBAuthorizationPolicy()
+        DBAuthorizationPolicy(db_pool)
     )
 
     log.debug(app['config'])

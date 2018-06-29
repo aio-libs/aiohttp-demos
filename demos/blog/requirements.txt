@@ -10,8 +10,7 @@ aioredis
 # database
 sqlalchemy
 asyncpg
-gino
-aiocontextvars
+asyncpgsa
 
 # dev
 psycopg2

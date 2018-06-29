@@ -1,8 +1,8 @@
-from aiohttpdemo_blog.models import User
+from aiohttpdemo_blog import db
 from aiohttpdemo_blog.security import check_password_hash
 
 
-async def validate_login_form(form):
+async def validate_login_form(conn, form):
     error = None
 
     username = form['username']
@@ -13,10 +13,11 @@ async def validate_login_form(form):
     if not password:
         return 'password is required'
 
-    user = await User.query.where(User.username == username).gino.first()
+    user = await db.get_user_by_name(conn, username)
+
     if not user:
         return 'Invalid username'
-    if not check_password_hash(password, user.password_hash):
+    if not check_password_hash(password, user['password_hash']):
         return 'Invalid password'
     else:
         return None

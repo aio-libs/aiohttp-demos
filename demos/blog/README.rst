@@ -16,6 +16,9 @@ Terminal 2: Create db::
 
     $ python db_helpers.py -a
 
+Terminal 2: Check db for created data::
+
+    $ psql -h localhost -p 5433 -U postgres -d aiohttpdemo_blog -c "select * from posts"
 
 Terminal 3: Run server::
 

@@ -1,8 +1,7 @@
 import aiohttp_jinja2
 from aiohttp import web
 from aiohttp_security import remember, forget, authorized_userid
-
-from aiohttpdemo_blog.models import User, Post
+from aiohttpdemo_blog import db
 from aiohttpdemo_blog.forms import validate_login_form
 
 
@@ -17,8 +16,9 @@ async def index(request):
     if not username:
         raise redirect(request.app.router, 'login')
 
-    current_user = await User.query.where(User.username == username).gino.first()
-    posts = await Post.query.gino.all()
+    async with request.app['db_pool'].acquire() as conn:
+        current_user = await db.get_user_by_name(conn, username)
+        posts = await db.get_posts(conn)
 
     return {'user': current_user, 'posts': posts}
 
@@ -32,16 +32,18 @@ async def login(request):
     if request.method == 'POST':
         form = await request.post()
 
-        error = await validate_login_form(form)
-        if error:
-            return {'error': error}
-        else:
-            response = redirect(request.app.router, 'index')
+        async with request.app['db_pool'].acquire() as conn:
+            error = await validate_login_form(conn, form)
 
-            user = await User.query.where(User.username == form['username']).gino.first()
-            await remember(request, response, user.username)
+            if error:
+                return {'error': error}
+            else:
+                response = redirect(request.app.router, 'index')
 
-            raise response
+                user = await db.get_user_by_name(conn, form['username'])
+                await remember(request, response, user['username'])
+
+                raise response
 
 
     return {}
