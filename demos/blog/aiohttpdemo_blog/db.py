@@ -54,8 +54,8 @@ def construct_db_url(config):
 async def get_user_by_name(conn, username):
     result = await conn.fetchrow(
         users
-            .select()
-            .where(users.c.username == username)
+        .select()
+        .where(users.c.username == username)
     )
     return result
 
@@ -76,7 +76,8 @@ async def get_posts(conn):
 
 async def get_posts_with_joined_users(conn):
     j = posts.join(users, posts.c.user_id == users.c.id)
-    stmt = select([posts, users.c.username]).select_from(j).order_by(posts.c.timestamp)
+    stmt = select(
+        [posts, users.c.username]).select_from(j).order_by(posts.c.timestamp)
     records = await conn.fetch(stmt)
     return records
 

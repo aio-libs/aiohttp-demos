@@ -1,5 +1,8 @@
-from aiohttpdemo_blog.security import generate_password_hash, check_password_hash
 from aiohttpdemo_blog.forms import validate_login_form
+from aiohttpdemo_blog.security import (
+    generate_password_hash,
+    check_password_hash
+)
 
 
 def test_security():

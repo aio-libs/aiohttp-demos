@@ -1,6 +1,7 @@
 import aiohttp_jinja2
 from aiohttp import web
 from aiohttp_security import remember, forget, authorized_userid
+
 from aiohttpdemo_blog import db
 from aiohttpdemo_blog.forms import validate_login_form
 

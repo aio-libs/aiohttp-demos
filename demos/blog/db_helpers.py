@@ -1,8 +1,9 @@
+from sqlalchemy import create_engine, MetaData
+
 from aiohttpdemo_blog.db import construct_db_url
 from aiohttpdemo_blog.db import users, posts
 from aiohttpdemo_blog.security import generate_password_hash
 from aiohttpdemo_blog.settings import load_config
-from sqlalchemy import create_engine, MetaData
 
 
 def setup_db(executor_config=None, target_config=None):
@@ -13,7 +14,8 @@ def setup_db(executor_config=None, target_config=None):
     db_pass = target_config['DB_PASS']
 
     with engine.connect() as conn:
-        teardown_db(executor_config=executor_config, target_config=target_config)
+        teardown_db(executor_config=executor_config,
+                    target_config=target_config)
 
         conn.execute("CREATE USER %s WITH PASSWORD '%s'" % (db_user, db_pass))
         conn.execute("CREATE DATABASE %s" % db_name)
@@ -83,22 +85,36 @@ if __name__ == '__main__':
 
     import argparse
     parser = argparse.ArgumentParser(description='DB related shortcuts')
-    parser.add_argument("-c", "--create", help="Create empty database and user with permissions", action='store_true')
-    parser.add_argument("-d", "--drop", help="Drop database and user role", action='store_true')
-    parser.add_argument("-r", "--recreate", help="Drop and recreate database and user", action='store_true')
-    parser.add_argument("-a", "--all", help="Create sample data", action='store_true')
+    parser.add_argument("-c", "--create",
+                        help="Create empty database and user with permissions",
+                        action='store_true')
+    parser.add_argument("-d", "--drop",
+                        help="Drop database and user role",
+                        action='store_true')
+    parser.add_argument("-r", "--recreate",
+                        help="Drop and recreate database and user",
+                        action='store_true')
+    parser.add_argument("-a", "--all",
+                        help="Create sample data",
+                        action='store_true')
     args = parser.parse_args()
 
     if args.create:
-        setup_db(executor_config=admin_db_config, target_config=user_db_config)
+        setup_db(executor_config=admin_db_config,
+                 target_config=user_db_config)
     elif args.drop:
-        teardown_db(executor_config=admin_db_config, target_config=user_db_config)
+        teardown_db(executor_config=admin_db_config,
+                    target_config=user_db_config)
     elif args.recreate:
-        teardown_db(executor_config=admin_db_config, target_config=user_db_config)
-        setup_db(executor_config=admin_db_config, target_config=user_db_config)
+        teardown_db(executor_config=admin_db_config,
+                    target_config=user_db_config)
+        setup_db(executor_config=admin_db_config,
+                 target_config=user_db_config)
     elif args.all:
-        teardown_db(executor_config=admin_db_config, target_config=user_db_config)
-        setup_db(executor_config=admin_db_config, target_config=user_db_config)
+        teardown_db(executor_config=admin_db_config,
+                    target_config=user_db_config)
+        setup_db(executor_config=admin_db_config,
+                 target_config=user_db_config)
         create_tables(target_config=user_db_config)
         create_sample_data(target_config=user_db_config)
     else:

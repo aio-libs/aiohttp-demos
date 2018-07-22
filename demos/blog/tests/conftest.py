@@ -17,8 +17,10 @@ async def client(aiohttp_client):
 
 @pytest.fixture(scope='session')
 def database():
-    admin_db_config = load_config(BASE_DIR / 'config' / 'admin_config.toml')['database']
-    test_db_config = load_config(BASE_DIR / 'config' / 'test_config.toml')['database']
+    admin_db_config = load_config(
+        BASE_DIR / 'config' / 'admin_config.toml')['database']
+    test_db_config = load_config(
+        BASE_DIR / 'config' / 'test_config.toml')['database']
 
     setup_db(executor_config=admin_db_config, target_config=test_db_config)
     yield
@@ -27,7 +29,8 @@ def database():
 
 @pytest.fixture
 def tables_and_data(database):
-    test_db_config = load_config(BASE_DIR / 'config' / 'test_config.toml')['database']
+    test_db_config = load_config(
+        BASE_DIR / 'config' / 'test_config.toml')['database']
 
     create_tables(target_config=test_db_config)
     create_sample_data(target_config=test_db_config)

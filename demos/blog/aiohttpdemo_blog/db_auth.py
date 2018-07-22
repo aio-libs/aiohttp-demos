@@ -1,4 +1,5 @@
 from aiohttp_security.abc import AbstractAuthorizationPolicy
+
 from aiohttpdemo_blog import db
 
 
@@ -14,7 +15,6 @@ class DBAuthorizationPolicy(AbstractAuthorizationPolicy):
                 return identity
 
         return None
-
 
     async def permits(self, identity, permission, context=None):
         if identity is None:
