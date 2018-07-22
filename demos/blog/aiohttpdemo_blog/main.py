@@ -35,9 +35,7 @@ async def setup_redis(app):
 
 
 async def current_user_ctx_processor(request):
-    # import pdb; pdb.set_trace()
     username = await authorized_userid(request)
-    # print('111111 username after authorized_userid', username)
     is_anonymous = not bool(username)
     return {'current_user': {'is_anonymous': is_anonymous}}
 

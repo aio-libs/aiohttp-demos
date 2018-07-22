@@ -5,6 +5,7 @@ from sqlalchemy import (
     MetaData, Table, Column, ForeignKey,
     Integer, String, DateTime
 )
+from sqlalchemy.sql import select
 
 metadata = MetaData()
 
@@ -39,6 +40,17 @@ async def init_db(app):
     return pool
 
 
+def construct_db_url(config):
+    DSN = "postgresql://{user}:{password}@{host}:{port}/{database}"
+    return DSN.format(
+        user=config['DB_USER'],
+        password=config['DB_PASS'],
+        database=config['DB_NAME'],
+        host=config['DB_HOST'],
+        port=config['DB_PORT'],
+    )
+
+
 async def get_user_by_name(conn, username):
     result = await conn.fetchrow(
         users
@@ -62,12 +74,13 @@ async def get_posts(conn):
     return records
 
 
-def construct_db_url(config):
-    DSN = "postgresql://{user}:{password}@{host}:{port}/{database}"
-    return DSN.format(
-        user=config['DB_USER'],
-        password=config['DB_PASS'],
-        database=config['DB_NAME'],
-        host=config['DB_HOST'],
-        port=config['DB_PORT'],
-    )
+async def get_posts_with_joined_users(conn):
+    j = posts.join(users, posts.c.user_id == users.c.id)
+    stmt = select([posts, users.c.username]).select_from(j).order_by(posts.c.timestamp)
+    records = await conn.fetch(stmt)
+    return records
+
+
+async def create_post(conn, post_body, user_id):
+    stmt = posts.insert().values(body=post_body, user_id=user_id)
+    await conn.execute(stmt)

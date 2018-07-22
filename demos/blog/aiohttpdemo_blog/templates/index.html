@@ -3,6 +3,6 @@
 {% block content %}
     <h1>Hi, {{ user.username }}!</h1>
     {% for post in posts %}
-    <div><p>[{{ post.timestamp }}] User #{{ post.user_id }} posted: <b>{{ post.body }}</b></p></div>
+    <div><p>[{{ post.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}] {{ post.username }} posted: <b>{{ post.body }}</b></p></div>
     {% endfor %}
 {% endblock %}

@@ -18,7 +18,7 @@ async def index(request):
 
     async with request.app['db_pool'].acquire() as conn:
         current_user = await db.get_user_by_name(conn, username)
-        posts = await db.get_posts(conn)
+        posts = await db.get_posts_with_joined_users(conn)
 
     return {'user': current_user, 'posts': posts}
 
@@ -45,7 +45,6 @@ async def login(request):
 
                 raise response
 
-
     return {}
 
 
@@ -53,3 +52,20 @@ async def logout(request):
     response = redirect(request.app.router, 'login')
     await forget(request, response)
     return response
+
+
+@aiohttp_jinja2.template('create_post.html')
+async def create_post(request):
+    username = await authorized_userid(request)
+    if not username:
+        raise redirect(request.app.router, 'login')
+
+    if request.method == 'POST':
+        form = await request.post()
+
+        async with request.app['db_pool'].acquire() as conn:
+            current_user = await db.get_user_by_name(conn, username)
+            await db.create_post(conn, form['body'], current_user['id'])
+            raise redirect(request.app.router, 'index')
+
+    return {}
