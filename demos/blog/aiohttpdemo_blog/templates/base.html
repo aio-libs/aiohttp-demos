@@ -1,0 +1,26 @@
+<html>
+    <head>
+      {% if title %}
+      <title>{{ title }} - Microblog</title>
+      {% else %}
+      <title>Welcome to Microblog</title>
+      {% endif %}
+    </head>
+    <body>
+
+        <div>
+            Microblog:
+            <a href="{{ url('index') }}">Home</a>
+            {% if current_user.is_anonymous %}
+                <a href="{{ url('login') }}">Login</a>
+            {% else %}
+                <a href="{{ url('logout') }}">Logout</a>
+                <a href="{{ url('create-post') }}">Write</a>
+            {% endif %}
+        </div>
+        <hr>
+
+    {% block content %}{% endblock %}
+
+    </body>
+</html>

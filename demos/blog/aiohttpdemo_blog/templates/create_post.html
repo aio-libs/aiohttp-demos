@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>Write something</h1>
+
+    <form action="/create" method="post">
+        <p>
+            <input id="body" name="body" type="text" value="" size=40 autofocus/>
+        </p>
+        <input type="submit" value="submit"/>
+    </form>
+
+{% endblock %}
