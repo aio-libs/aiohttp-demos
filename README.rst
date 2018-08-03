@@ -56,6 +56,15 @@ Simple polls application with postgresql storage.
     :width: 460px
 
 
+Blog
+----
+Blog application with postgresql storage and redis session store.
+
+.. image:: https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/docs/_static/blog.png
+    :align: center
+    :width: 460px
+
+
 Contributing
 ------------
 Things you need for local development::
