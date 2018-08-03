@@ -1,26 +1,32 @@
 Setup
 =====
 
-Terminal 1: Run db server::
+Clone the repo, create virtualenv if necessary.
 
-    $ docker run --rm -it -p 5433:5432 postgres:10
+Operate from base folder [../aiohttp-demos/demos/blog].
 
+To start the demo application you need running Postgres server.
+In case you have it already - good.
 
-(operating from base folder [../aiohttp-demos/demos/blog])
+But if you want neither to use it for experiments nor to stop the server:
+- update DB_PORT in config files
+- use desired port in following example commands e.g. like so::
 
-Terminal 2: Create db::
+    $ export DB_PORT=5433
 
-    $ python db_helpers.py -r
+Run db server::
 
-..db with tables and sample data::
+    $ docker run --rm -it -p $DB_PORT:5432 postgres:10
+
+Create db with tables and sample data::
 
     $ python db_helpers.py -a
 
-Terminal 2: Check db for created data::
+Check db for created data::
 
-    $ psql -h localhost -p 5433 -U postgres -d aiohttpdemo_blog -c "select * from posts"
+    $ psql -h localhost -p $DB_PORT -U postgres -d aiohttpdemo_blog -c "select * from posts"
 
-Terminal 3: Run server::
+Run server::
 
     $ python aiohttpdemo_blog/main.py -c config/user_config.toml
 
