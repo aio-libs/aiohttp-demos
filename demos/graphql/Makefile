@@ -14,7 +14,7 @@ lint:
 	@flake8 $(PROJECT_NAME)
 
 test: lint
-	@py.test --cov=graphql
+	@py.test
 
 start_database:
 	@docker-compose up -d postgres

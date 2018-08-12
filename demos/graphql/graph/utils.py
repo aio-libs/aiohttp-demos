@@ -32,11 +32,11 @@ CONFIG_TRAFARET = trafaret.Dict({
 })
 
 
-def get_config() -> dict:
+def get_config(path=DEFAULT_CONFIG_PATH) -> dict:
     ap = argparse.ArgumentParser()
     commandline.standard_argparse_options(
         ap,
-        default_config=DEFAULT_CONFIG_PATH,
+        default_config=path,
     )
     options = ap.parse_args()
 
