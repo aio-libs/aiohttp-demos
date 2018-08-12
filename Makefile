@@ -9,7 +9,7 @@ test:
 	@pytest -q demos/polls/tests
 	@pytest -q demos/chat/tests
 	@pytest -q demos/blog/tests
-	@pytest -q demos/graphql
+	@cd demos/graphql/ && py.test
 
 ci: lint test doc-spelling
 
