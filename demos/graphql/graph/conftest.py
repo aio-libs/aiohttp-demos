@@ -20,8 +20,8 @@ from graphene.test import Client
 TEST_CONFIG_PATH = PATH / 'config' / 'api.test.yml'
 CONFIG_PATH = PATH / 'config' / 'api.yml'
 
-config = get_config(CONFIG_PATH)
-test_config = get_config(TEST_CONFIG_PATH)
+config = get_config(['-c', CONFIG_PATH.as_posix()])
+test_config = get_config(['-c', TEST_CONFIG_PATH.as_posix()])
 
 
 # helpers
@@ -97,31 +97,28 @@ def teardown_test_db(engine) -> None:
 
 def init_sample_data(engine) -> None:
     with engine.connect() as conn:
-        print('run')
-        response = conn.execute(
-            users
-                .insert()
-                .values([{
+        query = users\
+            .insert()\
+            .values([{
                     'id': idx,
                     'username': f'test#{idx}',
                     'email': f'test#{idx}',
                     'password': f'{idx}'} for idx in range(1000)
-                ])
-                .returning(users.c.id)
-        )
+                ])\
+            .returning(users.c.id)
 
+        response = conn.execute(query)
         users_idx = [user[0] for user in response]
 
-        response = conn.execute(
-            rooms
-                .insert()
-                .values([{
-                    'name': f'test#{idx}',
-                    'owner_id': random.choice(users_idx)} for idx in users_idx
-                ])
-                .returning(rooms.c.id)
-        )
+        query = rooms\
+            .insert()\
+            .values([{
+                'name': f'test#{idx}',
+                'owner_id': random.choice(users_idx)} for idx in users_idx
+            ])\
+            .returning(rooms.c.id)
 
+        response = conn.execute(query)
         rooms_idx = [room[0] for room in response]
         values = []
 

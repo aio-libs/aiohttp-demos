@@ -32,16 +32,16 @@ CONFIG_TRAFARET = trafaret.Dict({
 })
 
 
-def get_config(path=DEFAULT_CONFIG_PATH) -> dict:
+def get_config(argv=None) -> dict:
     ap = argparse.ArgumentParser()
     commandline.standard_argparse_options(
         ap,
-        default_config=path,
+        default_config=DEFAULT_CONFIG_PATH,
     )
-    options = ap.parse_args()
+    options = ap.parse_args(argv)
 
     return commandline.config_from_options(options, CONFIG_TRAFARET)
 
 
 def init_config(app: web.Application) -> None:
-    app['config'] = get_config()
+    app['config'] = get_config(['-c', DEFAULT_CONFIG_PATH.as_posix()])
