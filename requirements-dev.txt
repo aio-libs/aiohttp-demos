@@ -1,7 +1,12 @@
-# test
+# lint
 flake8==3.5.0
+
+# test
 pytest==3.5.0
 pytest-aiohttp
+
+# dev
+psycopg2
 
 # docs
 sphinx==1.7.2

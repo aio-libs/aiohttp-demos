@@ -1,0 +1,6 @@
+-e .
+
+# testing
+pytest
+pytest-aiohttp
+flake8

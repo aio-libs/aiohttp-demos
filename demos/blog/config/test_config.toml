@@ -1,0 +1,13 @@
+[database]
+
+DB_HOST = 'localhost'
+DB_PORT = 5432
+
+DB_NAME = 'test'
+DB_USER = 'test'
+DB_PASS = 'test'
+
+[redis]
+
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
