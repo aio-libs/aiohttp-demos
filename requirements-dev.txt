@@ -4,7 +4,7 @@ flake8==3.5.0
 # test
 pytest==3.5.0
 pytest-aiohttp
-pytest-asyncio
+
 
 # dev
 psycopg2
