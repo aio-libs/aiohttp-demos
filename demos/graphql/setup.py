@@ -39,9 +39,12 @@ install_requires = [
 setup(
     name='graph',
     version=read_version(),
-    description='GraphQL example from aiohttp',
+    description='The GraphQL example from aiohttp',
     platforms=['POSIX'],
     packages=find_packages(),
+    package_data={
+        '': ['config/*.*']
+    },
     include_package_data=True,
     install_requires=install_requires,
     zip_safe=False,
