@@ -105,3 +105,21 @@ node_modules
 tags
 cscope.out
 cscope.files
+
+# idea
+.idea/
+
+# dependencies
+node_modules/
+
+# testing
+/coverage
+
+# production
+build/
+
+# misc
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store

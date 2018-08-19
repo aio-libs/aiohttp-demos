@@ -1,0 +1,19 @@
+.chat-room {
+  line-height: 44px;
+  font-size: 13px;
+  height: 44px;
+  padding: 0 30px;
+  color: rgba(0,0,0,0.87);
+  display: block;
+  cursor: pointer;
+  transition: .3s ease-out;
+  margin: 0;
+}
+
+.chat-room-active {
+  background: rgba(0,0,0,0.1) !important;
+}
+
+.chat-room:hover {
+  background-color: rgba(0,0,0,0.05);
+}

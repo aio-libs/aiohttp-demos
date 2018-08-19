@@ -1,0 +1,41 @@
+.message-block {
+  max-height: calc(100vh - 64px - 50px);
+  overflow: auto;
+  flex: 1;
+}
+
+.message-wrapper-right {
+  text-align: right;
+}
+
+.message-wrapper-left {
+  text-align: left;
+}
+
+.message-username {
+  padding-bottom: 5px;
+  font-size: 11px;
+  display: block;
+}
+
+.message {
+  display: inline-block;
+  background: rgba(0,0,0,0.1);
+  padding: 5px;
+  border-radius: 10px;
+  max-width: 50%;
+  border-bottom: 1px solid rgba(0,0,0,0.12);
+  margin: 10px 20px;
+}
+
+.message p {
+  font-size: 14px;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.typing-block {
+  margin: 10px 20px;
+  font-size: 11px;
+  color: #bbb;
+}

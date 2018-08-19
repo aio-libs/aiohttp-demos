@@ -1,0 +1,28 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+}
+
+.main {
+  display: flex;
+  max-height: calc(100vh - 64px);
+  overflow: hidden;
+}
+
+.bar {
+  width: 300px;
+  border-right: 1px solid rgba(0,0,0,0.14);
+  flex: initial;
+  max-height: calc(100vh - 64px);
+  overflow: auto;
+}
+
+.chatroom:hover {
+  background-color: #00A0FF;
+  color: white;
+}

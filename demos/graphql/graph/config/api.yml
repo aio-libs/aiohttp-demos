@@ -1,0 +1,14 @@
+postgres:
+  user: postgres
+  password: postgres
+  database: postgres
+  port: 5432
+  host: localhost
+
+redis:
+  port: 6379
+  host: localhost
+
+app:
+  host: 127.0.0.1
+  port: 9000

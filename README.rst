@@ -65,6 +65,16 @@ Blog application with postgresql storage and redis session store.
     :width: 460px
 
 
+
+GraphQl Messenger
+----
+The simple realization of GraphQl api.
+
+.. image:: /docs/_static/graph.gif
+    :align: center
+    :width: 460px
+
+
 Contributing
 ------------
 Things you need for local development::

@@ -1,0 +1,32 @@
+.message-box-wrapper {
+  position: absolute;
+  bottom: 0;
+  height: 50px;
+  width: calc(100% - 300px);
+  overflow: hidden;
+  border-top: 1px solid rgba(0,0,0,0.14);
+}
+
+.message-box {
+  height: 50px;
+  width: 100%;
+  border: 0;
+  padding: 16px 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none;
+  text-indent: 20px;
+}
+
+.message-box::placeholder {
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  position: absolute;
+  bottom: 7px;
+  right: 10px;
+}
