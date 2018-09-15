@@ -16,7 +16,7 @@ check out the `demo source`_.
 Project structure
 -----------------
 
-The project structure at the end of the tutorial should look very similar to
+At the end of the tutorial, this project's structure should look very similar to
 other Python based web projects:
 
 .. code-block:: none
@@ -109,8 +109,8 @@ We could have created this tutorial based on a local ``sqlite`` solution,
 but ``sqlite`` is almost never used in real-world applications. To better
 reflect a production example, we decided to use Postgres for the tutorial.
 
-Install and run the PostgreSQL database server: http://www.postgresql.org/download/ .
-Alternatively, to use PostgreSQL in more isolated way you may also use Docker::
+Install and run the PostgreSQL database server: http://www.postgresql.org/download/.
+To use PostgreSQL in a more isolated way, you may use Docker as an alternative::
 
     $ docker run --rm -it -p 5432:5432 postgres:10
 
@@ -121,10 +121,10 @@ We need to create a running database and a user with write access.
 For these and other database related actions, consider one of the following
 options:
 
-- Prepare manually through the database's interactive prompt
-- prepare and execute '.sql' files
+- prepare manually using the database's interactive prompt
+- prepare and execute ``.sql`` files
 - use migration tool
-- use default database/user `postgres`
+- use default database/user ``postgres``
 
 Whichever option you choose, make sure you remember the corresponding values to put them
 into a config file. Here are example commands to run manually ::
@@ -134,7 +134,7 @@ into a config file. Here are example commands to run manually ::
     > CREATE USER aiohttpdemo_user WITH PASSWORD 'aiohttpdemo_pass';
     > GRANT ALL PRIVILEGES ON DATABASE aiohttpdemo_polls TO aiohttpdemo_user;
 
-Use ``\l`` and ``\du`` *psql* commands to check results.
+Use the *psql* commands, ``\l`` and ``\du``, to check results.
 
 .. note::
 
