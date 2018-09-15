@@ -14,7 +14,7 @@ The following code creates an application::
     app = web.Application()
     web.run_app(app)
 
-Save it under ``aiohttpdemo_polls/main.py`` and start the server:
+Save it under ``aiohttpdemo_polls/main.py`` and start the server using:
 
 .. code-block:: shell
 
@@ -22,8 +22,9 @@ Save it under ``aiohttpdemo_polls/main.py`` and start the server:
     ======== Running on http://0.0.0.0:8080 ========
     (Press CTRL+C to quit)
 
-Open the link in browser... and it returns ``404: Not Found``.
-To show something more meaningful let's create a route and a view.
+Next, open the displayed link in a browser. It returns a ``404: Not Found``
+error. To show something more meaningful than an error, let's create a route
+and a view.
 
 
 .. _aiohttp-demos-polls-views:
@@ -31,8 +32,8 @@ To show something more meaningful let's create a route and a view.
 Views
 -----
 
-Let's start from first views. Create the file ``aiohttpdemo_polls/views.py``
-with the following::
+Let's start with the first views. Create the file ``aiohttpdemo_polls/views.py``
+and add the following to it::
 
     # views.py
     from aiohttp import web
@@ -40,10 +41,12 @@ with the following::
     async def index(request):
         return web.Response(text='Hello Aiohttp!')
 
-This is the simplest view possible in Aiohttp. Now we should create a route
-for this ``index`` view. Put this into ``aiohttpdemo_polls/routes.py``.
-It is a good practice to separate views, routes, models etc.
-You'll have more of each, and it is nice to have them in different places::
+This ``index`` view is the simplest view possible in Aiohttp.
+
+Now, we should create a route for this ``index`` view. Put the following into
+``aiohttpdemo_polls/routes.py``. It is a good practice to separate views,
+routes, models etc. You'll have more of each file type, and it is nice to group
+them into different places::
 
     # routes.py
     from views import index
@@ -52,8 +55,8 @@ You'll have more of each, and it is nice to have them in different places::
         app.router.add_get('/', index)
 
 
-Also, we should call ``setup_routes`` function somewhere, and the best place
-is in the ``main.py``::
+We should add a call to the ``setup_routes`` function somewhere. The best place
+to do this is in ``main.py``::
 
    # main.py
    from aiohttp import web
@@ -63,11 +66,12 @@ is in the ``main.py``::
    setup_routes(app)
    web.run_app(app)
 
-Start server again. Now if we open browser we can see::
+Start server again using ``python3 main.py``. This time when we open the browser
+we see::
 
     Hello Aiohttp!
 
-Success! For now your working directory should look like this:
+**Success!** Now, your working directory should look like this:
 
 .. code-block:: none
 

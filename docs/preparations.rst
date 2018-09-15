@@ -3,8 +3,7 @@
 Preparations
 ============
 
-You may start with empty folder and create files alongside with the
-tutorial.
+Start with an empty folder and create files alongside with the tutorial.
 If you want the full source code in advance or for comparison,
 check out the `demo source`_.
 
@@ -17,8 +16,8 @@ check out the `demo source`_.
 Project structure
 -----------------
 
-In the end project structure should look very similar to other python based
-web projects:
+The project structure at the end of the tutorial should look very similar to
+other Python based web projects:
 
 .. code-block:: none
 
@@ -63,25 +62,27 @@ web projects:
 
 Environment
 -----------
-We suggest you to create an isolated Python environment::
+
+We suggest you to create an isolated Python virtual environment::
 
     $ python3 -m venv env
     $ source env/bin/activate
 
-During tutorial you will be instructed to install some packages inside created
-environment. For example, ``$ pip install aiopg`` before database related sections.
+During the tutorial, you will be instructed to install some packages inside this
+activated environment. For example, you will use ``$ pip install aiopg``
+to install ``aiopg`` before doing the database related sections.
 
 .. note::
 
-    If you decided to run the application from the repo - install the app and
-    it's requirements like so:
+    If you decided to run the application from the repo's source code, install
+    the app and its requirements:
 
     .. code-block:: shell
 
         $ cd demos/polls
         $ pip install -e .
 
-Check you python version (tutorial requires Python 3.5 or newer)::
+Check your Python version (tutorial requires Python 3.5 or newer)::
 
    $ python -V
    Python 3.6.5
@@ -103,27 +104,30 @@ Database
 
 Running server
 ^^^^^^^^^^^^^^
-We could have created this tutorial based on local ``sqlite`` solution,
-but it is almost never used in real-world applications.
-So we decided to use Postgres.
 
-Install and run PostgreSQL database server: http://www.postgresql.org/download/ .
-Alternatively, to use Postgres in more isolated way you may also use Docker::
+We could have created this tutorial based on a local ``sqlite`` solution,
+but ``sqlite`` is almost never used in real-world applications. To better
+reflect a production example, we decided to use Postgres for the tutorial.
+
+Install and run the PostgreSQL database server: http://www.postgresql.org/download/ .
+Alternatively, to use PostgreSQL in more isolated way you may also use Docker::
 
     $ docker run --rm -it -p 5432:5432 postgres:10
 
 Initial setup
 ^^^^^^^^^^^^^
-We need running database and user with write access.
-For these and other db related actions consider some options:
 
-- do preparations manually within database's interactive prompt
+We need to create a running database and a user with write access.
+For these and other database related actions, consider one of the following
+options:
+
+- Prepare manually through the database's interactive prompt
 - prepare and execute '.sql' files
 - use migration tool
 - use default database/user `postgres`
 
-Whichever option you choose - make sure you remember corresponding values to put them
-into config file. Here are example commands to run manually ::
+Whichever option you choose, make sure you remember the corresponding values to put them
+into a config file. Here are example commands to run manually ::
 
     $ psql -U postgres -h localhost
     > CREATE DATABASE aiohttpdemo_polls;
@@ -134,8 +138,9 @@ Use ``\l`` and ``\du`` *psql* commands to check results.
 
 .. note::
 
-    If you decided to run the application from the repo - this script
-    ( :download:`init_db.py <../demos/polls/init_db.py>` ) will create db
-    at running server, create tables and populate them with sample data ::
+    If you decided to run the application from the repo's source code, this script
+    ( :download:`init_db.py <../demos/polls/init_db.py>` ) will create a
+    database and running server, as well as create tables and populate them
+    with sample data ::
 
         $ python init_db.py
