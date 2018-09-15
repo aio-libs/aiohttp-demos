@@ -12,7 +12,7 @@ aiohttp-demos
    :alt: Latest Read The Docs
 
 
-Demos for aiohttp project.
+Demos for `aiohttp <https://aiohttp.readthedocs.io>`_ project.
 
 
 .. contents::
@@ -20,14 +20,14 @@ Demos for aiohttp project.
 
 URL shortener
 -------------
-Simple URL shortener with redis storage.
+Simple URL shortener with Redis storage.
 
 .. image:: https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/docs/_static/shorty.png
 
 
-Toxic Comments Classifier 
+Toxic Comments Classifier
 -------------------------
-UI and API for classification of offensive and toxic comments using kaggle data and simple 
+UI and API for classification of offensive and toxic comments using Kaggle data and simple
 logistic regression.
 
 .. image:: https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/docs/_static/moderator.png
@@ -35,7 +35,7 @@ logistic regression.
 
 Twitter clone
 -------------
-Twitter clone with mongodb storage.
+Twitter clone with MongoDB storage.
 
 .. image:: https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/docs/_static/motortwit.png
 
@@ -49,7 +49,7 @@ Simple chat using websockets.
 
 Polls app
 ---------
-Simple polls application with postgresql storage.
+Simple *polls* application with PostgreSQL storage.
 
 .. image:: https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/docs/_static/polls.png
     :align: center
@@ -58,7 +58,7 @@ Simple polls application with postgresql storage.
 
 Blog
 ----
-Blog application with postgresql storage and redis session store.
+Blog application with PostgreSQL storage and Redis session store.
 
 .. image:: https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/docs/_static/blog.png
     :align: center
@@ -66,9 +66,9 @@ Blog application with postgresql storage and redis session store.
 
 
 
-GraphQl Messenger
-----
-The simple realization of GraphQl api.
+GraphQL Messenger
+-----------------
+The simple realization of the GraphQL api.
 
 .. image:: /docs/_static/graph.gif
     :align: center
@@ -81,7 +81,7 @@ Things you need for local development::
 
     $ pip install -r requirements-dev.txt
 
-After that - follow setup instructions from particular demo project.
+After that, follow setup instructions from a particular demo project.
 
 To check documentation locally click the ``open file`` link from the output
 of this command::

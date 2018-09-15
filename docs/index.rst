@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to aiohttp-demos's documentation!
-=========================================
+Welcome to aiohttp-demos
+========================
 
 .. _aiohttp-demos-polls-beginning:
 

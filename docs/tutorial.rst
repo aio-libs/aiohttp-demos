@@ -14,7 +14,7 @@ The following code creates an application::
     app = web.Application()
     web.run_app(app)
 
-Save it under ``aiohttpdemo_polls/main.py`` and start the server:
+Save it under ``aiohttpdemo_polls/main.py`` and start the server using:
 
 .. code-block:: shell
 
@@ -22,8 +22,9 @@ Save it under ``aiohttpdemo_polls/main.py`` and start the server:
     ======== Running on http://0.0.0.0:8080 ========
     (Press CTRL+C to quit)
 
-Open the link in browser... and it returns ``404: Not Found``.
-To show something more meaningful let's create a route and a view.
+Next, open the displayed link in a browser. It returns a ``404: Not Found``
+error. To show something more meaningful than an error, let's create a route
+and a view.
 
 
 .. _aiohttp-demos-polls-views:
@@ -31,8 +32,8 @@ To show something more meaningful let's create a route and a view.
 Views
 -----
 
-Let's start from first views. Create the file ``aiohttpdemo_polls/views.py``
-with the following::
+Let's start with the first views. Create the file ``aiohttpdemo_polls/views.py``
+and add the following to it::
 
     # views.py
     from aiohttp import web
@@ -40,10 +41,12 @@ with the following::
     async def index(request):
         return web.Response(text='Hello Aiohttp!')
 
-This is the simplest view possible in Aiohttp. Now we should create a route
-for this ``index`` view. Put this into ``aiohttpdemo_polls/routes.py``.
-It is a good practice to separate views, routes, models etc.
-You'll have more of each, and it is nice to have them in different places::
+This ``index`` view is the simplest view possible in Aiohttp.
+
+Now, we should create a route for this ``index`` view. Put the following into
+``aiohttpdemo_polls/routes.py``. It is a good practice to separate views,
+routes, models etc. You'll have more of each file type, and it is nice to group
+them into different places::
 
     # routes.py
     from views import index
@@ -52,8 +55,8 @@ You'll have more of each, and it is nice to have them in different places::
         app.router.add_get('/', index)
 
 
-Also, we should call ``setup_routes`` function somewhere, and the best place
-is in the ``main.py``::
+We should add a call to the ``setup_routes`` function somewhere. The best place
+to do this is in ``main.py``::
 
    # main.py
    from aiohttp import web
@@ -63,11 +66,12 @@ is in the ``main.py``::
    setup_routes(app)
    web.run_app(app)
 
-Start server again. Now if we open browser we can see::
+Start server again using ``python3 main.py``. This time when we open the browser
+we see::
 
     Hello Aiohttp!
 
-Success! For now your working directory should look like this:
+**Success!** Now, your working directory should look like this:
 
 .. code-block:: none
 
@@ -88,36 +92,36 @@ Configuration files
 .. note::
 
     aiohttp is configuration agnostic. It means the library does not
-    require any configuration approach and does not have builtin support
-    for any config schema.
+    require any specific configuration approach, and it does not have built-in
+    support for any config schema.
 
-    But please take into account these facts:
+    Please note these facts:
 
        1. 99% of servers have configuration files.
 
        2. Most products (except Python-based solutions like Django and
           Flask) do not store configs with source code.
 
-          For example Nginx has own configuration files stored by default
+          For example Nginx has its own configuration files stored by default
           under ``/etc/nginx`` folder.
 
-          Mongo pushes config as ``/etc/mongodb.conf``.
+          MongoDB stores its config as ``/etc/mongodb.conf``.
 
-       3. Config files validation is good idea, strong checks may prevent
-          silly errors during product deployment.
+       3. Config file validation is a good idea. Strong checks may prevent
+          unnecessary errors during product deployment.
 
-    Thus we **suggest** to use the following approach:
+    Thus, we **suggest** to use the following approach:
 
-       1. Pushing configs as ``yaml`` files (``json`` or ``ini`` is also
-          good but ``yaml`` is the best).
+       1. Push configs as ``yaml`` files (``json`` or ``ini`` is also
+          good but ``yaml`` is preferred).
 
-       2. Loading ``yaml`` config from a list of predefined locations,
+       2. Load ``yaml`` config from a list of predefined locations,
           e.g. ``./config/app_cfg.yaml``, ``/etc/app_cfg.yaml``.
 
-       3. Keeping ability to override config file by command line
+       3. Keep the ability to override a config file by a command line
           parameter, e.g. ``./run_app --config=/opt/config/app_cfg.yaml``.
 
-       4. Applying strict validation checks to loaded dict. `trafaret
+       4. Apply strict validation checks to loaded dict. `trafaret
           <http://trafaret.readthedocs.io/en/latest/>`_, `colander
           <http://docs.pylonsproject.org/projects/colander/en/latest/>`_
           or `JSON schema
@@ -126,7 +130,7 @@ Configuration files
 
 
 One way to store your config is in folder at the same level as `aiohttpdemo_polls`.
-Create config folder and config file at desired location. E.g.:
+Create a ``config`` folder and config file at desired location. E.g.:
 
 .. code-block:: none
 
@@ -142,7 +146,7 @@ Create config folder and config file at desired location. E.g.:
         └── config
             └── polls.yaml      <-- [config file]
 
-Create ``config/polls.yaml`` file with meaningful option names:
+Create a ``config/polls.yaml`` file with meaningful option names:
 
 .. code-block:: yaml
 
@@ -156,11 +160,12 @@ Create ``config/polls.yaml`` file with meaningful option names:
       minsize: 1
       maxsize: 5
 
-Install ``pyyaml``::
+Install ``pyyaml`` package::
 
     $ pip install pyyaml
 
-Let's also create separate settings file. It helps to leave ``main.py`` clean and short::
+Let's also create a separate ``settings.py`` file. It helps to leave ``main.py``
+clean and short::
 
     # settings.py
     import pathlib
@@ -177,7 +182,7 @@ Let's also create separate settings file. It helps to leave ``main.py`` clean an
     config = get_config(config_path)
 
 
-And now load config into the application::
+Next, load the config into the application::
 
     # main.py
     from aiohttp import web
@@ -190,14 +195,14 @@ And now load config into the application::
     app['config'] = config
     web.run_app(app)
 
-Try to run your app again. Make sure you are running it from ``BASE_DIR``::
+Now, try to run your app again. Make sure you are running it from ``BASE_DIR``::
 
     $ python aiohttpdemo_polls/main.py
     ======== Running on http://0.0.0.0:8080 ========
     (Press CTRL+C to quit)
 
-For the moment nothing should have changed in application's behavior. But at
-least we know how to configure our application.
+For the moment nothing should have changed in application's behavior. Since we
+see no errors, we succeeded in learning how to configure our application.
 
 
 .. _aiohttp-demos-polls-database:
@@ -207,7 +212,7 @@ Database
 
 Server
 ^^^^^^
-Here we assume that you have running database and user with write access.
+Here, we assume that you have running database and a user with write access.
 Refer to :ref:`aiohttp-demos-polls-preparations-database` for details.
 
 Schema
@@ -261,7 +266,7 @@ Create ``db.py`` file with database schemas::
 
 .. note::
 
-    It is possible to configure tables in declarative style like so:
+    It is possible to configure tables in a declarative style like so:
 
     .. code-block:: python
 
@@ -278,7 +283,7 @@ Create ``db.py`` file with database schemas::
     expressions such as ``Question.query.filter_by(question_text='Why').first()``
     or ``session.query(TableName).all()``.
 
-    You still can make select queries after little code modifications:
+    You still can make ``select`` queries after some code modifications:
 
     .. code-block:: python
 
@@ -291,11 +296,11 @@ Create ``db.py`` file with database schemas::
 
             result = await conn.execute(question.select())
 
-    But it is not as easy to deal with update/delete queries.
+    But it is not as easy to deal with as update/delete queries.
 
 
 Now we need to create tables in database as it was described with sqlalchemy.
-Helper script can do that for you. Create new file::
+Helper script can do that for you. Create a new file, ``init_db.py``::
 
     # init_db.py
     from sqlalchemy import create_engine, MetaData
@@ -334,22 +339,22 @@ Helper script can do that for you. Create new file::
 
 .. note::
 
-    More advanced version of this script is mentioned in :ref:`aiohttp-demos-polls-preparations-database` notes.
+    A more advanced version of this script is mentioned in :ref:`aiohttp-demos-polls-preparations-database` notes.
 
 
-Install ``aiopg[sa]`` package to interact with database and run the script::
+Install the ``aiopg[sa]`` package to interact with the database and run the script::
 
     $ pip install aiopg[sa]
     $ python init_db.py
 
 .. note::
 
-    At this point we are not using any async features of the package. For the same
-    reason you could have installed ``psycopg2`` package. Actually, because we use
-    sqlalchemy - we also could switch type of database server.
+    At this point we are not using any async features of the package. For this
+    reason, you could have installed ``psycopg2`` package. Though since we are
+    using sqlalchemy, we also could switch the type of database server.
 
-Now there should be one record for *question* with related *choice* options stored in
-corresponding tables in db.
+Now there should be one record for *question* with related *choice* options
+stored in corresponding tables in the database.
 
 
 .. _aiohttp-demos-polls-creating-connection-engine:
@@ -358,13 +363,13 @@ Creating connection engine
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 For making DB queries we need an engine instance. Assuming ``conf`` is
-a :class:`dict` with configuration info Postgres connection could be
-done by the following coroutine:
+a :class:`dict` with the configuration info for a Postgres connection, this
+could be done by the following coroutine:
 
 .. literalinclude:: ../demos/polls/aiohttpdemo_polls/db.py
   :pyobject: init_pg
 
-The best place for connecting to DB is
+The best place for connecting to the DB is using the
 :attr:`~aiohtp.web.Application.on_startup` signal::
 
    app.on_startup.append(init_pg)
@@ -375,9 +380,10 @@ The best place for connecting to DB is
 Graceful shutdown
 ^^^^^^^^^^^^^^^^^
 
-There is a good practice to close all resources on program exit.
+It is a good practice to close all resources on program exit.
 
-Let's close DB connection in :attr:`~aiohtp.web.Application.on_cleanup` signal::
+Let's close the DB connection with the :attr:`~aiohtp.web.Application.on_cleanup`
+signal::
 
     app.on_cleanup.append(close_pg)
 
@@ -391,23 +397,23 @@ Let's close DB connection in :attr:`~aiohtp.web.Application.on_cleanup` signal::
 Templates
 ---------
 
-Let's add more useful views:
+Let's add more views:
 
 .. literalinclude:: ../demos/polls/aiohttpdemo_polls/views.py
   :pyobject: poll
 
-Templates are very convenient way for web page writing. We return a
-dict with page content, ``aiohttp_jinja2.template`` decorator
-processes it by jinja2 template renderer.
+Templates are a very convenient way for web page writing. If we return a
+dict with page content, the ``aiohttp_jinja2.template`` decorator
+processes the dict using the jinja2 template renderer.
 
-For setting up template engine we need to install ``aiohttp_jinja2``
+For setting up the template engine, we install the ``aiohttp_jinja2``
 library first:
 
 .. code-block:: shell
 
    $ pip install aiohttp_jinja2
 
-After installing we need to setup the library::
+After installing, we setup the library::
 
     import aiohttp_jinja2
     import jinja2
@@ -416,7 +422,7 @@ After installing we need to setup the library::
         app, loader=jinja2.PackageLoader('aiohttpdemo_polls', 'templates'))
 
 
-In the tutorial we push template files under
+In the tutorial we place template files under
 ``polls/aiohttpdemo_polls/templates`` folder.
 
 
@@ -425,19 +431,20 @@ In the tutorial we push template files under
 Static files
 ------------
 
-Any web site has static files: images, JavaScript sources, CSS files etc.
+Any web site has static files such as: images, JavaScript sources, CSS files
 
-The best way to handle static in production is setting up reverse
+The best way to handle static files in production is by setting up a reverse
 proxy like NGINX or using CDN services.
 
-But for development handling static files by aiohttp server is very convenient.
+During development, handling static files using the aiohttp server is very
+convenient.
 
-Fortunately it can be done easy by single call:
+Fortunately, this can be done easily by a single call:
 
 .. literalinclude:: ../demos/polls/aiohttpdemo_polls/routes.py
   :pyobject: setup_static_routes
 
-where ``project_root`` is the path to root folder.
+where ``project_root`` is the path to the root folder.
 
 
 .. _aiohttp-demos-polls-middlewares:
@@ -446,31 +453,36 @@ Middlewares
 -----------
 
 Middlewares are stacked around every web-handler. They are called
-before handler for pre-processing request and after getting
-response back for post-processing given response.
+before the handler for a pre-processing request. After getting
+a response back, they are used for post-processing the given response.
 
-A common use of middlewares is to implement custom error pages. Example from :ref:`aiohttp-web-middlewares`
-documentation will render 404 errors using a JSON response, as might be appropriate for a REST service.
+A common use of middlewares is to implement custom error pages. Example from
+:ref:`aiohttp-web-middlewares` documentation will render 404 errors using a
+JSON response, as might be appropriate for a REST service.
 
-Here we'll create a little bit more complex middleware displaying custom pages
+Here we'll create a little bit more complex middleware custom display pages
 for *404 Not Found* and *500 Internal Error*.
 
-Every middleware should accept two parameters, a *request* and a *handler*, and return the *response*.
-Middleware itself is a *coroutine* that can modify either request or response:
+Every middleware should accept two parameters, a *request* and a *handler*,
+and return the *response*. Middleware itself is a *coroutine* that can modify
+either request or response:
 
-Create new ``middlewares.py`` file:
+Now, create a new ``middlewares.py`` file:
 
 .. literalinclude:: ../demos/polls/aiohttpdemo_polls/middlewares.py
 
-As you can see, we do nothing *before* web handler, we choose Jinja2 template renderer
-based on ``response.status`` - *after* request was handled.
-In case of exceptions - we do something similar, based on ``ex.status``.
-We could have done the same without ``create_error_middleware`` function, but it
-would take us many more if statements.
+As you can see, we do nothing *before* the web handler. We choose Jinja2
+template renderer based on ``response.status``  *after* the request was handled.
+In case of exceptions, we do something similar, based on ``ex.status``.
+Without the ``create_error_middleware`` function, the same task would take us
+many more ``if`` statements.
 
-Then we registered middleware in ``app`` by adding it to ``app.middlewares``.
+We have registered middleware in ``app`` by adding it to ``app.middlewares``.
 
-Now add ``setup_middlewares`` step to the main file::
+Now, add a ``setup_middlewares`` step to the main file:
+
+.. code-block:: python
+    :emphasize-lines: 6, 10
 
     # main.py
     from aiohttp import web
@@ -485,4 +497,4 @@ Now add ``setup_middlewares`` step to the main file::
     app['config'] = config
     web.run_app(app)
 
-Run the app and try some invalid url to test.
+Run the app again. To test, try an invalid url.
