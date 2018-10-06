@@ -16,7 +16,6 @@ Install the app::
 
     $ cd moderator
     $ pip install -r requirements-dev.txt
-    $ pip install -e .
 
 
 Run application::
