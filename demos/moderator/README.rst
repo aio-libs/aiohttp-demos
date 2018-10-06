@@ -15,7 +15,7 @@ intensive tasks from blocking event loop.
 Install the app::
 
     $ cd moderator
-    $ pip -r requirements-dev.txt
+    $ pip install -r requirements-dev.txt
     $ pip install -e .
 
 
