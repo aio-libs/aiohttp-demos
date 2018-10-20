@@ -1,0 +1,112 @@
+/* global */
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica , sans-serif;
+}
+
+/* header */
+
+.header {
+    padding: 35px 0;
+    color: #fff;
+    text-align: center;
+    background: #20232a;
+}
+
+.banner-logo {
+    display: block;
+    margin: auto;
+    width: 70px;
+}
+
+.banner-title {
+    margin-bottom: 0;
+    margin-top: 20px;
+    font-size: 50px;
+}
+
+/* content */
+
+main {
+    flex: 1;
+    max-width: 1000px;
+    width: 100%;
+    margin: auto;
+    color: black;
+    text-align: center;
+}
+
+.subtitle {
+    font-size: 24px;
+    text-align: center;
+}
+
+.wrapper {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+}
+
+.image-block {
+    margin-top: 40px;
+    text-align: left;
+    display: flex;
+}
+
+.image-wrapper, .predict-info {
+    width: 50%;
+}
+
+.predict-info {
+    margin-left: 20px;
+}
+
+#image-preview {
+    width: 100%;
+}
+
+/* github link */
+
+.fork-me-on-github {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+/* common */
+.btn {
+    display: inline-block;
+    padding: 7px 16px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    outline: none;
+    transition: background-color .2s;
+}
+
+.btn-success {
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+}
+
+.btn-success:hover {
+    background-color: #1eb846;
+}
