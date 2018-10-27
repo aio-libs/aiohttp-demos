@@ -19,7 +19,7 @@ Demos for `aiohttp <https://aiohttp.readthedocs.io>`_ project.
 
 Imagetagger Deep Learning Image Classifier
 ------------------------------------------
-Example how to deploye deep learning model with aiohttp.
+Example how to deploy deep learning model with aiohttp.
 
 .. image:: https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/docs/_static/imagetagger.png
 
