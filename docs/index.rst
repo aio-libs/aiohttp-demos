@@ -19,7 +19,7 @@ Example Projects
 ================
 
 We have created for you a selection of fun projects, that can show you how to
-create application from the blog to the applications related to data science.
+create application from the *blog* to the applications related to data science.
 Please feel free to add your open source example project by making Pull
 Request.
 
@@ -27,8 +27,8 @@ Request.
    - *URL shortener* with *Redis* storage.
 
  - `Moderator <https://github.com/aio-libs/aiohttp-demos/tree/master/demos/moderator>`_
-   - UI and API for classification of offensive and toxic comments using Kaggle
-   data and scikit-learn.
+   - UI and API for classification of offensive and toxic comments using
+   *Kaggle* data and *scikit-learn*.
 
  - `Motortwit <https://github.com/aio-libs/aiohttp-demos/tree/master/demos/motortwit>`_
    - *Twitter* clone with *MongoDB* storage.
