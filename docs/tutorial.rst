@@ -172,7 +172,7 @@ clean and short::
     import yaml
 
     BASE_DIR = pathlib.Path(__file__).parent.parent
-    config_path = BASE_DIR / 'config' / 'polls.yaml'
+    config_path = f"{BASE_DIR}/config/polls.yaml"
 
     def get_config(path):
         with open(path) as f:
