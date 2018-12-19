@@ -55,7 +55,7 @@ def predict(raw_data: bytes, model: Optional[Any]=None) -> bytes:
 
     # loop over the results and add them to the list of
     # returned predictions
-    data['predictions'] = [{'label': label, 'probability': float(prob)} 
+    data['predictions'] = [{'label': label, 'probability': float(prob)}
                            for _, label, prob in results[0]]
 
     data['success'] = True
