@@ -52,10 +52,11 @@ def predict(raw_data: bytes, model: Optional[Any]=None) -> bytes:
 
     preds = model.predict(image)
     results = imagenet_utils.decode_predictions(preds)
-    
+
     # loop over the results and add them to the list of
     # returned predictions
-    data['predictions'] = [{'label': label, 'probability': float(prob)} for _, label, prob in results[0]]
+    data['predictions'] = [{'label': label, 'probability': float(prob)} 
+                           for _, label, prob in results[0]]
 
     data['success'] = True
     return json.dumps(data).encode('utf-8')
