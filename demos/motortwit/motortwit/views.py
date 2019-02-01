@@ -26,7 +26,7 @@ class SiteHandler:
 
         if user_id is None:
             router = request.app.router
-            location = router['public_timeline'].url()
+            location = router['public_timeline'].url_for()
             raise web.HTTPFound(location=location)
 
         user = await self.mongo.user.find_one({'_id': ObjectId(user_id)})
@@ -121,7 +121,7 @@ class SiteHandler:
         error = await validate_register_form(self.mongo, form)
 
         if error is None:
-            await self.mongo.user.insert(
+            await self.mongo.user.insert_one(
                 {'username': form['username'],
                  'email': form['email'],
                  'pw_hash': generate_password_hash(form['password'])})
@@ -175,7 +175,7 @@ class SiteHandler:
                 {'_id': ObjectId(user_id)},
                 {'email': 1, 'username': 1})
 
-            await self.mongo.message.insert(
+            await self.mongo.message.insert_one(
                 {'author_id': ObjectId(user_id),
                  'email': user['email'],
                  'username': user['username'],

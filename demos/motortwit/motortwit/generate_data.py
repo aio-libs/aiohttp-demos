@@ -21,7 +21,7 @@ conf = {"host": "127.0.0.1",
 
 # TODO: validate using trafarets before insert
 async def insert_data(collection, values):
-    await collection.insert(values)
+    await collection.insert_many(values)
     return values
 
 
