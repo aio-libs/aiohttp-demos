@@ -45,7 +45,7 @@ def format_datetime(timestamp):
 
 def redirect(request, name, **kw):
     router = request.app.router
-    location = router[name].url(**kw)
+    location = router[name].url_for(**kw)
     return web.HTTPFound(location=location)
 
 

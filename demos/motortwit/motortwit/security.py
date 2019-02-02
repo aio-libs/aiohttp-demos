@@ -45,6 +45,6 @@ def auth_required(f):
     async def wrapped(self, request):
         user_id = await authorized_userid(request)
         if not user_id:
-            raise web.HTTPNotAuthorized()
+            raise web.HTTPUnauthorized()
         return (await f(self, request))
     return wrapped
