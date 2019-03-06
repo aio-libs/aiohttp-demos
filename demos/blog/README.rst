@@ -14,9 +14,11 @@ But if you want neither to use it for experiments nor to stop the server:
 
     $ export DB_PORT=5433
 
-Run db server::
+Run db servers::
 
-    $ docker run --rm -it -p $DB_PORT:5432 postgres:10
+    $ docker run --rm -d -p $DB_PORT:5432 postgres:10
+    $ docker run --rm -d -p 6379:6379 redis
+
 
 Create db with tables and sample data::
 
