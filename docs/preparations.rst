@@ -85,7 +85,7 @@ to install ``aiopg`` before doing the database related sections.
 Check your Python version (tutorial requires Python 3.5 or newer)::
 
    $ python -V
-   Python 3.6.5
+   Python 3.7.3
 
 Install ``aiohttp`` ::
 
@@ -94,7 +94,7 @@ Install ``aiohttp`` ::
 Check the aiohttp version::
 
     $ python3 -c 'import aiohttp; print(aiohttp.__version__)'
-    3.1.3
+    3.5.4
 
 
 .. _aiohttp-demos-polls-preparations-database:

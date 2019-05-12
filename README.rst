@@ -86,13 +86,18 @@ Contributing
 Things you need for local development::
 
     $ pip install -r requirements-dev.txt
+    $ pip install demos/polls
+    $ pip install demos/chat
+    $ pip install demos/blog
+    $ pip install demos/graphql
 
-After that, follow setup instructions from a particular demo project.
 
-To check documentation locally click the ``open file`` link from the output
-of this command::
+To check documentation locally - run::
 
     $ make doc
+
+and click the ``open file`` link from the output.
+
 
 To make sure everything is ok before committing::
 

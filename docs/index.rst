@@ -8,11 +8,11 @@ Welcome to aiohttp-demos
 
 .. _aiohttp-demos-polls-beginning:
 
-If you want to create your first application on *aiohttp* but don't know how,
-first step for you will be a simple guide to creating a *Polls*
-application :ref:`aiohttp-demos-polls-preparations-database`.
-*Polls* application, which is similar to the one in Django tutorial,
-is a great example. It lets people view polls and vote in them.
+If you want to create an application with *aiohttp* there is a step-by-step guide
+for *Polls* application (:ref:`aiohttp-demos-polls-getting-started`).
+The application is similar to the one from Django tutorial. It allows people to create polls and vote.
+
+There are also many other demo projects, give them a try!
 
 
 Example Projects
