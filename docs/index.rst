@@ -30,6 +30,9 @@ Request.
    - UI and API for classification of offensive and toxic comments using
    *Kaggle* data and *scikit-learn*.
 
+ - `Moderator bot <https://github.com/aio-libs/aiohttp-demos/tree/master/demos/moderator_bot>`_
+   - Slack bot for moderating offensive and toxic comments using provided model from *Moderator AI*
+
  - `Motortwit <https://github.com/aio-libs/aiohttp-demos/tree/master/demos/motortwit>`_
    - *Twitter* clone with *MongoDB* storage.
 

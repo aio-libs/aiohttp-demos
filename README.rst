@@ -39,6 +39,13 @@ logistic regression.
 .. image:: https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/docs/_static/moderator.png
 
 
+Moderator Slack Bot
+-------------------
+Slack bot that moderates offensive and toxic chat messages using model from `Moderator AI`.
+
+.. image:: https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/demos/moderator_bot/static/example.gif
+
+
 Twitter clone
 -------------
 Twitter clone with MongoDB storage.
