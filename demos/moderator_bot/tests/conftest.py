@@ -1,7 +1,4 @@
-import asyncio
-
 import pytest
-
 from moderator_bot.server import init_application
 from moderator_bot.settings import PROJECT_ROOT
 from moderator_bot.utils import load_config

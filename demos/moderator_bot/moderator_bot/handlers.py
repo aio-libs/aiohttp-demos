@@ -27,10 +27,15 @@ class MainHandler:
         return web.Response()
 
     async def _respond(self, event):
-        result = await self.giphy_client.get("random", params={"tag": "funny cat"})
+        result = await self.giphy_client.get(
+            "random",
+            params={
+                "tag": "funny cat"
+            },
+        )
         image_url = result["data"]["image_url"]
 
-        text = (f"Hey, <@{event['user']}>, please be polite! "
+        text = (f"Hey <@{event['user']}>, please be polite! "
                 f"Here is a funny cat GIF for you {image_url}")
 
         await self.slack_client.chat.post_message(

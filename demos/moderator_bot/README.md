@@ -5,7 +5,7 @@ It uses Events API.
 
 Model reused from [Moderator AI](https://github.com/aio-libs/aiohttp-demos/tree/master/demos/moderator) project.
 
-<img src="demos/moderator_bot/static/example.gif" width="450px"/>
+<img src="/demos/moderator_bot/static/example.gif" width="450px"/>
 
 ## Requirements
  - [aiohttp](https://github.com/aio-libs/aiohttp)

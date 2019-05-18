@@ -27,7 +27,12 @@ class GiphyClient:
         }
 
         async with async_timeout.timeout(self.timeout):
-            async with self.session.request(method, url, *args, **kwargs) as resp:
+            async with self.session.request(
+                method,
+                url,
+                *args,
+                **kwargs
+            ) as resp:
                 if "application/json" in resp.content_type:
                     return await resp.json()
 
