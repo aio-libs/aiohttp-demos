@@ -10,6 +10,7 @@ test:
 	@pytest -q demos/chat/tests
 	@pytest -q demos/blog/tests
 	@pytest -q demos/graphql
+	@pytest -q demos/moderator_bot/tests
 
 ci: lint test doc-spelling
 

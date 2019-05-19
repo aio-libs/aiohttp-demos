@@ -4,6 +4,9 @@ language: python
 python:
   - '3.6'
 
+env:
+  - SLACK_BOT_TOKEN=xxx GIPHY_API_KEY=xxx
+
 services:
   - postgresql
   - redis-server
@@ -20,6 +23,7 @@ install:
   - pip install demos/chat
   - pip install demos/blog
   - pip install demos/graphql
+  - pip install -r demos/moderator_bot/requirements-dev.txt
 
 script:
   - make lint

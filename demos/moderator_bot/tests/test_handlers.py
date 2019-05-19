@@ -1,3 +1,6 @@
+from unittest import mock
+
+
 async def test_listen_challenge(client):
     resp = await client.post("/listen", json={"challenge": "challenge"})
     result = await resp.text()
@@ -5,12 +8,14 @@ async def test_listen_challenge(client):
 
 
 async def test_list_message(client):
-    await client.post(
-        "/list",
-        json={
-            "event": {
-                "type": "message",
-                "text": "test"
+    with mock.patch('moderator_bot.handlers.MainHandler._respond') as m:
+        await client.post(
+            "/listen",
+            json={
+                "event": {
+                    "type": "message",
+                    "text": "You are stupid and useless!"
+                },
             },
-        },
-    )
+        )
+        assert m.called
