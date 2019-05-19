@@ -5,4 +5,4 @@ debug: true
 
 request_timeout: 10
 
-model_path: "model/pipeline.dat"
+model_path: "demos/moderator_bot/model/pipeline.dat"
