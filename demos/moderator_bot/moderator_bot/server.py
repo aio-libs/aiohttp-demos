@@ -34,7 +34,7 @@ def setup_startup_hooks(loop, executor, model_path, workers_count):
 
 
 async def init_application(loop, config):
-    app = web.Application(loop=loop, debug=config["debug"])
+    app = web.Application(debug=config["debug"])
 
     executor = ProcessPoolExecutor(MAX_WORKERS)
 

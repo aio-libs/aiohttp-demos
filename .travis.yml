@@ -4,9 +4,6 @@ language: python
 python:
   - '3.6'
 
-env:
-  - SLACK_BOT_TOKEN=xxx GIPHY_API_KEY=xxx
-
 services:
   - postgresql
   - redis-server
