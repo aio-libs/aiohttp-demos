@@ -1,0 +1,8 @@
+host: 127.0.0.1
+port: 8080
+
+debug: true
+
+request_timeout: 10
+
+model_path: "demos/moderator_bot/model/pipeline.dat"

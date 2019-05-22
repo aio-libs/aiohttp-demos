@@ -20,6 +20,7 @@ install:
   - pip install demos/chat
   - pip install demos/blog
   - pip install demos/graphql
+  - pip install -r demos/moderator_bot/requirements-dev.txt
 
 script:
   - make lint
