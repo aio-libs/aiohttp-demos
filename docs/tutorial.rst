@@ -326,8 +326,8 @@ Helper script can do that for you. Create a new file ``init_db.py`` in project's
     # polls/init_db.py
     from sqlalchemy import create_engine, MetaData
 
-    from settings import config
-    from db import question, choice
+    from aiohttpdemo_polls.settings import config
+    from aiohttpdemo_polls.db import question, choice
 
 
     DSN = "postgresql://{user}:{password}@{host}:{port}/{database}"
