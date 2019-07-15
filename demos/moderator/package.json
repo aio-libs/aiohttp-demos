@@ -20,7 +20,7 @@
     "parcel": "^1.8.1",
     "preact": "8.2.9",
     "whatwg-fetch": "2.0.4",
-    "yarn": "^1.7.0"
+    "yarn": "^1.17.3"
   },
   "devDependencies": {
     "autoprefixer": "8.5.0",
