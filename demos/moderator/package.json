@@ -11,7 +11,9 @@
     "eslint": "eslint ui/**/*.js test/**/*.js",
     "eslint-check": "eslint --print-config .eslintrc.json | eslint-config-prettier-check",
     "pretest": "npm-run-all eslint-check eslint",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "license": "MIT",
   "dependencies": {
@@ -20,7 +22,8 @@
     "parcel": "^1.8.1",
     "preact": "8.2.9",
     "whatwg-fetch": "2.0.4",
-    "yarn": "^1.7.0"
+    "yarn": "^1.7.0",
+    "snyk": "^1.230.5"
   },
   "devDependencies": {
     "autoprefixer": "8.5.0",
@@ -40,5 +43,6 @@
     "postcss-modules": "1.1.0",
     "prettier": "1.12.1",
     "prettier-eslint": "8.8.1"
-  }
+  },
+  "snyk": true
 }
