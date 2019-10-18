@@ -98,7 +98,7 @@ Things you need for local development::
     $ pip install demos/polls
     $ pip install demos/chat
     $ pip install demos/blog
-    $ pip install demos/graphql
+    $ pip install demos/graphql-demo
 
 
 To check documentation locally - run::
