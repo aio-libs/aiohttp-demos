@@ -1,4 +1,3 @@
-from pathlib import Path
 from functools import partial
 
 import aiopg.sa
@@ -8,17 +7,14 @@ import aiohttp_jinja2
 import jinja2
 
 from graph.routes import init_routes
-from graph.utils import init_config
+from graph.utils import init_config, APP_PATH
 from graph.api.dataloaders import UserDataLoader
-
-
-path = Path(__file__).parent
 
 
 def init_jinja2(app: web.Application) -> None:
     aiohttp_jinja2.setup(
         app,
-        loader=jinja2.FileSystemLoader(str(path / 'templates'))
+        loader=jinja2.FileSystemLoader(str(APP_PATH / 'templates'))
     )
 
 

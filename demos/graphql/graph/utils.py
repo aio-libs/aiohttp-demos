@@ -1,13 +1,13 @@
-import pathlib
+from pathlib import Path
 import argparse
 
 from aiohttp import web
 from trafaret_config import commandline
 import trafaret
 
-
-PATH = pathlib.Path(__file__).parent
-DEFAULT_CONFIG_PATH = PATH / 'config' / 'api.yml'
+# Paths
+APP_PATH = Path(__file__).parent
+DEFAULT_CONFIG_PATH = APP_PATH / 'config' / 'api.yml'
 
 
 CONFIG_TRAFARET = trafaret.Dict({

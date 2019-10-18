@@ -1,13 +1,9 @@
-import pathlib
-
+from graph.utils import APP_PATH
 from graph.api.views import (
     GQL,
     subscriptions,
 )
 from graph.main.views import index
-
-
-PROJECT_PATH = pathlib.Path(__file__).parent
 
 
 def init_routes(app):
@@ -21,6 +17,6 @@ def init_routes(app):
     # added static dir
     app.router.add_static(
         '/static/',
-        path=(PROJECT_PATH / 'static'),
+        path=(APP_PATH / 'static'),
         name='static',
     )
