@@ -13,7 +13,10 @@ from graph.chat.tables import (
     messages,
 )
 from graph.db import metadata
-from graph.utils import PATH, get_config
+from graph.utils import (
+    APP_PATH as PATH,
+    get_config,
+)
 from graphene.test import Client
 
 # constants

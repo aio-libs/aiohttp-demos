@@ -30,6 +30,7 @@ install_requires = [
     'aiodataloader',
     'trafaret_config',
     'graphene==2.1.7',
+    'graphql-core==2.2.1',
     'graphql-ws',
     'psycopg2-binary',
     'Faker',
