@@ -126,3 +126,5 @@ yarn-error.log*
 
 # pytest
 .pytest_cache/
+
+.vscode/
