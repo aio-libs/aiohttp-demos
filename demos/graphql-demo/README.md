@@ -10,7 +10,7 @@ The simple realization of GraphQl api.
 
 ### Install requirements:
 ```
-$ cd graphql
+$ cd graphql-demo
 $ pip install -r requirements-dev.txt
 $ pip install -e .
 ```

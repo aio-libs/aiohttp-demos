@@ -85,7 +85,9 @@ async def generate_users(conn: SAConnection, count: int) -> List[int]:
         users.insert().values(values).returning(users.c.id)
     )
 
-    return [user[0] for user in response]
+    result = await response.fetchall()
+
+    return [user[0] for user in result]
 
 
 async def generate_rooms(
@@ -105,7 +107,9 @@ async def generate_rooms(
         rooms.insert().values(values).returning(rooms.c.id)
     )
 
-    return [room[0] for room in response]
+    result = await response.fetchall()
+
+    return [room[0] for room in result]
 
 
 async def generate_messages(
@@ -144,6 +148,7 @@ async def main():
             await generate_messages(conn, users, rooms)
     finally:
         engine.close()
+        await engine.wait_closed()
 
     print("Finished!")
 

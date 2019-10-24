@@ -48,7 +48,7 @@ Request.
  - `Blog <https://github.com/aio-libs/aiohttp-demos/tree/master/demos/blog>`_
    - The *blog* application with *PostgreSQL* storage and *Redis* session store.
 
- - `Graphql <https://github.com/aio-libs/aiohttp-demos/tree/master/demos/graphql>`_
+ - `Graphql <https://github.com/aio-libs/aiohttp-demos/tree/master/demos/graphql-demo>`_
    - The simple real-time chat that based on the *GraphQL* api and *Apollo client*.
 
 
