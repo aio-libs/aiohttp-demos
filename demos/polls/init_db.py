@@ -86,4 +86,4 @@ if __name__ == '__main__':
     create_tables(engine=user_engine)
     sample_data(engine=user_engine)
     # drop_tables()
-    # teardown_db(config)
+    # teardown_db(USER_CONFIG['postgres'])
