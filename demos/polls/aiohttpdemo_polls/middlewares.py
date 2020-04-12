@@ -20,9 +20,7 @@ def create_error_middleware(overrides):
         except web.HTTPException as ex:
             override = overrides.get(ex.status)
             if override:
-                resp = await override(request)
-                resp.set_status(ex.status)
-                return resp
+                return await override(request)
 
             raise
         except:  # noqa: E722
