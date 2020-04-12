@@ -15,22 +15,18 @@ def create_error_middleware(overrides):
 
     @web.middleware
     async def error_middleware(request, handler):
-
         try:
-            response = await handler(request)
-
-            override = overrides.get(response.status)
-            if override:
-                return await override(request)
-
-            return response
-
+            return await handler(request)
         except web.HTTPException as ex:
             override = overrides.get(ex.status)
             if override:
-                return await override(request)
+                resp = await override(request)
+                resp.set_status(ex.status)
+                return resp
 
             raise
+        except:
+            return await overrides[500](request)
 
     return error_middleware
 
