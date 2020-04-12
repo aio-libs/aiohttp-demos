@@ -17,6 +17,11 @@ async def test_results(cli, tables_and_data):
     assert 'Just hacking again' in await response.text()
 
 
+async def test_404_status(cli, tables_and_data):
+    response = await cli.get('/no-such-route')
+    assert response.status == 404
+
+
 async def test_vote(cli, tables_and_data):
 
     question_id = 1
