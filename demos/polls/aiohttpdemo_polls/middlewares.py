@@ -25,7 +25,7 @@ def create_error_middleware(overrides):
                 return resp
 
             raise
-        except:
+        except:  # noqa: E722
             resp = await overrides[500](request)
             resp.set_status(500)
             return resp
