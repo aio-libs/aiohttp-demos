@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.13.5
+version: v1.14.1
 ignore: {}
 # patches apply the minimum changes required to fix a vulnerability
 patch:
@@ -18,3 +18,58 @@ patch:
         patched: '2019-10-18T22:13:17.701Z'
     - snyk > proxy-agent > pac-proxy-agent > https-proxy-agent:
         patched: '2019-10-18T22:13:17.701Z'
+  SNYK-JS-LODASH-567746:
+    - parcel > babylon-walk > babel-types > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - parcel > htmlnano > uncss > jsdom > request-promise-native > request-promise-core > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - snyk > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - parcel > @babel/core > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - snyk > @snyk/dep-graph > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - snyk > inquirer > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - snyk > snyk-config > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - snyk > snyk-mvn-plugin > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - snyk > snyk-nodejs-lockfile-parser > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - snyk > snyk-nuget-plugin > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - parcel > @babel/preset-env > @babel/plugin-transform-block-scoping > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - parcel > htmlnano > uncss > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - snyk > @snyk/dep-graph > graphlib > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - snyk > snyk-go-plugin > graphlib > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - snyk > snyk-nodejs-lockfile-parser > graphlib > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - snyk > @snyk/snyk-cocoapods-plugin > @snyk/dep-graph > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - snyk > snyk-nuget-plugin > dotnet-deps-parser > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - snyk > snyk-php-plugin > @snyk/composer-lockfile-parser > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - parcel > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-define-map > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - snyk > @snyk/snyk-cocoapods-plugin > @snyk/dep-graph > graphlib > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - snyk > @snyk/snyk-cocoapods-plugin > @snyk/cocoapods-lockfile-parser > @snyk/ruby-semver > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - parcel > @babel/preset-env > @babel/plugin-transform-parameters > @babel/helper-call-delegate > @babel/traverse > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - snyk > @snyk/snyk-cocoapods-plugin > @snyk/cocoapods-lockfile-parser > @snyk/dep-graph > graphlib > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - parcel > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - parcel > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/generator > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - parcel > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
+    - parcel > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash:
+        patched: '2020-04-30T22:18:07.397Z'
