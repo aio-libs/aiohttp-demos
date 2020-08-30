@@ -3,7 +3,7 @@ def setup_routes(app, handler, project_root):
     h = handler
     router.add_get('/', h.index, name='index')
     router.add_get('/{short_id}', h.redirect, name='short')
-    router.add_post('/shortify', h.shotify, name='shortfy')
+    router.add_post('/shortify', h.shortify, name='shortify')
     router.add_static(
         '/static/', path=str(project_root / 'static'),
         name='static')
