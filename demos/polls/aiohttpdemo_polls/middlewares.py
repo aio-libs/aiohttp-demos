@@ -24,9 +24,7 @@ def create_error_middleware(overrides):
 
             raise
         except Exception:
-            resp = await overrides[500](request)
-            resp.set_status(500)
-            return resp
+            return overrides[500](request)
 
     return error_middleware
 
