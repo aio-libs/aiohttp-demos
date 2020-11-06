@@ -4,11 +4,27 @@ import yaml
 from aiohttp import web
 
 
+CONFIG_TRAFARET = t.Dict(
+    {
+        t.Key('redis'): t.Dict(
+            {
+                'port': t.Int(),
+                'host': t.String(),
+                'db': t.Int(),
+                'minsize': t.Int(),
+                'maxsize': t.Int(),
+            }
+        ),
+        'host': t.IP,
+        'port': t.Int(),
+    }
+)
+
+
 def load_config(fname):
     with open(fname, 'rt') as f:
         data = yaml.load(f)
-    # TODO: add config validation
-    return data
+    return CONFIG_TRAFARET.check(data)
 
 
 async def init_redis(conf, loop):
@@ -16,7 +32,7 @@ async def init_redis(conf, loop):
         (conf['host'], conf['port']),
         minsize=conf['minsize'],
         maxsize=conf['maxsize'],
-        loop=loop
+        loop=loop,
     )
     return pool
 
@@ -36,9 +52,7 @@ def encode(num, alphabet=CHARS):
     return ''.join(arr)
 
 
-ShortifyRequest = t.Dict({
-    t.Key('url'): t.URL
-})
+ShortifyRequest = t.Dict({t.Key('url'): t.URL})
 
 
 def fetch_url(data):
