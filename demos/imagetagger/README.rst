@@ -9,8 +9,8 @@ classify images, but other supported network can be used.
 
 Install the app::
 
-    $ git clone https://github.com/aio-libs/aiohttp-keras-demo.git
-    $ cd aiohttp-keras-demo
+    $ git clone https://github.com/aio-libs/aiohttp-demos.git
+    $ cd demos/imagetagger/
     $ pip install -r requirements/development.txt
 
 
