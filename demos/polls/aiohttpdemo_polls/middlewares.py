@@ -24,7 +24,7 @@ def create_error_middleware(overrides):
 
             raise
         except Exception:
-            return overrides[500](request)
+            return await overrides[500](request)
 
     return error_middleware
 
