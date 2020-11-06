@@ -14,8 +14,7 @@ class SiteHandler:
     async def index(self, request):
         return {}
 
-    @aiohttp_jinja2.template('timeline.html')
-    async def shotify(self, request):
+    async def shortify(self, request):
         data = await request.json()
         long_url = fetch_url(data)
 
