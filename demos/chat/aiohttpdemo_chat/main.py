@@ -29,6 +29,14 @@ async def shutdown(app):
     app['websockets'].clear()
 
 
+async def get_app():
+    """Used by aiohttp-devtools for local development."""
+    import aiohttp_debugtoolbar
+    app = await init_app()
+    aiohttp_debugtoolbar.setup(app)
+    return app
+
+
 def main():
     logging.basicConfig(level=logging.DEBUG)
 
