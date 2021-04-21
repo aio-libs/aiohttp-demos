@@ -31,6 +31,14 @@ async def init_app(conf: Config) -> web.Application:
     return app
 
 
+async def get_app():
+    """Used by aiohttp-devtools for local development."""
+    import aiohttp_debugtoolbar
+    app = await init_app(get_config())
+    aiohttp_debugtoolbar.setup(app)
+    return app
+
+
 def main(args: Any = None) -> None:
     conf = get_config(args)
     loop = asyncio.get_event_loop()

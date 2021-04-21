@@ -18,7 +18,7 @@ def init_jinja2(app: web.Application) -> None:
     )
 
 
-async def init_database(app: web.Application) -> None:
+async def database_ctx(app: web.Application) -> None:
     '''
     This is signal for success creating connection with database
     '''
@@ -27,8 +27,13 @@ async def init_database(app: web.Application) -> None:
     engine = await aiopg.sa.create_engine(**config)
     app['db'] = engine
 
+    yield
 
-async def init_redis(app: web.Application) -> None:
+    app['db'].close()
+    await app['db'].wait_closed()
+
+
+async def redis_ctx(app: web.Application) -> None:
     '''
     This is signal for success creating connection with redis
     '''
@@ -50,19 +55,8 @@ async def init_redis(app: web.Application) -> None:
     app['redis_pub'] = pub
     app['create_redis'] = create_redis
 
+    yield
 
-async def close_database(app: web.Application) -> None:
-    '''
-    This is signal for success closing connection with database before shutdown
-    '''
-    app['db'].close()
-    await app['db'].wait_closed()
-
-
-async def close_redis(app: web.Application) -> None:
-    '''
-    This is signal for success closing connection with redis before shutdown
-    '''
     app['redis_sub'].close()
     app['redis_pub'].close()
 
@@ -87,7 +81,15 @@ def init_app() -> web.Application:
     init_config(app)
     init_routes(app)
 
-    app.on_startup.extend([init_redis, init_database, init_graph_loaders])
-    app.on_cleanup.extend([close_redis, close_database])
+    app.cleanup_ctx.extend((redis_ctx, database_ctx))
+    app.on_startup.append(init_graph_loaders)
 
+    return app
+
+
+async def get_app():
+    """Used by aiohttp-devtools for local development."""
+    import aiohttp_debugtoolbar
+    app = init_app()
+    aiohttp_debugtoolbar.setup(app)
     return app
