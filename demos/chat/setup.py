@@ -18,7 +18,7 @@ def read_version():
             raise RuntimeError(msg)
 
 
-install_requires = ['aiohttp',
+install_requires = ['aiohttp>=3.6',
                     'aiohttp_jinja2',
                     'faker']
 
