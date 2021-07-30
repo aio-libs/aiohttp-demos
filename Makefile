@@ -24,10 +24,10 @@ doc-spelling:
 install:
 	@pip install -U pip setuptools
 	@pip install -Ur requirements-dev.txt
-  	@pip install demos/polls
-  	@pip install demos/chat
-  	@pip install demos/blog
-  	@pip install demos/graphql-demo
-  	@pip install -r demos/moderator_bot/requirements-dev.txt
+	@pip install demos/polls
+	@pip install demos/chat
+	@pip install demos/blog
+	@pip install demos/graphql-demo
+	@pip install -r demos/moderator_bot/requirements-dev.txt
 
 .PHONY: clean doc
