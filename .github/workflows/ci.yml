@@ -25,7 +25,7 @@ jobs:
       uses: actions/cache@v2.1.6
       with:
         path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/dev-requirements.txt') }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
     - name: Install libenchant
       run: sudo apt-get install libenchant-dev
     - name: Install dependencies
@@ -73,7 +73,7 @@ jobs:
       uses: actions/cache@v2.1.6
       with:
         path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/dev-requirements.txt') }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
     - name: Install libenchant
       run: sudo apt-get install libenchant-dev
     - name: Run tests
