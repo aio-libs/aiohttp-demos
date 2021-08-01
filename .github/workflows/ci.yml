@@ -76,9 +76,6 @@ jobs:
         key: ${{ runner.os }}-pip-${{ hashFiles('**/dev-requirements.txt') }}
     - name: Install libenchant
       run: sudo apt-get install libenchant-dev
-    - name: Install dependencies
-      run: |
-        make install
     - name: Run tests
       run: |
         make test
