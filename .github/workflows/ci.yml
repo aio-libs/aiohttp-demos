@@ -17,10 +17,10 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2.3.4
-    - name: Set up Python 3.6
+    - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.6
+        python-version: 3.9
     - name: Cache pip
       uses: actions/cache@v2.1.6
       with:
@@ -65,10 +65,10 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Set up Python 3.6
+    - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.6
+        python-version: 3.9
     - name: Cache pip
       uses: actions/cache@v2.1.6
       with:
