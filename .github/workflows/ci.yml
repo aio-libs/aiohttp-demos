@@ -25,7 +25,7 @@ jobs:
       uses: actions/cache@v2.1.6
       with:
         path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+        key: ${{ hashFiles('**/setup.py') }}-${{ hashFiles('**/requirements*.txt') }}
     - name: Install libenchant
       run: sudo apt-get install libenchant-dev
     - name: Install dependencies
@@ -73,7 +73,7 @@ jobs:
       uses: actions/cache@v2.1.6
       with:
         path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+        key: ${{ hashFiles('**/setup.py') }}-${{ hashFiles('**/requirements*.txt') }}
     - name: Install libenchant
       run: sudo apt-get install libenchant-dev
     - name: Install dependencies
@@ -90,6 +90,11 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: Cache pip
+      uses: actions/cache@v2.1.6
+      with:
+        path: ~/.cache/pip
+        key: ${{ hashFiles('**/setup.py') }}-${{ hashFiles('**/requirements*.txt') }}
     - name: Documentation
       run: |
         make doc
