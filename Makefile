@@ -22,7 +22,7 @@ doc-spelling:
 	@make -C docs spelling SPHINXOPTS="-W -E"
 
 install:
-	@pip install -U pip setuptools
+	@pip install -U pip setuptools cython
 	@pip install -Ur requirements-dev.txt
 	@pip install demos/polls
 	@pip install demos/chat
