@@ -26,8 +26,6 @@ jobs:
       with:
         path: ~/.cache/pip
         key: ${{ hashFiles('**/setup.py') }}-${{ hashFiles('**/requirements*.txt') }}
-    - name: Install libenchant
-      run: sudo apt-get install libenchant-dev
     - name: Install dependencies
       run: |
         make install
@@ -74,8 +72,6 @@ jobs:
       with:
         path: ~/.cache/pip
         key: ${{ hashFiles('**/setup.py') }}-${{ hashFiles('**/requirements*.txt') }}
-    - name: Install libenchant
-      run: sudo apt-get install libenchant-dev
     - name: Install dependencies
       run: |
         make install
@@ -95,6 +91,8 @@ jobs:
       with:
         path: ~/.cache/pip
         key: ${{ hashFiles('**/setup.py') }}-${{ hashFiles('**/requirements*.txt') }}
+    - name: Install libenchant
+      run: sudo apt-get install libenchant-dev
     - name: Documentation
       run: |
         make doc
