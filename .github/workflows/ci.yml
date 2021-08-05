@@ -35,7 +35,6 @@ jobs:
   
   test:
     name: Test
-    needs: lint
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -81,7 +80,6 @@ jobs:
 
   doc:
     name: Documentation
-    needs: test
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
