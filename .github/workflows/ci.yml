@@ -91,6 +91,8 @@ jobs:
         key: ${{ hashFiles('**/setup.py') }}-${{ hashFiles('**/requirements*.txt') }}
     - name: Install libenchant
       run: sudo apt-get install libenchant-dev
+    - name: Install sphinx
+      run: pip install sphinx
     - name: Documentation
       run: |
         make doc
