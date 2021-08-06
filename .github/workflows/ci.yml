@@ -32,7 +32,12 @@ jobs:
     - name: Run linters
       run: |
         make lint
-  
+    - name: Install libenchant
+      run: sudo apt-get install libenchant-dev
+    - name: Run docs spelling
+      run: |
+        make doc-spelling
+
   test:
     name: Test
     runs-on: ubuntu-latest
@@ -89,8 +94,6 @@ jobs:
       with:
         path: ~/.cache/pip
         key: ${{ hashFiles('**/setup.py') }}-${{ hashFiles('**/requirements*.txt') }}
-    - name: Install libenchant
-      run: sudo apt-get install libenchant-dev
     - name: Install sphinx
       run: pip install sphinx
     - name: Documentation
