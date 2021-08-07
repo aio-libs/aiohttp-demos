@@ -23,7 +23,7 @@ install_requires = [
     'trafaret',
     'aiohttp_jinja2',
     'pyyaml',
-    'aioredis==1.0.0b2'
+    'aioredis==1.3.1'
 ]
 
 

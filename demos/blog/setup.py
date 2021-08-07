@@ -7,7 +7,7 @@ install_requires = [
     'bcrypt',
     'pytoml',
     'aiohttp_security[session]',
-    'aioredis',
+    'aioredis==1.3.1',
     'sqlalchemy',
     'asyncpg',
     'asyncpgsa',
