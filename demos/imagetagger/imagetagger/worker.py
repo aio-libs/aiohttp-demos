@@ -39,7 +39,7 @@ def prepare_image(image: Image, target: Tuple[int, int]) -> Image:
     return image
 
 
-def predict(raw_data: bytes, model: Optional[Any]=None) -> bytes:
+def predict(raw_data: bytes, model: Optional[Any] = None) -> bytes:
     if model is None:
         model = _model
 

@@ -26,7 +26,7 @@ install_requires = [
     'aiopg[sa]',
     'aiohttp_jinja2',
     'aiohttp_graphql',
-    'aioredis',
+    'aioredis==1.3.1',
     'aiodataloader',
     'trafaret_config',
     'graphene==2.1.7',

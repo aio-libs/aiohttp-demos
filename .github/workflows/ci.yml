@@ -1,0 +1,101 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - 'master'
+  pull_request:
+    branches:
+      - 'master'
+
+
+jobs:
+
+  lint:
+    name: Linter
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2.3.4
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Cache pip
+      uses: actions/cache@v2.1.6
+      with:
+        path: ~/.cache/pip
+        key: ${{ hashFiles('**/setup.py') }}-${{ hashFiles('**/requirements*.txt') }}
+    - name: Install dependencies
+      run: |
+        make install
+    - name: Run linters
+      run: |
+        make lint
+    - name: Install libenchant
+      run: sudo apt-get install libenchant-dev
+    - name: Run docs spelling
+      run: |
+        make doc-spelling
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      redis:
+        image: redis
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Cache pip
+      uses: actions/cache@v2.1.6
+      with:
+        path: ~/.cache/pip
+        key: ${{ hashFiles('**/setup.py') }}-${{ hashFiles('**/requirements*.txt') }}
+    - name: Install dependencies
+      run: |
+        make install
+    - name: Run tests
+      run: |
+        make test
+
+  doc:
+    name: Documentation
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Cache pip
+      uses: actions/cache@v2.1.6
+      with:
+        path: ~/.cache/pip
+        key: ${{ hashFiles('**/setup.py') }}-${{ hashFiles('**/requirements*.txt') }}
+    - name: Install sphinx
+      run: pip install sphinx
+    - name: Documentation
+      run: |
+        make doc
