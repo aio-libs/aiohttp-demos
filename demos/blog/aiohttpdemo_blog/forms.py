@@ -18,7 +18,5 @@ async def validate_login_form(conn, form):
         return 'Invalid username'
     if not check_password_hash(password, user['password_hash']):
         return 'Invalid password'
-    else:
-        return None
 
-    return 'error'
+    return None

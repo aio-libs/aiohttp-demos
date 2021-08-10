@@ -19,7 +19,7 @@ def setup_cleanup_hooks(tasks):
         for func in tasks:
             result = func()
             if asyncio.iscoroutine(result):
-                result = await result
+                await result
 
     return cleanup
 
