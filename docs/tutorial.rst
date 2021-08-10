@@ -470,7 +470,7 @@ Complete files with changes
     )
 
 
-    async def init_pg(app):
+    async def pg_context(app):
         conf = app['config']['postgres']
         engine = await aiopg.sa.create_engine(
             database=conf['database'],
@@ -483,27 +483,26 @@ Complete files with changes
         )
         app['db'] = engine
 
+        yield
 
-    async def close_pg(app):
         app['db'].close()
         await app['db'].wait_closed()
 
 
 .. code-block:: python
-    :emphasize-lines: 6, 11, 12
+    :emphasize-lines: 6, 11
 
     # aiohttpdemo_polls/main.py
     from aiohttp import web
 
     from settings import config
     from routes import setup_routes
-    from db import close_pg, init_pg
+    from db import pg_context
 
     app = web.Application()
     app['config'] = config
     setup_routes(app)
-    app.on_startup.append(init_pg)
-    app.on_cleanup.append(close_pg)
+    app.cleanup_ctx.append(pg_context)
     web.run_app(app)
 
 
@@ -552,15 +551,14 @@ After installing, setup the library:
 
     from settings import config, BASE_DIR
     from routes import setup_routes
-    from db import close_pg, init_pg
+    from db import pg_context
 
     app = web.Application()
     app['config'] = config
     aiohttp_jinja2.setup(app,
         loader=jinja2.FileSystemLoader(str(BASE_DIR / 'aiohttpdemo_polls' / 'templates')))
     setup_routes(app)
-    app.on_startup.append(init_pg)
-    app.on_cleanup.append(close_pg)
+    app.cleanup_ctx.append(pg_context)
     web.run_app(app)
 
 
