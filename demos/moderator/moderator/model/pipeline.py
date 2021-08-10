@@ -57,4 +57,4 @@ def build_model(dataset_path, model_path):
     name = 'pipeline_{score}.dat'.format(score=score)
 
     with open(name, 'wb') as f:
-        pipeline = pickle.dump(pipeline, f)
+        pickle.dump(pipeline, f)

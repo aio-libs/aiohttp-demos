@@ -16,9 +16,8 @@ def read_version():
             match = REGEXP.match(line)
             if match is not None:
                 return match.group(1)
-        else:
-            msg = f'Cannot find version in ${init_py}'
-            raise RuntimeError(msg)
+        msg = f'Cannot find version in ${init_py}'
+        raise RuntimeError(msg)
 
 
 install_requires = [
