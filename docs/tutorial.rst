@@ -395,7 +395,7 @@ Doing things at startup and shutdown
 ------------------------------------
 
 Sometimes it is necessary to configure some component's setup and tear down.
-In case of database that would be creation of connection or connection pool and closing it afterward.
+For a database this would be the creation of a connection or connection pool and closing it afterwards.
 
 Pieces of code below belong to ``aiohttpdemo_polls/db.py`` and ``aiohttpdemo_polls/main.py`` files.
 Complete files will be shown shortly after.
@@ -407,35 +407,29 @@ Creating connection engine
 
 For making DB queries we need an engine instance. Assuming ``conf`` is
 a :class:`dict` with the configuration info for a Postgres connection, this
-could be done by the following coroutine:
+could be done by the following async generator function:
 
 .. literalinclude:: ../demos/polls/aiohttpdemo_polls/db.py
-  :pyobject: init_pg
+  :pyobject: pg_context
 
 Add the code to ``aiohttpdemo_polls/db.py`` file.
 
 
 The best place for connecting to the DB is using the
-:attr:`~aiohtp.web.Application.on_startup` signal::
+:attr:`~aiohtp.web.Application.cleanup_ctx` signal::
 
-   app.on_startup.append(init_pg)
+    app.cleanup_ctx.append(pg_context)
 
+On startup, the code is run until the ``yield``. When the application is
+shutdown the code will resume and close the DB connection.
 
-.. _aiohttp-demos-polls-graceful-shutdown:
+.. note::
 
-Graceful shutdown
-^^^^^^^^^^^^^^^^^
-
-It is a good practice to close all resources on program exit.
-
-Let's close the DB connection with the :attr:`~aiohtp.web.Application.on_cleanup`
-signal::
-
-    app.on_cleanup.append(close_pg)
-
-
-.. literalinclude:: ../demos/polls/aiohttpdemo_polls/db.py
-  :pyobject: close_pg
+    We could also have used separate startup/shutdown functions with the
+    :attr:`~aiohtp.web.Application.on_startup` and
+    :attr:`~aiohtp.web.Application.on_cleanup` signals. However, a
+    cleanup context ties the 2 parts together so that the DB can be
+    correctly shutdown even if an error occurs in another startup step.
 
 
 Complete files with changes
@@ -476,7 +470,7 @@ Complete files with changes
     )
 
 
-    async def init_pg(app):
+    async def pg_context(app):
         conf = app['config']['postgres']
         engine = await aiopg.sa.create_engine(
             database=conf['database'],
@@ -489,27 +483,26 @@ Complete files with changes
         )
         app['db'] = engine
 
+        yield
 
-    async def close_pg(app):
         app['db'].close()
         await app['db'].wait_closed()
 
 
 .. code-block:: python
-    :emphasize-lines: 6, 11, 12
+    :emphasize-lines: 6, 11
 
     # aiohttpdemo_polls/main.py
     from aiohttp import web
 
     from settings import config
     from routes import setup_routes
-    from db import close_pg, init_pg
+    from db import pg_context
 
     app = web.Application()
     app['config'] = config
     setup_routes(app)
-    app.on_startup.append(init_pg)
-    app.on_cleanup.append(close_pg)
+    app.cleanup_ctx.append(pg_context)
     web.run_app(app)
 
 
@@ -558,15 +551,14 @@ After installing, setup the library:
 
     from settings import config, BASE_DIR
     from routes import setup_routes
-    from db import close_pg, init_pg
+    from db import pg_context
 
     app = web.Application()
     app['config'] = config
     aiohttp_jinja2.setup(app,
         loader=jinja2.FileSystemLoader(str(BASE_DIR / 'aiohttpdemo_polls' / 'templates')))
     setup_routes(app)
-    app.on_startup.append(init_pg)
-    app.on_cleanup.append(close_pg)
+    app.cleanup_ctx.append(pg_context)
     web.run_app(app)
 
 

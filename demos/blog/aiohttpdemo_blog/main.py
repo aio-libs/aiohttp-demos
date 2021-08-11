@@ -71,6 +71,19 @@ async def init_app(config):
     return app
 
 
+async def get_app():
+    """Used by aiohttp-devtools for local development."""
+    import argparse
+    import aiohttp_debugtoolbar
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", "--config", help="Provide path to config file")
+    args = parser.parse_args()
+
+    app = await init_app(args.config)
+    aiohttp_debugtoolbar.setup(app)
+    return app
+
+
 def main(configpath):
     config = load_config(configpath)
     logging.basicConfig(level=logging.DEBUG)
