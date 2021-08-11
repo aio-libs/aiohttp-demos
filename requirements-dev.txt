@@ -12,5 +12,5 @@ psycopg2
 # docs
 sphinx==1.7.2
 sphinxcontrib-asyncio==0.2.0
-pygments==2.2.0
+pygments==2.7.4
 sphinxcontrib-spelling==4.1.0; platform_system!="Windows"  # We only use it in Travis CI
