@@ -16,9 +16,8 @@ def read_version():
             match = REGEXP.match(line)
             if match is not None:
                 return match.group(1)
-        else:
-            msg = f'Cannot find version in ${init_py}'
-            raise RuntimeError(msg)
+        msg = f'Cannot find version in ${init_py}'
+        raise RuntimeError(msg)
 
 
 install_requires = [
@@ -26,7 +25,7 @@ install_requires = [
     'aiopg[sa]',
     'aiohttp_jinja2',
     'aiohttp_graphql',
-    'aioredis',
+    'aioredis==1.3.1',
     'aiodataloader',
     'trafaret_config',
     'graphene==2.1.7',

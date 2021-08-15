@@ -1,5 +1,5 @@
 import "whatwg-fetch";
-import { h, render, Component } from "preact";
+import { render, Component } from "preact";
 import classNames from "./App.scss";
 import Results from "./Results";
 

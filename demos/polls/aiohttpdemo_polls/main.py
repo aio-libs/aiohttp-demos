@@ -5,7 +5,7 @@ import aiohttp_jinja2
 import jinja2
 from aiohttp import web
 
-from aiohttpdemo_polls.db import close_pg, init_pg
+from aiohttpdemo_polls.db import pg_context
 from aiohttpdemo_polls.middlewares import setup_middlewares
 from aiohttpdemo_polls.routes import setup_routes
 from aiohttpdemo_polls.settings import get_config
@@ -22,14 +22,21 @@ async def init_app(argv=None):
         app, loader=jinja2.PackageLoader('aiohttpdemo_polls', 'templates'))
 
     # create db connection on startup, shutdown on exit
-    app.on_startup.append(init_pg)
-    app.on_cleanup.append(close_pg)
+    app.cleanup_ctx.append(pg_context)
 
     # setup views and routes
     setup_routes(app)
 
     setup_middlewares(app)
 
+    return app
+
+
+async def get_app():
+    """Used by aiohttp-devtools for local development."""
+    import aiohttp_debugtoolbar
+    app = await init_app(sys.argv[1:])
+    aiohttp_debugtoolbar.setup(app)
     return app
 
 

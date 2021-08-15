@@ -2,8 +2,9 @@
 aiohttp-demos
 =============
 
-.. image:: https://travis-ci.org/aio-libs/aiohttp-demos.svg?branch=master
-    :target: https://travis-ci.org/aio-libs/aiohttp-demos
+.. image:: https://github.com/aio-libs/aiohttp-demos/actions/workflows/ci.yml/badge.svg
+   :target: https://github.com/aio-libs/aiohttp-demos/actions/workflows/ci.yml
+   :alt: GitHub Actions status for master branch
 .. image:: https://badges.gitter.im/Join%20Chat.svg
     :target: https://gitter.im/aio-libs/Lobby
     :alt: Chat on Gitter

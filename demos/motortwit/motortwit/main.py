@@ -53,6 +53,14 @@ async def init(loop):
     return app, host, port
 
 
+async def get_app():
+    """Used by aiohttp-devtools for local development."""
+    import aiohttp_debugtoolbar
+    app, _, _ = await init(asyncio.get_event_loop())
+    aiohttp_debugtoolbar.setup(app)
+    return app
+
+
 def main():
     logging.basicConfig(level=logging.DEBUG)
 

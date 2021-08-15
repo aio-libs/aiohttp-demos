@@ -13,9 +13,8 @@ def read_version():
             match = regexp.match(line)
             if match is not None:
                 return match.group(1)
-        else:
-            msg = 'Cannot find version in shortify/__init__.py'
-            raise RuntimeError(msg)
+        msg = 'Cannot find version in shortify/__init__.py'
+        raise RuntimeError(msg)
 
 
 install_requires = [
@@ -23,7 +22,7 @@ install_requires = [
     'trafaret',
     'aiohttp_jinja2',
     'pyyaml',
-    'aioredis==1.0.0b2'
+    'aioredis==1.3.1'
 ]
 
 

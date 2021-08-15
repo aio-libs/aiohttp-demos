@@ -13,12 +13,11 @@ def read_version():
             match = regexp.match(line)
             if match is not None:
                 return match.group(1)
-        else:
-            msg = 'Cannot find version in aiohttpdemo_chat/__init__.py'
-            raise RuntimeError(msg)
+        msg = 'Cannot find version in aiohttpdemo_chat/__init__.py'
+        raise RuntimeError(msg)
 
 
-install_requires = ['aiohttp',
+install_requires = ['aiohttp>=3.6',
                     'aiohttp_jinja2',
                     'faker']
 
