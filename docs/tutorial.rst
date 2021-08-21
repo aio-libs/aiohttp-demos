@@ -656,11 +656,10 @@ Now, create a new ``middlewares.py`` file:
 
 .. literalinclude:: ../demos/polls/aiohttpdemo_polls/middlewares.py
 
-As you can see, we do nothing *before* the web handler. We choose Jinja2
-template renderer based on ``response.status``  *after* the request was handled.
-In case of exceptions, we do something similar, based on ``ex.status``.
-Without the ``create_error_middleware`` function, the same task would take us
-many more ``if`` statements.
+As you can see, we do nothing *before* the web handler. In the case of an ``HTTPException``,
+we use the Jinja2 template renderer based on ``ex.status`` *after* the request was handled.
+For other exceptions, we log the error and render our 500 template. Without the
+``create_error_middleware`` function, the same task would take us many more ``if`` statements.
 
 We have registered middleware in ``app`` by adding it to ``app.middlewares``.
 
