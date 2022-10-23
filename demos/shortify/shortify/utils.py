@@ -1,4 +1,4 @@
-import aioredis
+from redis import asyncio as aioredis
 import trafaret as t
 import yaml
 from aiohttp import web
