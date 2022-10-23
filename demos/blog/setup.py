@@ -1,7 +1,7 @@
 from setuptools import setup
 
 
-install_requires = [
+install_requires = (
     'aiohttp',
     'aiohttp-jinja2',
     'bcrypt',
@@ -11,10 +11,11 @@ install_requires = [
     'sqlalchemy',
     'asyncpg',
     'asyncpgsa',
-]
+)
 
 setup(
     name='aiohttpdemo-blog',
     version='0.2',
     install_requires=install_requires,
+    packages=("aiohttpdemo_blog",)
 )
