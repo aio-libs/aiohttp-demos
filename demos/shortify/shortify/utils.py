@@ -29,7 +29,7 @@ def load_config(fname):
 
 async def init_redis(conf):
     redis = await aioredis.from_url(
-        f"redis://{conf['host']}:{conf['port']}/",
+        f"redis://{conf['host']}:{conf['port']}",
     )
     return redis
 
