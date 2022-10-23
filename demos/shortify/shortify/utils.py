@@ -23,18 +23,15 @@ CONFIG_TRAFARET = t.Dict(
 
 def load_config(fname):
     with open(fname, 'rt') as f:
-        data = yaml.load(f)
+        data = yaml.safe_load(f)
     return CONFIG_TRAFARET.check(data)
 
 
-async def init_redis(conf, loop):
-    pool = await aioredis.create_redis_pool(
-        (conf['host'], conf['port']),
-        minsize=conf['minsize'],
-        maxsize=conf['maxsize'],
-        loop=loop,
+async def init_redis(conf):
+    redis = await aioredis.from_url(
+        f"redis://{conf['host']}:{conf['port']}/",
     )
-    return pool
+    return redis
 
 
 CHARS = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789"
