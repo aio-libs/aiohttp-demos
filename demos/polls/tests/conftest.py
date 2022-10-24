@@ -14,9 +14,9 @@ TEST_CONFIG_PATH = BASE_DIR / 'config' / 'polls_test.yaml'
 
 
 @pytest.fixture
-async def cli(loop, test_client, db):
+async def cli(loop, aiohttp_client, db):
     app = await init_app(['-c', TEST_CONFIG_PATH.as_posix()])
-    return await test_client(app)
+    return await aiohttp_client(app)
 
 
 @pytest.fixture(scope='module')

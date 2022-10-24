@@ -61,4 +61,4 @@ async def vote(request):
             raise web.HTTPNotFound(text=str(e))
         router = request.app.router
         url = router['results'].url_for(question_id=str(question_id))
-        return web.HTTPFound(location=url)
+        raise web.HTTPFound(location=url)
