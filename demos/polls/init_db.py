@@ -36,7 +36,6 @@ def setup_db(config):
     conn.execute("CREATE DATABASE %s ENCODING 'UTF8'" % db_name)
     conn.execute("ALTER DATABASE %s OWNER TO %s" %
                  (db_name, db_user))
-    #conn.execute("ALTER SCHEMA public OWNER TO %s" % db_user)
     conn.execute("GRANT ALL ON SCHEMA public TO %s" % db_user)
     conn.close()
 
@@ -52,7 +51,7 @@ def teardown_db(config):
       WHERE pg_stat_activity.datname = '%s'
         AND pid <> pg_backend_pid();""" % db_name)
     conn.execute("DROP DATABASE IF EXISTS %s" % db_name)
-    conn.execute("ALTER SCHEMA public OWNER TO postgres")
+    conn.execute("REVOKE ALL ON SCHEMA public FROM %s" % db_user)
     conn.execute("DROP ROLE IF EXISTS %s" % db_user)
     conn.close()
 
