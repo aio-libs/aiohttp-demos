@@ -37,6 +37,7 @@ def setup_db(config):
     conn.execute("CREATE DATABASE %s ENCODING 'UTF8'" % db_name)
     conn.execute("GRANT ALL PRIVILEGES ON DATABASE %s TO %s" %
                  (db_name, db_user))
+    conn.execute("GRANT USAGE ON SCHEMA public TO %s" % db_user)
     conn.close()
 
 
