@@ -1,4 +1,4 @@
-async def test_msg_sending(client):
+async def test_msg_sending(aiohttp_client):
     ws1 = await client.ws_connect('/')
     ws2 = await client.ws_connect('/')
 
