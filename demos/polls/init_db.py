@@ -7,7 +7,7 @@ from aiohttpdemo_polls.settings import BASE_DIR, get_config
 DSN = "postgresql://{user}:{password}@{host}:{port}/{database}"
 
 ADMIN_DB_URL = DSN.format(
-    user='postgres', password='postgres', database='test_aiohttpdemo_polls',
+    user='postgres', password='postgres', database='postgres',
     host='localhost', port=5432
 )
 admin_engine = create_engine(ADMIN_DB_URL, isolation_level='AUTOCOMMIT')
@@ -36,6 +36,14 @@ def setup_db(config):
     conn.execute("CREATE DATABASE %s ENCODING 'UTF8'" % db_name)
     conn.execute("GRANT ALL PRIVILEGES ON DATABASE %s TO %s" %
                  (db_name, db_user))
+    conn.close()
+    
+    url = DSN.format(
+        user='postgres', password='postgres', database=db_name,
+        host='localhost', port=5432
+    )
+    db_engine = create_engine(url, isolation_level='AUTOCOMMIT')
+    conn = db_engine.connect()
     conn.execute("GRANT USAGE ON SCHEMA public TO %s" % db_user)
     conn.close()
 
