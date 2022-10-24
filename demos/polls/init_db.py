@@ -37,12 +37,11 @@ def setup_db(config):
     conn.execute("ALTER DATABASE %s OWNER TO %s" %
                  (db_name, db_user))
     conn.execute("ALTER SCHEMA public OWNER TO %s" % db_user)
-    conn.execute("GRANT ALL ON SCHEMA public TO %s" % db_user)
+    #conn.execute("GRANT ALL ON SCHEMA public TO %s" % db_user)
     conn.close()
 
 
 def teardown_db(config):
-
     db_name = config['database']
     db_user = config['user']
 
@@ -53,6 +52,7 @@ def teardown_db(config):
       WHERE pg_stat_activity.datname = '%s'
         AND pid <> pg_backend_pid();""" % db_name)
     conn.execute("DROP DATABASE IF EXISTS %s" % db_name)
+    conn.execute("ALTER SCHEMA public OWNER TO postgres")
     conn.execute("DROP ROLE IF EXISTS %s" % db_user)
     conn.close()
 
@@ -82,7 +82,6 @@ def sample_data(engine=test_engine):
 
 
 if __name__ == '__main__':
-
     setup_db(USER_CONFIG['postgres'])
     create_tables(engine=user_engine)
     sample_data(engine=user_engine)
