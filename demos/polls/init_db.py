@@ -7,10 +7,9 @@ from aiohttpdemo_polls.settings import BASE_DIR, get_config
 DSN = "postgresql://{user}:{password}@{host}:{port}/{database}"
 
 ADMIN_DB_URL = DSN.format(
-    user='postgres', password='postgres', database='postgres',
+    user='postgres', password='postgres', database='test_aiohttpdemo_polls',
     host='localhost', port=5432
 )
-
 admin_engine = create_engine(ADMIN_DB_URL, isolation_level='AUTOCOMMIT')
 
 USER_CONFIG_PATH = BASE_DIR / 'config' / 'polls.yaml'
