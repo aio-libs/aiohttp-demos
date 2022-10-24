@@ -29,7 +29,7 @@ def db():
 
 
 @pytest.fixture
-def tables_and_data(db):
+def tables_and_data():
     create_tables()
     sample_data()
     yield
