@@ -14,9 +14,6 @@ def setup_db(executor_config=None, target_config=None):
     db_pass = target_config['DB_PASS']
 
     with engine.connect() as conn:
-        teardown_db(executor_config=executor_config,
-                    target_config=target_config)
-
         conn.execute("CREATE USER %s WITH PASSWORD '%s'" % (db_user, db_pass))
         conn.execute("CREATE DATABASE %s" % db_name)
         conn.execute("ALTER DATABASE %s OWNER TO %s" % (db_name, db_user))
