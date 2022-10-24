@@ -34,7 +34,7 @@ def setup_db(config):
     conn.execute("DROP ROLE IF EXISTS %s" % db_user)
     conn.execute("CREATE USER %s WITH PASSWORD '%s'" % (db_user, db_pass))
     conn.execute("CREATE DATABASE %s ENCODING 'UTF8'" % db_name)
-    conn.execute("GRANT ALL PRIVILEGES ON DATABASE %s TO %s" %
+    conn.execute("ALTER DATABASE %s OWNER TO %s" %
                  (db_name, db_user))
     conn.close()
 
