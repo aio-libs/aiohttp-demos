@@ -36,8 +36,8 @@ def setup_db(config):
     conn.execute("CREATE DATABASE %s ENCODING 'UTF8'" % db_name)
     conn.execute("ALTER DATABASE %s OWNER TO %s" %
                  (db_name, db_user))
-    conn.execute("ALTER SCHEMA public OWNER TO %s" % db_user)
-    #conn.execute("GRANT ALL ON SCHEMA public TO %s" % db_user)
+    #conn.execute("ALTER SCHEMA public OWNER TO %s" % db_user)
+    conn.execute("GRANT ALL ON SCHEMA public TO %s" % db_user)
     conn.close()
 
 
