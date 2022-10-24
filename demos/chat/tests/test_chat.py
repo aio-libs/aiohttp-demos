@@ -1,6 +1,6 @@
 async def test_msg_sending(aiohttp_client):
-    ws1 = await client.ws_connect('/')
-    ws2 = await client.ws_connect('/')
+    ws1 = await aiohttp_client.ws_connect('/')
+    ws2 = await aiohttp_client.ws_connect('/')
 
     ack_msg1 = await ws1.receive()
     assert ack_msg1.json()['action'] == 'connect'
