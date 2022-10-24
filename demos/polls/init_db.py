@@ -37,15 +37,6 @@ def setup_db(config):
     conn.execute("GRANT ALL PRIVILEGES ON DATABASE %s TO %s" %
                  (db_name, db_user))
     conn.close()
-    
-    url = DSN.format(
-        user='postgres', password='postgres', database=db_name,
-        host='localhost', port=5432
-    )
-    db_engine = create_engine(url, isolation_level='AUTOCOMMIT')
-    conn = db_engine.connect()
-    conn.execute("GRANT USAGE ON SCHEMA public TO %s" % db_user)
-    conn.close()
 
 
 def teardown_db(config):
