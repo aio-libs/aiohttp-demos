@@ -19,8 +19,8 @@ def setup_db(executor_config=None, target_config=None):
 
         conn.execute("CREATE USER %s WITH PASSWORD '%s'" % (db_user, db_pass))
         conn.execute("CREATE DATABASE %s" % db_name)
-        conn.execute("GRANT ALL PRIVILEGES ON DATABASE %s TO %s" %
-                     (db_name, db_user))
+        conn.execute("ALTER DATABASE %s OWNER TO %s" % (db_name, db_user))
+        conn.execute("GRANT ALL ON SCHEMA public TO %s" % db_user)
 
 
 def teardown_db(executor_config=None, target_config=None):
@@ -37,6 +37,7 @@ def teardown_db(executor_config=None, target_config=None):
           WHERE pg_stat_activity.datname = '%s'
             AND pid <> pg_backend_pid();""" % db_name)
         conn.execute("DROP DATABASE IF EXISTS %s" % db_name)
+        conn.execute("REVOKE ALL ON SCHEMA public FROM %s" % db_user)
         conn.execute("DROP ROLE IF EXISTS %s" % db_user)
 
 
