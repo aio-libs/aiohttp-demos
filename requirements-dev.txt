@@ -10,7 +10,7 @@ pytest-aiohttp
 psycopg2
 
 # docs
-sphinx==1.7.2
-sphinxcontrib-asyncio==0.2.0
-pygments==2.7.4
-sphinxcontrib-spelling==4.1.0; platform_system!="Windows"  # We only use it in Travis CI
+pygments==2.13.0
+sphinx==5.3.0
+sphinxcontrib-asyncio==0.3.0
+sphinxcontrib-spelling==7.6.2; platform_system!="Windows"  # We only use it in CI
