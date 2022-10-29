@@ -45,8 +45,7 @@ async def init_app(config):
     db_pool = await init_db(app)
 
     redis = await setup_redis(app)
-    storage = RedisStorage(redis)
-    setup_session(app, storage)
+    setup_session(app, RedisStorage(redis))
 
     # needs to be after session setup because of `current_user_ctx_processor`
     aiohttp_jinja2.setup(
