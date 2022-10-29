@@ -10,7 +10,6 @@ ADMIN_DB_URL = DSN.format(
     user='postgres', password='postgres', database='postgres',
     host='localhost', port=5432
 )
-
 admin_engine = create_engine(ADMIN_DB_URL, isolation_level='AUTOCOMMIT')
 
 USER_CONFIG_PATH = BASE_DIR / 'config' / 'polls.yaml'
@@ -35,13 +34,13 @@ def setup_db(config):
     conn.execute("DROP ROLE IF EXISTS %s" % db_user)
     conn.execute("CREATE USER %s WITH PASSWORD '%s'" % (db_user, db_pass))
     conn.execute("CREATE DATABASE %s ENCODING 'UTF8'" % db_name)
-    conn.execute("GRANT ALL PRIVILEGES ON DATABASE %s TO %s" %
+    conn.execute("ALTER DATABASE %s OWNER TO %s" %
                  (db_name, db_user))
+    conn.execute("GRANT ALL ON SCHEMA public TO %s" % db_user)
     conn.close()
 
 
 def teardown_db(config):
-
     db_name = config['database']
     db_user = config['user']
 
@@ -52,6 +51,7 @@ def teardown_db(config):
       WHERE pg_stat_activity.datname = '%s'
         AND pid <> pg_backend_pid();""" % db_name)
     conn.execute("DROP DATABASE IF EXISTS %s" % db_name)
+    conn.execute("REVOKE ALL ON SCHEMA public FROM %s" % db_user)
     conn.execute("DROP ROLE IF EXISTS %s" % db_user)
     conn.close()
 
@@ -81,7 +81,6 @@ def sample_data(engine=test_engine):
 
 
 if __name__ == '__main__':
-
     setup_db(USER_CONFIG['postgres'])
     create_tables(engine=user_engine)
     sample_data(engine=user_engine)
