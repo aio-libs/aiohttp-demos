@@ -8,7 +8,7 @@ from aiohttp_security import authorized_userid
 from aiohttp_security import setup as setup_security
 from aiohttp_session import setup as setup_session
 from aiohttp_session.redis_storage import RedisStorage
-import aioredis
+from redis import asyncio as aioredis
 from aiohttpdemo_blog.db_auth import DBAuthorizationPolicy
 from aiohttpdemo_blog.db import init_db
 from aiohttpdemo_blog.routes import setup_routes
@@ -20,18 +20,12 @@ log = logging.getLogger(__name__)
 
 async def setup_redis(app):
 
-    pool = await aioredis.create_redis_pool((
-        app['config']['redis']['REDIS_HOST'],
-        app['config']['redis']['REDIS_PORT']
-    ))
+    redis_host = app['config']['redis']['REDIS_HOST']
+    redis_port = app['config']['redis']['REDIS_PORT']
 
-    async def close_redis(app):
-        pool.close()
-        await pool.wait_closed()
-
-    app.on_cleanup.append(close_redis)
-    app['redis_pool'] = pool
-    return pool
+    redis = await aioredis.from_url(f"redis://{redis_host}:{redis_port}")
+    app['redis'] = redis
+    return redis
 
 
 async def current_user_ctx_processor(request):
@@ -50,8 +44,9 @@ async def init_app(config):
 
     db_pool = await init_db(app)
 
-    redis_pool = await setup_redis(app)
-    setup_session(app, RedisStorage(redis_pool))
+    redis = await setup_redis(app)
+    storage = RedisStorage(redis)
+    setup_session(app, storage)
 
     # needs to be after session setup because of `current_user_ctx_processor`
     aiohttp_jinja2.setup(
