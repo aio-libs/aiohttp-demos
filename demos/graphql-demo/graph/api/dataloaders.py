@@ -11,7 +11,7 @@ __all__ = ['UserDataLoader', ]
 
 class BaseAIODataLoader(DataLoader):
     """The base data loader for aiohttp.
-    
+
     It need create when application initialization with current db engine.
     """
     engine: Any = None
@@ -31,7 +31,7 @@ class BaseAIODataLoader(DataLoader):
 
 class UserDataLoader(BaseAIODataLoader):
     """Simple user data loader.
-    
+
     Should be used everywhere, when it is possible problem N + 1 requests.
     """
     async def batch_load_fn(self, keys: List[int]) -> RowsProxy:
