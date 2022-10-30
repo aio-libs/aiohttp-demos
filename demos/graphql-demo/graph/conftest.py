@@ -130,8 +130,8 @@ def init_sample_data(engine) -> None:
 @pytest.fixture
 async def sa_engine(event_loop):
     """The fixture initialize async engine for PostgresSQl."""
-
-    return await aiopg.sa.create_engine(**test_config['postgres'])
+    async with aiopg.sa.create_engine(**test_config["postgres"]) as db:
+        yield db
 
 
 @pytest.fixture
