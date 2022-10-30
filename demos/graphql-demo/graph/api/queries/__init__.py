@@ -3,6 +3,4 @@ from graph.api.queries.rooms import RoomsQuery
 
 
 class Query(UserQuery, RoomsQuery):
-    '''
-    The main GraphQL query point.
-    '''
+    """Main GraphQL query point."""
