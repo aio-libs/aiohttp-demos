@@ -6,11 +6,15 @@ lint:
 	@flake8 demos
 
 test:
-	@pytest -q demos/polls/tests
-	@pytest -q demos/chat/tests
-	@pytest -q demos/blog/tests
-	@pytest -q demos/graphql-demo
-	@SLACK_BOT_TOKEN=xxx GIPHY_API_KEY=xxx pytest -q demos/moderator_bot/tests
+	@pytest demos/blog
+	@pytest demos/chat
+	@pytest demos/graphql-demo
+	@pytest demos/imagetagger
+	@pytest demos/moderator
+	@SLACK_BOT_TOKEN=xxx GIPHY_API_KEY=xxx pytest demos/moderator_bot/tests
+	@pytest demos/motortwit
+	@pytest demos/polls
+	@pytest demos/shortify
 
 ci: lint test doc-spelling
 
@@ -23,11 +27,15 @@ doc-spelling:
 
 install:
 	@pip install -U pip setuptools cython
-	@pip install -Ur requirements-dev.txt
-	@pip install demos/polls
-	@pip install demos/chat
-	@pip install demos/blog
-	@pip install demos/graphql-demo
+	@pip install -r requirements-dev.txt
+	@pip install -r demos/blog/requirements.txt
+	@pip install -r demos/chat/requirements.txt
+	@pip install -r demos/graphql-demo/requirements-dev.txt
+	@pip install -r demos/imagetagger/requirements.txt
+	@pip install -r demos/moderator/requirements-dev.txt
 	@pip install -r demos/moderator_bot/requirements-dev.txt
+	@pip install -r demos/motortwit/requirements.txt
+	@pip install -r demos/polls/requirements-dev.txt
+	@pip install -r demos/shortify/requirements.txt
 
 .PHONY: clean doc
