@@ -25,13 +25,13 @@ install_requires = [
     'aiopg[sa]',
     'aiohttp_jinja2',
     'aiohttp_graphql',
-    'aioredis==1.3.1',
     'aiodataloader',
     'trafaret_config',
     'graphene==2.1.7',
     'graphql-core==2.2.1',
     'graphql-ws',
     'psycopg2-binary',
+    'redis>=4.2',
     'Faker',
 ]
 
