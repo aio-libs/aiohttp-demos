@@ -1,3 +1,4 @@
 aiohttp==3.8.3
 aiohttp-jinja2==1.5
+keras==2.10.0
 trafaret_config==2.0.2
