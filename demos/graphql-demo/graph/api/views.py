@@ -26,7 +26,7 @@ subscription_server = CustomAiohttpSubscriptionServer(schema)
 
 def GQL(graphiql: bool = False) -> CustomGraphQLView:
     """The main view for give access to GraphQl.
-    
+
     The view can work in two modes:
 
         - simple GraphQl handler
