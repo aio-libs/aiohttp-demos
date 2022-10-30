@@ -63,8 +63,6 @@ def setup_test_db(engine) -> None:
     db_user = test_config['postgres']['user']
     db_password = test_config['postgres']['password']
 
-    teardown_test_db(engine)
-
     with engine.connect() as conn:
         conn.execute(
             f"create user {db_user} with password '{db_password}'"
