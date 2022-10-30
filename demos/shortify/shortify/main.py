@@ -15,16 +15,10 @@ PROJ_ROOT = pathlib.Path(__file__).parent.parent
 TEMPLATES_ROOT = pathlib.Path(__file__).parent / 'templates'
 
 
-async def setup_redis(app, conf, loop):
-    pool = await init_redis(conf['redis'], loop)
-
-    async def close_redis(app):
-        pool.close()
-        await pool.wait_closed()
-
-    app.on_cleanup.append(close_redis)
-    app['redis_pool'] = pool
-    return pool
+async def setup_redis(app, conf):
+    redis = await init_redis(conf["redis"])
+    app["redis"] = redis
+    return redis
 
 
 def setup_jinja(app):
@@ -33,14 +27,14 @@ def setup_jinja(app):
     return jinja_env
 
 
-async def init(loop):
+async def init():
     conf = load_config(PROJ_ROOT / 'config' / 'config.yml')
 
     app = web.Application()
-    redis_pool = await setup_redis(app, conf, loop)
+    redis = await setup_redis(app, conf)
     setup_jinja(app)
 
-    handler = SiteHandler(redis_pool, conf)
+    handler = SiteHandler(redis, conf)
 
     setup_routes(app, handler, PROJ_ROOT)
     host, port = conf['host'], conf['port']
@@ -50,7 +44,7 @@ async def init(loop):
 async def get_app():
     """Used by aiohttp-devtools for local development."""
     import aiohttp_debugtoolbar
-    app, _, _ = await init(asyncio.get_event_loop())
+    app, _, _ = await init()
     aiohttp_debugtoolbar.setup(app)
     return app
 
@@ -59,7 +53,7 @@ def main():
     logging.basicConfig(level=logging.DEBUG)
 
     loop = asyncio.get_event_loop()
-    app, host, port = loop.run_until_complete(init(loop))
+    app, host, port = loop.run_until_complete(init())
     web.run_app(app, host=host, port=port)
 
 
