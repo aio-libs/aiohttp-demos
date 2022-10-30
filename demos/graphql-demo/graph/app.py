@@ -19,9 +19,7 @@ def init_jinja2(app: web.Application) -> None:
 
 
 async def database_ctx(app: web.Application) -> None:
-    '''
-    This is signal for success creating connection with database
-    '''
+    """This is signal for success creating connection with database."""
     config = app['config']['postgres']
 
     engine = await aiopg.sa.create_engine(**config)
@@ -34,9 +32,7 @@ async def database_ctx(app: web.Application) -> None:
 
 
 async def redis_ctx(app: web.Application) -> None:
-    '''
-    This is signal for success creating connection with redis
-    '''
+    """This is signal for success creating connection with redis."""
     config = app['config']['redis']
 
     sub = await aioredis.create_redis(
@@ -62,10 +58,10 @@ async def redis_ctx(app: web.Application) -> None:
 
 
 async def init_graph_loaders(app: web.Application) -> None:
-    '''
-    The function initialize data loaders for `graphene`. U should initialize it
-    after initialize a database.
-    '''
+    """Initialize data loaders for `graphene`.
+    
+    Should be initialized after the database.
+    """
     engine = app['db']
 
     class Loaders:
