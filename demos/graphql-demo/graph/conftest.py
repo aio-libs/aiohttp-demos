@@ -72,9 +72,8 @@ def setup_test_db(engine) -> None:
         conn.execute(
             f"create database {db_name} encoding 'UTF8'"
         )
-        conn.execute(
-            f"grant all privileges on database {db_name} to {db_user}"
-        )
+        conn.execute(f"alter database {db_name} owner to {db_user}")
+        conn.execute(f"grant all on schema public to {db_user}")
 
 
 def teardown_test_db(engine) -> None:
@@ -95,6 +94,7 @@ def teardown_test_db(engine) -> None:
             """
         )
         conn.execute(f"drop database if exists {db_name}")
+        conn.execute(f"REVOKE ALL ON SCHEMA public FROM {db_user}")
         conn.execute(f"drop role if exists {db_user}")
 
 
