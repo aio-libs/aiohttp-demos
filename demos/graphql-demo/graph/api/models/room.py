@@ -12,9 +12,7 @@ __all__ = ['Message', 'Room', ]
 
 
 class Message(graphene.ObjectType):
-    '''
-    A messages is main object that representation data of user message.
-    '''
+    """Main object that representation data of user message."""
     id = graphene.Int(
         description="An id of message, it's unique for all message",
     )
@@ -37,9 +35,7 @@ class Message(graphene.ObjectType):
 
 
 class Room(graphene.ObjectType):
-    '''
-    A room is point where users can have conversations.
-    '''
+    """Point where users can have conversations."""
     id = graphene.Int(
         description="An id of room, it's unique for all rooms",
     )
