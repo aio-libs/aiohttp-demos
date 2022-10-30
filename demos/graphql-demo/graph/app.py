@@ -59,7 +59,7 @@ async def redis_ctx(app: web.Application) -> None:
 
 async def init_graph_loaders(app: web.Application) -> None:
     """Initialize data loaders for `graphene`.
-    
+
     Should be initialized after the database.
     """
     engine = app['db']
