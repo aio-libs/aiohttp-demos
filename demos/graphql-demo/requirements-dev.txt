@@ -8,7 +8,7 @@ trafaret_config==2.0.2
 graphene==2.1.7
 graphql-core==2.2.1
 graphql-ws==0.4.4
-psycopg2-binary==3.1.4
+psycopg2-binary==2.9.5
 redis==4.3.4
 
 mypy==0.982
