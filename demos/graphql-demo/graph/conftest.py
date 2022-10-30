@@ -155,7 +155,7 @@ async def requests(sa_engine):
     return {'request': request}
 
 
-@pytest.yield_fixture(scope='session')
+@pytest.fixture(scope="session")
 def db():
     """The fixture for running and turn down database."""
     setup_test_db(engine)
@@ -163,7 +163,7 @@ def db():
     teardown_test_db(engine)
 
 
-@pytest.yield_fixture(scope='session')
+@pytest.fixture(scope="session")
 def tables(db):
     """The fixture for create all tables and init simple data."""
     metadata.create_all(test_engine)
