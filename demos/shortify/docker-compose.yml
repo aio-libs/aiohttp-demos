@@ -1,4 +1,4 @@
 redis:
-    image: redis:4
+    image: redis:6
     ports:
         - 6379:6379
