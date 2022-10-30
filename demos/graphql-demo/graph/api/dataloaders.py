@@ -10,10 +10,10 @@ __all__ = ['UserDataLoader', ]
 
 
 class BaseAIODataLoader(DataLoader):
-    '''
-    The base data loader for aiohttp. It need create when application
-    initialization with current db engine.
-    '''
+    """The base data loader for aiohttp.
+    
+    It need create when application initialization with current db engine.
+    """
     engine: Any = None
 
     def __init__(self, engine, *args, **kwargs):
@@ -21,10 +21,7 @@ class BaseAIODataLoader(DataLoader):
         self.engine = engine
 
     def sorted_by_keys(self, items: RowsProxy, keys: List[int]) -> RowsProxy:
-        '''
-        In `aiodataloader` ordering of returning items is very inportant and
-        this function halp to do it.
-        '''
+        """Help ordering of returned items In `aiodataloader`."""
         items_dict = {
             key: value for key, value in zip(sorted(set(keys)), items)
         }
@@ -33,10 +30,10 @@ class BaseAIODataLoader(DataLoader):
 
 
 class UserDataLoader(BaseAIODataLoader):
-    '''
-    A simple user data loader. U should use it everywhere, when you think that
-    it is possible problem N + 1 requests.
-    '''
+    """Simple user data loader.
+    
+    Should be used everywhere, when it is possible problem N + 1 requests.
+    """
     async def batch_load_fn(self, keys: List[int]) -> RowsProxy:
         async with self.engine.acquire() as conn:
             response = await select_users(conn, keys)
