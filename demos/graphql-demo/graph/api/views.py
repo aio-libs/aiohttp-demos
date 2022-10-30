@@ -25,15 +25,16 @@ subscription_server = CustomAiohttpSubscriptionServer(schema)
 
 
 def GQL(graphiql: bool = False) -> CustomGraphQLView:
-    '''
-    The main view for give access to GraphQl. The view cat work in two modes:
+    """The main view for give access to GraphQl.
+    
+    The view can work in two modes:
 
         - simple GraphQl handler
         - GraphIQL view for interactive work with graph application
 
     :param graphiql: bool
     :return: GraphQLView
-    '''
+    """
 
     view = CustomGraphQLView(
         schema=schema,
@@ -49,10 +50,9 @@ def GQL(graphiql: bool = False) -> CustomGraphQLView:
 
 
 async def subscriptions(request: web.Request) -> web.WebSocketResponse:
-    '''
-    The handler for creating socket connection with apollo client, for checking
+    """Handler for creating socket connection with apollo client and checking
     subscriptions.
-    '''
+    """
     ws = web.WebSocketResponse(protocols=('graphql-ws',))
     await ws.prepare(request)
 
