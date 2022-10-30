@@ -2,12 +2,12 @@
 flake8==3.9.2
 
 # test
-pytest==3.5.0
-pytest-aiohttp
+pytest==7.2.0
+pytest-aiohttp==1.0.4
 
 
 # dev
-psycopg2
+psycopg2==3.1.4
 
 # docs
 pygments==2.13.0
