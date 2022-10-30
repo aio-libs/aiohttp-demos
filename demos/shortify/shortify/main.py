@@ -16,8 +16,8 @@ TEMPLATES_ROOT = pathlib.Path(__file__).parent / 'templates'
 
 
 async def setup_redis(app, conf):
-    redis = await init_redis(conf['redis'])
-    app['redis'] = redis
+    redis = await init_redis(conf["redis"])
+    app["redis"] = redis
     return redis
 
 
