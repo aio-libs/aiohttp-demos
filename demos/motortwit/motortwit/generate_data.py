@@ -28,7 +28,7 @@ async def insert_data(collection, values):
 async def generate_users(mongo, schema, rows, fake):
     values = []
     pw_hash = generate_password_hash('123456')
-    for i in range(rows):
+    for _ in range(rows):
         values.append(schema({
             '_id': ObjectId(),
             'username': fake.user_name()[:50],
@@ -42,7 +42,7 @@ async def generate_users(mongo, schema, rows, fake):
 async def generate_messages(mongo, schema, rows, fake, users):
     values = []
     for user in users:
-        for i in range(rows):
+        for _ in range(rows):
             values.append(schema({
                 '_id': ObjectId(),
                 'author_id': ObjectId(user['_id']),
@@ -61,7 +61,7 @@ async def generate_followers(mongo, schema, rows, fake, user_ids):
         entry = schema({'_id': ObjectId(),
                         'who_id': user_id,
                         'whom_id': []})
-        for i in range(rows):
+        for _ in range(rows):
             entry['whom_id'].append(random.choice(user_ids))
         values.append(entry)
     await insert_data(mongo, values)
