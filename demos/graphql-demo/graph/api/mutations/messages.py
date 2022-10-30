@@ -15,9 +15,7 @@ __all__ = [
 
 
 class AddMessageMutation(graphene.Mutation):
-    '''
-    Gives interface for create new messages.
-    '''
+    """Provide interface for create new messages."""
 
     class Arguments:
         room_id = graphene.Int()
@@ -46,9 +44,7 @@ class AddMessageMutation(graphene.Mutation):
 
 
 class RemoveMessageMutation(graphene.Mutation):
-    '''
-    Gives interface for create new message by id.
-    '''
+    """Provide interface for create new message by id."""
 
     class Arguments:
         id = graphene.Int()
@@ -65,9 +61,7 @@ class RemoveMessageMutation(graphene.Mutation):
 
 
 class StartTypingMessageMutation(graphene.Mutation):
-    '''
-    Gives interface for set info about start typing new message.
-    '''
+    """Provide interface for set info about start typing new message."""
 
     class Arguments:
         room_id = graphene.Int()
