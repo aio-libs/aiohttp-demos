@@ -20,11 +20,11 @@ log = logging.getLogger(__name__)
 
 async def setup_redis(app):
 
-    redis_host = app['config']['redis']['REDIS_HOST']
-    redis_port = app['config']['redis']['REDIS_PORT']
+    redis_host = app["config"]["redis"]["REDIS_HOST"]
+    redis_port = app["config"]["redis"]["REDIS_PORT"]
 
     redis = await aioredis.from_url(f"redis://{redis_host}:{redis_port}")
-    app['redis'] = redis
+    app["redis"] = redis
     return redis
 
 
