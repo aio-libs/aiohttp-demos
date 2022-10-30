@@ -68,7 +68,7 @@ async def create_engine():
 async def generate_users(conn: SAConnection, count: int) -> List[int]:
 
     values = []
-    for number in range(count):
+    for _ in range(count):
         name = faker.name()
         values.append({
             'username': name,
@@ -120,7 +120,7 @@ async def generate_messages(
 
     values = []
     for room in rooms:
-        for i in range(20):
+        for _ in range(20):
             values.append({
                 'body': faker.text(max_nb_chars=200),
                 'who_like': random.sample(users, random.randint(0, 5)),
