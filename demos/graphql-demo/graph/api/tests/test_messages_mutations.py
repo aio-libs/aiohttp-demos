@@ -9,7 +9,7 @@ async def test_mutations_for_message(client, requests):
 
     async def fetch_messages(room_id: int):
         return await client.execute(
-            '''{
+            """{
               room(id: %s) {
                 messages {
                   id
@@ -23,7 +23,7 @@ async def test_mutations_for_message(client, requests):
                 }
               }
             }
-            ''' % room_id,
+            """ % room_id,
             context_value=requests,
         )
 
@@ -32,13 +32,13 @@ async def test_mutations_for_message(client, requests):
     init_last_messages = messages[-1]
 
     executed = await client.execute(
-        '''
+        """
           mutation {
             addMessage(roomId: %s, ownerId: %s, body: "%s") {
               isCreated
             }
           }
-        ''' % (room_id, owner_id, text),
+        """ % (room_id, owner_id, text),
         context_value=requests,
     )
 
@@ -52,13 +52,13 @@ async def test_mutations_for_message(client, requests):
     assert last_messages['body'] == text
 
     executed = await client.execute(
-        '''
+        """
           mutation {
             removeMessage(id: %s) {
               isRemoved
             }
           }
-        ''' % last_messages['id'],
+        """ % last_messages['id'],
         context_value=requests,
     )
 
