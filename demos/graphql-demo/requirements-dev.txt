@@ -6,7 +6,7 @@ aiodataloader==0.2.1
 faker==15.1.1
 trafaret_config==2.0.2
 graphene==2.1.7
-graphql-core==2.2.1
+graphql-core==2.3.2
 graphql-ws==0.4.4
 psycopg2-binary==2.9.5
 redis==4.3.4
