@@ -47,8 +47,9 @@ def predict(raw_data: bytes, model: Optional[Any] = None) -> bytes:
         raise RuntimeError('Model should be loaded first')
 
     data: Dict[str, Any] = {}
-    with Image.open(io.BytesIO(raw_data)) as f:
-        image = prepare_image(f, target=(224, 224))
+    with io.BytesIO(raw_data) as b_io:
+        with Image.open(b_io) as f:
+            image = prepare_image(f, target=(224, 224))
 
     preds = model.predict(image)
     results = imagenet_utils.decode_predictions(preds)
