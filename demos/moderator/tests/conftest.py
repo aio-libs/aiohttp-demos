@@ -16,6 +16,6 @@ def conf():
 
 @pytest.fixture
 def api(loop, aiohttp_client, conf):
-    app = loop.run_until_complete(init(loop, conf))
+    app = loop.run_until_complete(init(conf))
     yield loop.run_until_complete(aiohttp_client(app))
     loop.run_until_complete(app.shutdown())
