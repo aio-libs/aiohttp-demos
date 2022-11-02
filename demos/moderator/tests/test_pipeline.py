@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from moderator.model.pipeline import build_pipeline, read_data
 
 
@@ -8,7 +10,7 @@ def test_build_pipeline():
 
 
 def test_train_model():
-    dataset_path = "tests/toxic.csv"
+    dataset_path = Path(__file__).parent / "toxic.csv"
     train, targets = read_data(dataset_path)
 
     pipeline = build_pipeline()
