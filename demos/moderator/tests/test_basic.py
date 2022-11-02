@@ -12,11 +12,11 @@ async def test_moderate(api):
     assert resp.status == 200
     data = await resp.json()
     expected = [{
-        'identity_hate': 0.01,
-        'insult': 0.04,
-        'obscene': 0.04,
-        'severe_toxic': 0.01,
-        'toxic': 0.1
+        "identity_hate": "0.01",
+        "insult": "0.04",
+        "obscene": "0.04",
+        "severe_toxic": "0.01",
+        "toxic": "0.10"
     }]
     assert data == expected
 
