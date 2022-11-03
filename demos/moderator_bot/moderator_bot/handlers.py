@@ -44,6 +44,6 @@ class MainHandler:
         )
 
     async def _message_handler(self, event):
-        scores = await self._run(predict, event["text"])
+        scores = await asyncio.get_running_loop().run_in_executor(self.executor, predict, event["text"])
         if np.average([scores.toxic, scores.insult]) >= self._toxicity_index:
             await self._respond(event)
