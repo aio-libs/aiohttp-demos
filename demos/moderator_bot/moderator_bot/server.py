@@ -24,36 +24,30 @@ def setup_cleanup_hooks(tasks):
     return cleanup
 
 
-def setup_startup_hooks(loop, executor, model_path, workers_count):
+def setup_startup_hooks(executor, model_path, workers_count):
     async def startup(app):
-        run = partial(loop.run_in_executor, executor, warm, model_path)
+        run = partial(asyncio.get_running_loop().run_in_executor, executor, warm, model_path)
         coros = [run() for _ in range(0, workers_count)]
         await asyncio.gather(*coros)
 
     return startup
 
 
-async def init_application(loop, config):
+async def init_application(config):
     app = web.Application(debug=config["debug"])
 
     executor = ProcessPoolExecutor(MAX_WORKERS)
 
     slack_client = Slacker(SLACK_BOT_TOKEN)
-    giphy_client = GiphyClient(loop, GIPHY_API_KEY, config["request_timeout"])
+    giphy_client = GiphyClient(GIPHY_API_KEY, config["request_timeout"])
 
-    handler = MainHandler(
-        loop,
-        executor,
-        slack_client,
-        giphy_client,
-    )
+    handler = MainHandler(executor, slack_client, giphy_client)
 
     model_path = Path(config["model_path"])
 
     setup_main_handler(app, handler)
 
     app.on_startup.append(setup_startup_hooks(
-        loop,
         executor,
         model_path,
         MAX_WORKERS,
@@ -69,7 +63,6 @@ async def init_application(loop, config):
 
 
 def main():
-    loop = asyncio.get_event_loop()
     config = load_config(PROJECT_ROOT / "configs" / "base.yml")
-    app = init_application(loop, config)
+    app = asyncio.run(init_application(config))
     web.run_app(app, host=config["host"], port=config["port"])
