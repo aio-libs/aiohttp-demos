@@ -1,5 +1,4 @@
 import asyncio
-from functools import partial
 
 import numpy as np
 from aiohttp import web
