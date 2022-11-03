@@ -6,7 +6,7 @@ import yaml
 
 def load_config(path):
     with Path(path).open() as fp:
-        return yaml.load(fp.read())
+        return yaml.safe_load(fp.read())
 
 
 def required_env(variable):
