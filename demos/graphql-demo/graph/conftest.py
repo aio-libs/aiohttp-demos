@@ -136,7 +136,7 @@ async def sa_engine(event_loop):
 
 @pytest.fixture
 async def requests(sa_engine):
-    """Rrequest for get resource in program from app."""
+    """Request for get resource in program from app."""
     class Loaders:
         users = UserDataLoader(sa_engine, max_batch_size=100)
 
