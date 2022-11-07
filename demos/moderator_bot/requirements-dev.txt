@@ -17,7 +17,6 @@ py==1.8.0
 pytest==7.2.0
 pytest-aiohttp==1.0.4
 pyyaml==5.4
-requests==2.22.0
 scikit-learn==0.21.3
 scipy==1.9.3
 six==1.12.0
