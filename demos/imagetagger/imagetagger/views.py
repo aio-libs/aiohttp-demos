@@ -22,6 +22,7 @@ class SiteHandler:
     async def predict(self, request: web.Request) -> web.Response:
         form = await request.post()
         raw_data = form['file'].file.read()
+        form["file"].file.close()  # Not needed in aiohttp 4+.
         executor = request.app['executor']
         r = self._loop.run_in_executor
         raw_data = await r(executor, predict, raw_data)

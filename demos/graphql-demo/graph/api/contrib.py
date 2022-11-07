@@ -7,7 +7,7 @@ from aiohttp_graphql.render_graphiql import (
 )
 
 
-GQPHIQL_TEMPLATE = '''
+GQPHIQL_TEMPLATE = """
 <!DOCTYPE html>
 <html>
 <head>
@@ -140,7 +140,7 @@ GQPHIQL_TEMPLATE = '''
   </script>
 </body>
 </html>
-'''
+"""
 
 
 def simple_renderer(template, **values):

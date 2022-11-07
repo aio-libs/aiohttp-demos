@@ -6,14 +6,13 @@ from yarl import URL
 
 
 class GiphyClient:
-    def __init__(self, loop, api_key, timeout, session=None):
-        self.loop = loop
+    def __init__(self, api_key, timeout, session=None):
         self.api_key = api_key
         self.timeout = timeout
         self.base_url = URL("https://api.giphy.com/v1/gifs")
 
         if session is None:
-            session = aiohttp.ClientSession(loop=self.loop)
+            session = aiohttp.ClientSession()
 
         self.session = session
 

@@ -1,4 +1,8 @@
+from pathlib import Path
+
 from aiohttp import FormData
+
+DATA_PATH = Path(__file__).parent / "data"
 
 
 async def test_index(api):
@@ -9,8 +13,8 @@ async def test_index(api):
 
 
 async def test_predict(api):
-    with open('tests/data/hotdog.jpg', 'rb') as f:
-        img = f.read()
+    hotdog_path = DATA_PATH / "hotdog.jpg"
+    img = hotdog_path.read_bytes()
     data = FormData()
     data.add_field(
         'file', img, filename='aircraft.jpg', content_type='image/img')

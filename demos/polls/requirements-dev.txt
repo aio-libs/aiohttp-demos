@@ -1,10 +1,9 @@
-# Install project in editable mode from current directory.
-# `setup.py` contains instructions to install dependencies, such as
-# aiohttp / aiopg / aiohttp-jinja2 / etc
-
--e .
+aiohttp==3.8.3
+aiopg[sa]==1.4.0
+aiohttp-jinja2==1.5
+trafaret_config==2.0.2
 
 # For testing
-pytest
-pytest-aiohttp
-flake8
+pytest==7.2.0
+pytest-aiohttp==1.0.4
+flake8==3.9.2

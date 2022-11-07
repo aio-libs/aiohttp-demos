@@ -22,7 +22,7 @@ install_requires = [
     'trafaret',
     'aiohttp_jinja2',
     'pyyaml',
-    'redis==4.3.4'
+    'redis>=4.2'
 ]
 
 

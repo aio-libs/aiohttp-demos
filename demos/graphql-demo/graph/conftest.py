@@ -29,9 +29,7 @@ test_config = get_config(['-c', TEST_CONFIG_PATH.as_posix()])
 
 # helpers
 def get_db_url(config: dict) -> str:
-    '''
-    Generate a url for db connection from the config.
-    '''
+    """Generate a url for db connection from the config."""
 
     return (
         f"postgresql://"
@@ -54,10 +52,7 @@ test_engine = create_engine(
 
 
 def setup_test_db(engine) -> None:
-    '''
-    Removing the old test database environment and creating new clean
-    environment.
-    '''
+    """Creating new test database environment."""
     # test params
     db_name = test_config['postgres']['database']
     db_user = test_config['postgres']['user']
@@ -75,9 +70,7 @@ def setup_test_db(engine) -> None:
 
 
 def teardown_test_db(engine) -> None:
-    '''
-    Removing the test database environment.
-    '''
+    """Remove the test database environment."""
     # test params
     db_name = test_config['postgres']['database']
     db_user = test_config['postgres']['user']
@@ -98,15 +91,13 @@ def teardown_test_db(engine) -> None:
 
 def init_sample_data(engine) -> None:
     with engine.connect() as conn:
-        query = users\
-            .insert()\
-            .values([{
-                    'id': idx,
-                    'username': f'test#{idx}',
-                    'email': f'test#{idx}',
-                    'password': f'{idx}'} for idx in range(1000)
-                ])\
-            .returning(users.c.id)
+        values = [{
+            "id": idx,
+            "username": f"test#{idx}",
+            "email": f"test#{idx}",
+            "password": f"{idx}"
+        } for idx in range(1000)]
+        query = users.insert().values(values).returning(users.c.id)
 
         response = conn.execute(query)
         users_idx = [user[0] for user in response]
@@ -124,7 +115,7 @@ def init_sample_data(engine) -> None:
         values = []
 
         for room in rooms_idx:
-            for i in range(10):
+            for _ in range(10):
                 values.append({
                     'body': "test",
                     'who_like': random.sample(users_idx, random.randint(0, 5)),
@@ -137,20 +128,15 @@ def init_sample_data(engine) -> None:
 
 # fixtures
 @pytest.fixture
-async def sa_engine(loop):
-    '''
-    The fixture initialize async engine for PostgresSQl.
-    '''
-
-    return await aiopg.sa.create_engine(**test_config['postgres'])
+async def sa_engine(event_loop):
+    """The fixture initialize async engine for PostgresSQl."""
+    async with aiopg.sa.create_engine(**test_config["postgres"]) as db:
+        yield db
 
 
 @pytest.fixture
 async def requests(sa_engine):
-    '''
-    In the graphene's client u should put request for get resource in program
-    from app.
-    '''
+    """Request for get resource in program from app."""
     class Loaders:
         users = UserDataLoader(sa_engine, max_batch_size=100)
 
@@ -169,21 +155,17 @@ async def requests(sa_engine):
     return {'request': request}
 
 
-@pytest.yield_fixture(scope='session')
+@pytest.fixture(scope="session")
 def db():
-    '''
-    The fixture for running and turn down database.
-    '''
+    """The fixture for running and turn down database."""
     setup_test_db(engine)
     yield
     teardown_test_db(engine)
 
 
-@pytest.yield_fixture(scope='session')
+@pytest.fixture(scope="session")
 def tables(db):
-    '''
-    The fixture for create all tables and init simple data.
-    '''
+    """The fixture for create all tables and init simple data."""
     metadata.create_all(test_engine)
     init_sample_data(test_engine)
     yield
@@ -192,7 +174,5 @@ def tables(db):
 
 @pytest.fixture(scope='session')
 def client(tables):
-    '''
-    The fixture for the initialize graphene's client.
-    '''
+    """The fixture for the initialize graphene's client."""
     return Client(schema, return_promise=True)

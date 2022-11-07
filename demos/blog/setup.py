@@ -7,7 +7,7 @@ install_requires = (
     'bcrypt',
     'pytoml',
     'aiohttp_security[session]',
-    'redis==4.3.4',
+    'redis>=4.2',
     'sqlalchemy',
     'asyncpg',
     'asyncpgsa',

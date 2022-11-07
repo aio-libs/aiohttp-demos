@@ -8,17 +8,13 @@ from graph.api.models.user import User
 
 
 class RandomType(graphene.ObjectType):
-    '''
-    Random type. Need for test.
-    '''
+    """Random type. Need for test."""
     seconds = graphene.Int()
     random_int = graphene.Int()
 
 
 class MessageAdded(graphene.ObjectType):
-    '''
-    The simple type for representation message response in subscription.
-    '''
+    """The simple type for representation message response in subscription."""
     id = graphene.Int(
         description='The id of message'
     )
@@ -32,10 +28,9 @@ class MessageAdded(graphene.ObjectType):
 
 
 class StartTyping(graphene.ObjectType):
-    '''
-    The simple type for representation info connected with starting of typing
+    """Simple type for representing info connected with starting of typing
     new message by some user.
-    '''
+    """
 
     user = graphene.Field(
         User,
@@ -44,9 +39,7 @@ class StartTyping(graphene.ObjectType):
 
 
 class MessageSubscription(graphene.ObjectType):
-    '''
-    Subscriptions for all actions connected with messages.
-    '''
+    """Subscriptions for all actions connected with messages."""
     random_int = graphene.Field(RandomType)
     typing_start = graphene.Field(
         StartTyping,

@@ -18,14 +18,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2.3.4
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: 3.9
-    - name: Cache pip
-      uses: actions/cache@v2.1.6
-      with:
-        path: ~/.cache/pip
-        key: ${{ hashFiles('**/setup.py') }}-${{ hashFiles('**/requirements*.txt') }}
+        cache: 'pip'
+        cache-dependency-path: '**/requirements*.txt'
     - name: Install dependencies
       run: |
         make install
@@ -68,14 +65,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: 3.9
-    - name: Cache pip
-      uses: actions/cache@v2.1.6
-      with:
-        path: ~/.cache/pip
-        key: ${{ hashFiles('**/setup.py') }}-${{ hashFiles('**/requirements*.txt') }}
+        cache: 'pip'
+        cache-dependency-path: '**/requirements*.txt'
     - name: Install dependencies
       run: |
         make install
@@ -89,11 +83,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Cache pip
-      uses: actions/cache@v2.1.6
-      with:
-        path: ~/.cache/pip
-        key: ${{ hashFiles('**/setup.py') }}-${{ hashFiles('**/requirements*.txt') }}
     - name: Install sphinx
       run: pip install sphinx
     - name: Documentation

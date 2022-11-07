@@ -4,12 +4,12 @@ import pytest
 @pytest.mark.asyncio
 async def test_simple_fetch_messages_from_room(client, requests):
     executed = await client.execute(
-        '''{
+        """{
           rooms {
             id
           }
         }
-        ''',
+        """,
         context_value=requests,
     )
 
@@ -17,7 +17,7 @@ async def test_simple_fetch_messages_from_room(client, requests):
     room_id = single_room['id']
 
     executed = await client.execute(
-        '''{
+        """{
           room(id: %s) {
             messages {
               id
@@ -31,7 +31,7 @@ async def test_simple_fetch_messages_from_room(client, requests):
             }
           }
         }
-        ''' % room_id,
+        """ % room_id,
         context_value=requests,
     )
 

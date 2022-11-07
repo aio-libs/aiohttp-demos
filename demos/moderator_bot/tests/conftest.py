@@ -10,6 +10,6 @@ def config():
 
 
 @pytest.fixture
-async def client(aiohttp_client, loop, config):
-    app = await init_application(loop, config)
+async def client(aiohttp_client, config):
+    app = await init_application(config)
     return await aiohttp_client(app)

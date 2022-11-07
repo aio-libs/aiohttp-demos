@@ -5,10 +5,7 @@ __all__ = ['User', ]
 
 
 class User(graphene.ObjectType):
-    '''
-    A user is an individual's account on current api that can have
-    conversations.
-    '''
+    """Individual's account on current api that can have conversations."""
     id = graphene.Int(
         description='A id of user',
     )

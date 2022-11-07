@@ -8,9 +8,7 @@ from graph.api.mutations.messages import (
 
 
 class Mutation(graphene.ObjectType):
-    '''
-    The main GraphQL mutation point.
-    '''
+    """Main GraphQL mutation point."""
 
     add_message = AddMessageMutation.Field()
     remove_message = RemoveMessageMutation.Field()

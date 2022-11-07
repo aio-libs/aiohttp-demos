@@ -4,13 +4,13 @@ import pytest
 @pytest.mark.asyncio
 async def test_simple_fetch_rooms(client, requests):
     executed = await client.execute(
-        '''{
+        """{
           rooms {
             id
             name
           }
         }
-        ''',
+        """,
         context_value=requests,
     )
 
@@ -25,7 +25,7 @@ async def test_simple_fetch_rooms(client, requests):
 @pytest.mark.asyncio
 async def test_fetch_data_connected_with_owner_of_room(client, requests):
     executed = await client.execute(
-        '''{
+        """{
           rooms {
             owner {
               id
@@ -34,7 +34,7 @@ async def test_fetch_data_connected_with_owner_of_room(client, requests):
             }
           }
         }
-        ''',
+        """,
         context_value=requests,
     )
 
@@ -48,7 +48,7 @@ async def test_fetch_data_connected_with_owner_of_room(client, requests):
 @pytest.mark.asyncio
 async def test_fetch_single_room(client, requests):
     executed = await client.execute(
-        '''{
+        """{
           rooms {
             id
             name
@@ -59,7 +59,7 @@ async def test_fetch_single_room(client, requests):
             }
           }
         }
-        ''',
+        """,
         context_value=requests,
     )
 
@@ -67,7 +67,7 @@ async def test_fetch_single_room(client, requests):
     room_id = single_room['id']
 
     executed = await client.execute(
-        '''{
+        """{
           room(id: %s) {
             id
             name
@@ -78,7 +78,7 @@ async def test_fetch_single_room(client, requests):
             }
           }
         }
-        ''' % room_id,
+        """ % room_id,
         context_value=requests,
     )
 
