@@ -1,5 +1,3 @@
-import asyncio
-
 from .server import init_application
 from .settings import PROJECT_ROOT
 from .utils import load_config
