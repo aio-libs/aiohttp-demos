@@ -28,7 +28,7 @@
   "devDependencies": {
     "autoprefixer": "8.5.0",
     "babel-preset-env": "1.7.0",
-    "babel-preset-preact": "1.1.0",
+    "babel-preset-preact": "2.0.0",
     "eslint": "4.19.1",
     "eslint-config-airbnb-base": "12.1.0",
     "eslint-config-prettier": "2.9.0",
