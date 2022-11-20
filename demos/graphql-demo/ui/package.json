@@ -7,7 +7,7 @@
     "graphql": "^16.6.0",
     "graphql-tag": "^2.2.0",
     "immutability-helper": "^3.1.1",
-    "react": "15.4.2",
+    "react": "15.7.0",
     "react-apollo": "^1.2.0",
     "react-dom": "15.4.2",
     "recompose": "^0.22.0",
