@@ -22,11 +22,19 @@ updates:
     directory: "/demos/graphql-demo"
     schedule:
       interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/demos/graphql-demo"
+    schedule:
+      interval: "daily"
   - package-ecosystem: "pip"
     directory: "/demos/imagetagger"
     schedule:
       interval: "daily"
   - package-ecosystem: "pip"
+    directory: "/demos/moderator"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
     directory: "/demos/moderator"
     schedule:
       interval: "daily"
