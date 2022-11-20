@@ -9,7 +9,7 @@
     "immutability-helper": "^3.1.1",
     "react": "15.7.0",
     "react-apollo": "^1.2.0",
-    "react-dom": "15.4.2",
+    "react-dom": "15.7.0",
     "recompose": "^0.22.0",
     "redux": "^3.6.0",
     "subscriptions-transport-ws": "^0.7.0"
