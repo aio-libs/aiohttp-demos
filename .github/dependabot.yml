@@ -23,7 +23,7 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "npm"
-    directory: "/demos/graphql-demo"
+    directory: "/demos/graphql-demo/ui"
     schedule:
       interval: "daily"
   - package-ecosystem: "pip"
