@@ -10,7 +10,7 @@
     "react": "15.7.0",
     "react-apollo": "^1.2.0",
     "react-dom": "15.7.0",
-    "recompose": "^0.22.0",
+    "recompose": "^0.30.0",
     "redux": "^3.6.0",
     "subscriptions-transport-ws": "^0.7.0"
   },
