@@ -30,7 +30,7 @@
     "babel-preset-env": "1.7.0",
     "babel-preset-preact": "2.0.0",
     "eslint": "4.19.1",
-    "eslint-config-airbnb-base": "12.1.0",
+    "eslint-config-airbnb-base": "13.2.0",
     "eslint-config-prettier": "2.9.0",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-json": "3.1.0",
