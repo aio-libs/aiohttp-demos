@@ -20,7 +20,7 @@
     "npm": "^9.1.2",
     "package.json": "^2.0.1",
     "parcel": "^2.8.0",
-    "preact": "8.2.9",
+    "preact": "10.11.3",
     "snyk": "^1.1061.0",
     "whatwg-fetch": "3.6.2",
     "yarn": "^1.22.19"
