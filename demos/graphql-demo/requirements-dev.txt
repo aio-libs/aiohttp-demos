@@ -9,7 +9,7 @@ graphene==2.1.9
 graphql-core==2.3.2
 graphql-ws==0.4.4
 psycopg2-binary==2.9.5
-redis==4.3.4
+redis==4.3.5
 
 mypy==0.991
 flake8==5.0.4
