@@ -20,6 +20,6 @@ scikit-learn==0.21.3
 scipy==1.9.3
 six==1.16.0
 slacker==0.9.42
-urllib3==1.26.12
+urllib3==1.26.13
 yarl==1.8.1
 zipp==3.10.0
