@@ -29,7 +29,7 @@
     "autoprefixer": "9.8.8",
     "babel-preset-env": "1.7.0",
     "babel-preset-preact": "2.0.0",
-    "eslint": "5.16.0",
+    "eslint": "7.32.0",
     "eslint-config-airbnb-base": "14.2.1",
     "eslint-config-prettier": "6.15.0",
     "eslint-plugin-import": "2.26.0",
