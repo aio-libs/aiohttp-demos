@@ -12,4 +12,4 @@ sqlalchemy==1.4.44
 pytest==7.2.0
 pytest-aiohttp==1.0.4
 pytest-asyncio==0.20.2
-flake8==5.0.4
+flake8==6.0.0
