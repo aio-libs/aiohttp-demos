@@ -10,7 +10,7 @@ idna==3.4
 importlib-metadata==0.23 ; python_version < '3.8'
 joblib==1.2.0
 more-itertools==9.0.0
-multidict==6.0.2
+multidict==6.0.3
 numpy==1.23.4
 pluggy==1.0.0
 pytest==7.2.0
