@@ -1,6 +1,6 @@
 # lint
 flake8==6.0.0
-flake8-bugbear==22.10.27
+flake8-bugbear==22.12.6
 flake8-quotes==3.3.1
 
 # test
