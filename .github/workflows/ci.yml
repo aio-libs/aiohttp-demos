@@ -30,7 +30,7 @@ jobs:
       run: |
         make lint
     - name: Install libenchant
-      run: sudo apt-get install libenchant-dev
+      run: sudo apt-get install libenchant-2-dev
     - name: Run docs spelling
       run: |
         make doc-spelling
