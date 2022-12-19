@@ -4,6 +4,6 @@ aiohttp_security==0.4.0
 bcrypt==4.0.1
 faker==15.3.4
 motor==3.1.1
-pytz==2022.6
+pytz==2022.7
 pyyaml==6.0
 trafaret==2.1.1
