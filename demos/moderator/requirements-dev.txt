@@ -1,7 +1,7 @@
 aiohttp==3.8.3
 trafaret==2.1.1
 pyyaml==6.0
-numpy==1.24.0
+numpy==1.24.1
 pandas==1.5.2
 scikit-learn==1.2.0
 scipy==1.9.3
