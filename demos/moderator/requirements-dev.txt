@@ -4,7 +4,7 @@ pyyaml==6.0
 numpy==1.24.1
 pandas==1.5.2
 scikit-learn==1.2.0
-scipy==1.9.3
+scipy==1.10.0
 
 
 flake8==6.0.0
