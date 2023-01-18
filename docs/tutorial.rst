@@ -24,7 +24,9 @@ It looks like this:
 aiohttp server is built around :class:`aiohttp.web.Application` instance.
 It is used for registering *startup*/*cleanup* signals, connecting routes etc.
 
-The following code creates an application::
+The following code creates an application:
+
+.. code-block:: python
 
     # aiohttpdemo_polls/main.py
     from aiohttp import web
@@ -51,7 +53,9 @@ Views
 -----
 
 Let's start with the first views. Create the file ``aiohttpdemo_polls/views.py``
-and add the following to it::
+and add the following to it:
+
+.. code-block:: python
 
     # aiohttpdemo_polls/views.py
     from aiohttp import web
@@ -64,7 +68,9 @@ This ``index`` view is the simplest view possible in Aiohttp.
 Now, we should create a route for this ``index`` view. Put the following into
 ``aiohttpdemo_polls/routes.py``. It is a good practice to separate views,
 routes, models etc. You'll have more of each file type, and it is nice to group
-them into different places::
+them into different places:
+
+.. code-block:: python
 
     # aiohttpdemo_polls/routes.py
     from views import index
@@ -74,7 +80,9 @@ them into different places::
 
 
 We should add a call to the ``setup_routes`` function somewhere. The best place
-to do this is in ``main.py``::
+to do this is in ``main.py``:
+
+.. code-block:: python
 
    # aiohttpdemo_polls/main.py
    from aiohttp import web
@@ -183,7 +191,9 @@ Install ``pyyaml`` package::
     $ pip install pyyaml
 
 Let's also create a separate ``settings.py`` file. It helps to leave ``main.py``
-clean and short::
+clean and short:
+
+.. code-block:: python
 
     # aiohttpdemo_polls/settings.py
     import pathlib
@@ -254,105 +264,66 @@ We will use SQLAlchemy to describe database schema for two related models,
                           +-------- | question_id   |
                                     +---------------+
 
-Create ``db.py`` file with database schemas::
+Create ``db.py`` file with database schemas:
+
+.. code-block:: python
 
     # aiohttpdemo_polls/db.py
-    from sqlalchemy import (
-        MetaData, Table, Column, ForeignKey,
-        Integer, String, Date
-    )
+    from sqlalchemy import MetaData, ForeignKey, String
+    from sqlalchemy.orm import declarative_base, Mapped, mapped_column
+    from datetime import date
 
-    meta = MetaData()
+    Base = declarative_base()
 
-    question = Table(
-        'question', meta,
+    class Question(Base):
+        __tablename__ = "question"
 
-        Column('id', Integer, primary_key=True),
-        Column('question_text', String(200), nullable=False),
-        Column('pub_date', Date, nullable=False)
-    )
+        id: Mapped[int] = mapped_column(primary_key=True)
+        question_text: Mapped[str] = mapped_column(String(200), nullable=False)
+        pub_date: Mapped[date]
 
-    choice = Table(
-        'choice', meta,
+    class Choice(Base):
+        __tablename__ = "choice"
 
-        Column('id', Integer, primary_key=True),
-        Column('choice_text', String(200), nullable=False),
-        Column('votes', Integer, server_default="0", nullable=False),
+        id: Mapped[int] = mapped_column(primary_key=True)
+        choice_text: Mapped[str] = mapped_column(String(200), nullable=False)
+        votes: Mapped[int] = mapped_column(server_default="0", nullable=False)
 
-        Column('question_id',
-               Integer,
-               ForeignKey('question.id', ondelete='CASCADE'))
-    )
-
-
-.. note::
-
-    It is possible to configure tables in a declarative style like so:
-
-    .. code-block:: python
-
-        class Question(Base):
-            __tablename__ = 'question'
-
-            id = Column(Integer, primary_key=True)
-            question_text = Column(String(200), nullable=False)
-            pub_date = Column(Date, nullable=False)
-
-
-    But it doesn't give much benefits later on. SQLAlchemy ORM doesn't work in
-    asynchronous style and as a result ``aiopg.sa`` doesn't support related ORM
-    expressions such as ``Question.query.filter_by(question_text='Why').first()``
-    or ``session.query(TableName).all()``.
-
-    You still can make ``select`` queries after some code modifications:
-
-    .. code-block:: python
-
-        from sqlalchemy.sql import select
-        result = await conn.execute(select([Question]))
-
-    instead of
-
-    .. code-block:: python
-
-            result = await conn.execute(question.select())
-
-    But it is not as easy to deal with as update/delete queries.
+        question_id: Mapped[int] = mapped_column(
+            ForeignKey('question.id', ondelete='CASCADE')
+        )
 
 
 Now we need to create tables in database as it was described with sqlalchemy.
-Helper script can do that for you. Create a new file ``init_db.py`` in project's root::
+Helper script can do that for you. Create a new file ``init_db.py`` in project's root:
+
+.. code-block:: python
 
     # polls/init_db.py
     from sqlalchemy import create_engine, MetaData
+    from sqlalchemy.orm import Session, sessionmaker
+    from datetime import date
 
     from aiohttpdemo_polls.settings import config
-    from aiohttpdemo_polls.db import question, choice
-
-
+    from aiohttpdemo_polls.db import Question, Choice, Base
+    
     DSN = "postgresql://{user}:{password}@{host}:{port}/{database}"
 
     def create_tables(engine):
-        meta = MetaData()
-        meta.create_all(bind=engine, tables=[question, choice])
-
+        Base.metadata.create_all(bind=engine)
 
     def sample_data(engine):
-        conn = engine.connect()
-        conn.execute(question.insert(), [
-            {'question_text': 'What\'s new?',
-             'pub_date': '2015-12-15 17:17:49.629+02'}
-        ])
-        conn.execute(choice.insert(), [
-            {'choice_text': 'Not much', 'votes': 0, 'question_id': 1},
-            {'choice_text': 'The sky', 'votes': 0, 'question_id': 1},
-            {'choice_text': 'Just hacking again', 'votes': 0, 'question_id': 1},
-        ])
-        conn.close()
+        Session = sessionmaker(engine)
+        with Session.begin() as session:
+            session.add_all((
+                Question(question_text="What\'s new?",pub_date=date(2015, 12, 15)),
+                Choice(choice_text="Not much", votes=0, question_id=1),
+                Choice(choice_text="The sky", votes=0, question_id=1),
+                Choice(choice_text="Just hacking again", votes=0, question_id=1)
+            ))
 
-
-    if __name__ == '__main__':
-        db_url = DSN.format(**config['postgres'])
+    if __name__ == "__main__":
+        db_url = DSN.format(**config["postgres"])
         engine = create_engine(db_url)
 
         create_tables(engine)
@@ -363,10 +334,10 @@ Helper script can do that for you. Create a new file ``init_db.py`` in project's
     A more advanced version of this script is mentioned in :ref:`aiohttp-demos-polls-preparations-database` notes.
 
 
-Install both the ``aiopg`` and ``sqlalchemy`` packages to interact with the database,
+Install both the ``asyncpg`` and ``sqlalchemy`` packages to interact with the database,
 and run the script::
 
-    $ pip install aiopg
+    $ pip install asyncpg
     $ pip install SQLAlchemy>=2
     $ python init_db.py
 
@@ -410,8 +381,25 @@ For making DB queries we need an engine instance. Assuming ``conf`` is
 a :class:`dict` with the configuration info for a Postgres connection, this
 could be done by the following async generator function:
 
-.. literalinclude:: ../demos/polls/aiohttpdemo_polls/db.py
-  :pyobject: pg_context
+.. code-block:: python
+
+    async def pg_context(app):
+        conf = app['config']['postgres']
+        engine = await aiopg.sa.create_engine(
+            database=conf['database'],
+            user=conf['user'],
+            password=conf['password'],
+            host=conf['host'],
+            port=conf['port'],
+            minsize=conf['minsize'],
+            maxsize=conf['maxsize'],
+        )
+        async_session = async_sessionmaker(engine)
+        app["db"] = async_session
+
+        yield
+
+        await app["db"].dispose()
 
 Add the code to ``aiohttpdemo_polls/db.py`` file.
 
@@ -437,58 +425,43 @@ Complete files with changes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
-    :emphasize-lines: 33, 47
-
+    :emphasize-lines: 4, 27, 28, 29, 30, 31, 32, 33, 34, 35
+    
     # aiohttpdemo_polls/db.py
-    import aiopg.sa
-    from sqlalchemy import (
-        MetaData, Table, Column, ForeignKey,
-        Integer, String, Date
-    )
+    from sqlalchemy import MetaData, ForeignKey, String
+    from sqlalchemy.orm import declarative_base, Mapped, mapped_column
+    from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+    from datetime import date
 
-    __all__ = ['question', 'choice']
+    Base = declarative_base()
 
-    meta = MetaData()
+    class Question(Base):
+        __tablename__ = "question"
 
-    question = Table(
-        'question', meta,
+        id: Mapped[int] = mapped_column(primary_key=True)
+        question_text: Mapped[str] = mapped_column(String(200), nullable=False)
+        pub_date: Mapped[date]
 
-        Column('id', Integer, primary_key=True),
-        Column('question_text', String(200), nullable=False),
-        Column('pub_date', Date, nullable=False)
-    )
+    class Choice(Base):
+        __tablename__ = "choice"
 
-    choice = Table(
-        'choice', meta,
+        id: Mapped[int] = mapped_column(primary_key=True)
+        choice_text: Mapped[str] = mapped_column(String(200), nullable=False)
+        votes: Mapped[int] = mapped_column(server_default="0", nullable=False)
 
-        Column('id', Integer, primary_key=True),
-        Column('choice_text', String(200), nullable=False),
-        Column('votes', Integer, server_default="0", nullable=False),
-
-        Column('question_id',
-               Integer,
-               ForeignKey('question.id', ondelete='CASCADE'))
-    )
-
+        question_id: Mapped[int] = mapped_column(
+            ForeignKey("question.id", ondelete="CASCADE")
+        )
 
     async def pg_context(app):
-        conf = app['config']['postgres']
-        engine = await aiopg.sa.create_engine(
-            database=conf['database'],
-            user=conf['user'],
-            password=conf['password'],
-            host=conf['host'],
-            port=conf['port'],
-            minsize=conf['minsize'],
-            maxsize=conf['maxsize'],
-        )
-        app['db'] = engine
+        conf = app["config"]["postgres"]
+        engine = create_async_engine("sqlite+aiosqlite:///polls.db")
+        async_session = async_sessionmaker(engine)
+        app["db"] = async_session
 
         yield
 
-        app['db'].close()
-        await app['db'].wait_closed()
-
+        await app["db"].dispose()
 
 .. code-block:: python
     :emphasize-lines: 6, 11
@@ -501,8 +474,8 @@ Complete files with changes
     from db import pg_context
 
     app = web.Application()
-    app['config'] = config
     setup_routes(app)
+    app["config"] = config
     app.cleanup_ctx.append(pg_context)
     web.run_app(app)
 
@@ -510,18 +483,19 @@ Complete files with changes
 Since we now have database connection on start - let's use it! Modify index view:
 
 .. code-block:: python
+    :emphasize-lines: 3, 7, 8, 9 , 10, 11
 
     # aiohttpdemo_polls/views.py
     from aiohttp import web
+    from sqlalchemy import select
     import db
 
 
     async def index(request):
-        async with request.app['db'].acquire() as conn:
-            cursor = await conn.execute(db.question.select())
-            records = await cursor.fetchall()
-            questions = [dict(q) for q in records]
-            return web.Response(text=str(questions))
+        async with request.app["db"]() as sess:
+            rows = await sess.scalars(select(db.Question))
+            questions = [f"{q.id}) {q.pub_date} : {q.question_text}" for q in rows.all()]
+            return web.Response(text="\n".join(questions))
 
 
 Run server and you should get list of available questions (one record at the moment) with all fields.
