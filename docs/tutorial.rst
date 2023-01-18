@@ -363,10 +363,11 @@ Helper script can do that for you. Create a new file ``init_db.py`` in project's
     A more advanced version of this script is mentioned in :ref:`aiohttp-demos-polls-preparations-database` notes.
 
 
-Install the ``aiopg[sa]`` package (it will pull ``sqlalchemy`` alongside) to interact with the database,
+Install both the ``aiopg`` and ``sqlalchemy`` packages to interact with the database,
 and run the script::
 
-    $ pip install aiopg[sa]
+    $ pip install aiopg
+    $ pip install SQLAlchemy>=2
     $ python init_db.py
 
 .. note::
