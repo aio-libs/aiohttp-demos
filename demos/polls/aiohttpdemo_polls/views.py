@@ -1,25 +1,23 @@
-# views.py
+# aiohttpdemo_polls/views.py
 import aiohttp_jinja2
 from aiohttp import web
-
+from sqlalchemy import select
 from . import db
 
 
-@aiohttp_jinja2.template('index.html')
+@aiohttp_jinja2.template("index.html")
 async def index(request):
-    async with request.app['db'].acquire() as conn:
-        cursor = await conn.execute(db.question.select())
-        records = await cursor.fetchall()
-        questions = [dict(q) for q in records]
-        return {'questions': questions}
+    async with request.app["db"]() as sess:
+        questions = await sess.scalars(select(db.Question))
+        return {"questions": questions.all()}
 
 
 @aiohttp_jinja2.template('detail.html')
 async def poll(request):
-    async with request.app['db'].acquire() as conn:
+    async with request.app['db']() as sess:
         question_id = request.match_info['question_id']
         try:
-            question, choices = await db.get_question(conn,
+            question, choices = await db.get_question(sess,
                                                       question_id)
         except db.RecordNotFound as e:
             raise web.HTTPNotFound(text=str(e))
@@ -27,15 +25,14 @@ async def poll(request):
             'question': question,
             'choices': choices
         }
-
 
 @aiohttp_jinja2.template('results.html')
 async def results(request):
-    async with request.app['db'].acquire() as conn:
+    async with request.app['db']() as sess:
         question_id = request.match_info['question_id']
 
         try:
-            question, choices = await db.get_question(conn,
+            question, choices = await db.get_question(sess,
                                                       question_id)
         except db.RecordNotFound as e:
             raise web.HTTPNotFound(text=str(e))
@@ -45,9 +42,7 @@ async def results(request):
             'choices': choices
         }
 
-
 async def vote(request):
-    async with request.app['db'].acquire() as conn:
         question_id = int(request.match_info['question_id'])
         data = await request.post()
         try:
@@ -56,7 +51,7 @@ async def vote(request):
             raise web.HTTPBadRequest(
                 text='You have not specified choice value') from e
         try:
-            await db.vote(conn, question_id, choice_id)
+            await db.vote(request.app, question_id, choice_id)
         except db.RecordNotFound as e:
             raise web.HTTPNotFound(text=str(e))
         router = request.app.router

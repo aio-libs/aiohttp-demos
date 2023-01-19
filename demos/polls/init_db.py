@@ -1,8 +1,10 @@
+# polls/init_db.py
 from sqlalchemy import create_engine, MetaData
+from sqlalchemy.orm import Session, sessionmaker
+from datetime import date
 
-from aiohttpdemo_polls.db import question, choice
+from aiohttpdemo_polls.db import Question, Choice, Base
 from aiohttpdemo_polls.settings import BASE_DIR, get_config
-
 
 DSN = "postgresql://{user}:{password}@{host}:{port}/{database}"
 
@@ -23,66 +25,19 @@ TEST_DB_URL = DSN.format(**TEST_CONFIG['postgres'])
 test_engine = create_engine(TEST_DB_URL)
 
 
-def setup_db(config):
-
-    db_name = config['database']
-    db_user = config['user']
-    db_pass = config['password']
-
-    conn = admin_engine.connect()
-    conn.execute("DROP DATABASE IF EXISTS %s" % db_name)
-    conn.execute("DROP ROLE IF EXISTS %s" % db_user)
-    conn.execute("CREATE USER %s WITH PASSWORD '%s'" % (db_user, db_pass))
-    conn.execute("CREATE DATABASE %s ENCODING 'UTF8'" % db_name)
-    conn.execute("ALTER DATABASE %s OWNER TO %s" %
-                 (db_name, db_user))
-    conn.execute("GRANT ALL ON SCHEMA public TO %s" % db_user)
-    conn.close()
-
-
-def teardown_db(config):
-    db_name = config['database']
-    db_user = config['user']
-
-    conn = admin_engine.connect()
-    conn.execute("""
-      SELECT pg_terminate_backend(pg_stat_activity.pid)
-      FROM pg_stat_activity
-      WHERE pg_stat_activity.datname = '%s'
-        AND pid <> pg_backend_pid();""" % db_name)
-    conn.execute("DROP DATABASE IF EXISTS %s" % db_name)
-    conn.execute("REVOKE ALL ON SCHEMA public FROM %s" % db_user)
-    conn.execute("DROP ROLE IF EXISTS %s" % db_user)
-    conn.close()
-
-
 def create_tables(engine=test_engine):
-    meta = MetaData()
-    meta.create_all(bind=engine, tables=[question, choice])
-
-
-def drop_tables(engine=test_engine):
-    meta = MetaData()
-    meta.drop_all(bind=engine, tables=[question, choice])
-
+    Base.metadata.create_all(bind=engine)
 
 def sample_data(engine=test_engine):
-    conn = engine.connect()
-    conn.execute(question.insert(), [
-        {'question_text': 'What\'s new?',
-         'pub_date': '2015-12-15 17:17:49.629+02'}
-    ])
-    conn.execute(choice.insert(), [
-        {'choice_text': 'Not much', 'votes': 0, 'question_id': 1},
-        {'choice_text': 'The sky', 'votes': 0, 'question_id': 1},
-        {'choice_text': 'Just hacking again', 'votes': 0, 'question_id': 1},
-    ])
-    conn.close()
+    Session = sessionmaker(engine)
+    with Session.begin() as session:
+        session.add_all((
+            Question(question_text="What\'s new?",pub_date=date(2015, 12, 15)),
+            Choice(choice_text="Not much", votes=0, question_id=1),
+            Choice(choice_text="The sky", votes=0, question_id=1),
+            Choice(choice_text="Just hacking again", votes=0, question_id=1)
+        ))
 
-
-if __name__ == '__main__':
-    setup_db(USER_CONFIG['postgres'])
+if __name__ == "__main__":
     create_tables(engine=user_engine)
     sample_data(engine=user_engine)
-    # drop_tables()
-    # teardown_db(USER_CONFIG['postgres'])

@@ -1,7 +1,7 @@
 Polls
 =====
 
-Example of polls project using aiohttp_, aiopg_ and aiohttp_jinja2_,
+Example of polls project using aiohttp_, asyncpg_, SQLAlchemy_ and aiohttp_jinja2_,
 similar to Django one.
 
 
@@ -65,11 +65,13 @@ Here is how you can do that::
 Requirements
 ============
 * aiohttp_
-* aiopg_
+* asyncpg_
 * aiohttp_jinja2_
+* SQLAlchemy_
 
 
 .. _Python: https://www.python.org
 .. _aiohttp: https://github.com/aio-libs/aiohttp
-.. _aiopg: https://github.com/aio-libs/aiopg
+.. _asyncpg: https://pypi.org/project/asyncpg
 .. _aiohttp_jinja2: https://github.com/aio-libs/aiohttp_jinja2
+.. _SQLAlchemy: https://www.sqlalchemy.org/
