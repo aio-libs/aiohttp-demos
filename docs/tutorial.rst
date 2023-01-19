@@ -333,7 +333,7 @@ Helper script can do that for you. Create a new file ``init_db.py`` in project's
     A more advanced version of this script is mentioned in :ref:`aiohttp-demos-polls-preparations-database` notes.
 
 
-Install both the ``asyncpg`` and ``sqlalchemy`` packages to interact with the database,
+Install both the ``asyncpg`` (we'll be using it later) and ``sqlalchemy`` packages to interact with the database,
 and run the script::
 
     $ pip install asyncpg
@@ -378,21 +378,14 @@ Creating connection engine
 
 For making DB queries we need an engine instance. Assuming ``conf`` is
 a :class:`dict` with the configuration info for a Postgres connection, this
-could be done by the following async generator function:
+could be done by the following generator function:
 
 .. code-block:: python
 
+    DSN = "postgresql+asyncgp://{user}:{password}@{host}:{port}/{database}"
+    
     async def pg_context(app):
-        conf = app['config']['postgres']
-        engine = await aiopg.sa.create_engine(
-            database=conf['database'],
-            user=conf['user'],
-            password=conf['password'],
-            host=conf['host'],
-            port=conf['port'],
-            minsize=conf['minsize'],
-            maxsize=conf['maxsize'],
-        )
+        engine = await create_async_engine(DSN.format(**app['config']['postgres']))
         app["db"] = async_sessionmaker(engine)
 
         yield
@@ -449,15 +442,16 @@ Complete files with changes
         question_id: Mapped[int] = mapped_column(
             ForeignKey("question.id", ondelete="CASCADE")
         )
+        
+    DSN = "postgresql+asyncgp://{user}:{password}@{host}:{port}/{database}"
 
-    async def pg_context(app):
-        conf = app["config"]["postgres"]
-        engine = create_async_engine("sqlite+aiosqlite:///polls.db")
-        app["db"] = async_sessionmaker(engine)
+        async def pg_context(app):
+            engine = await create_async_engine(DSN.format(**app['config']['postgres']))
+            app["db"] = async_sessionmaker(engine)
 
-        yield
+            yield
 
-        await engine.dispose()
+            await engine.dispose()
 
 .. code-block:: python
 
@@ -514,8 +508,7 @@ After installing, setup the library:
 
     # aiohttpdemo_polls/main.py
     from aiohttp import web
-    import aiohttp_jinja2
-    import jinja2
+    import aiohttp_jinja2, jinja2
 
     from settings import config, BASE_DIR
     from routes import setup_routes
@@ -533,6 +526,32 @@ After installing, setup the library:
 
 
 As you can see from setup above - templates should be placed at ``aiohttpdemo_polls/templates`` folder.
+
+Below is the code for ``base.html``. The rest of the templates we're going to use are available `here`_.
+
+.. _here: https://github.com/aio-libs/aiohttp-demos/tree/master/demos/polls/aiohttpdemo_polls/templates
+
+.. code-block:: jinja
+
+    <!--aiohttpdemo_polls/templates/base.html-->
+    <!DOCTYPE html>
+    <html>
+      <head>
+        {% block head %}
+         <link rel="stylesheet" type="text/css" 
+              href="{{ url('static', filename='style.css') }}" />
+            <title>{{title}}</title>
+        {% endblock %}
+      </head>
+      <body>
+        <h1>{{title}}</h1>
+        <div>
+          {% block content %}
+          {% endblock %}
+        </div>
+      </body>
+    </html>
+
 
 Let's create simple template and modify index view to use it:
 
@@ -571,14 +590,33 @@ processes the dict using the jinja2 template renderer.
             questions = await sess.scalars(select(db.Question))
             return {"questions": questions.all()}
 
-
 Run the server and you should see a question decorated in html list element.
 
 
-Let's add more views:
+Now let's add more views:
+
+Update ``views.py`` and ``db.py`` one last time, to:
 
 .. literalinclude:: ../demos/polls/aiohttpdemo_polls/views.py
-  :pyobject: poll
+
+.. literalinclude:: ../demos/polls/aiohttpdemo_polls/db.py
+
+
+Add the following to ``routes.py``:
+
+.. code-block:: python
+
+    app.router.add_get('/poll/{question_id}', poll, name='poll')
+    app.router.add_get('/poll/{question_id}/results',
+                       results, name='results')
+    app.router.add_post('/poll/{question_id}/vote', vote, name='vote')
+
+.. note::
+    
+    Don't forget to import ``poll, result, vote`` from ``views``.
+
+
+You're now ready to add votes to your current question. Since we only have one, it can be accessed by adding ``/poll/1`` to our URL. This will allow you to cast a vote and, on submission, allow to check the updated poll.
 
 
 .. _aiohttp-demos-polls-static-files:
@@ -594,12 +632,53 @@ proxy like NGINX or using CDN services.
 During development, handling static files using the aiohttp server is very
 convenient.
 
-Fortunately, this can be done easily by a single call:
+Fortunately, this can be easily done:
 
-.. literalinclude:: ../demos/polls/aiohttpdemo_polls/routes.py
-  :pyobject: setup_static_routes
+First we update ``routes.py``, adding:
+
+.. code-block:: python
+
+    import pathlib
+    PROJECT_ROOT = pathlib.Path(__file__).parent
+    
+    def setup_static_routes(app):
+        app.router.add_static('/static/',
+                              path=PROJECT_ROOT / 'static',
+                              name='static')
 
 where ``project_root`` is the path to the root folder.
+
+Then we update ``base.html``:
+
+.. code-block:: jinja
+
+    <!--aiohttpdemo_polls/templates/base.html-->
+    <!DOCTYPE html>
+    <html>
+      <head>
+        {% block head %}
+         <link rel="stylesheet" type="text/css" 
+              href="{{ url('static', filename='style.css') }}" />
+            <title>{{title}}</title>
+        {% endblock %}
+      </head>
+      <body>
+        <h1>{{title}}</h1>
+        <div>
+          {% block content %}
+          {% endblock %}
+        </div>
+      </body>
+    </html>
+    
+Lastly, we import and call ``setup_static_routes`` in ``main.py``:
+
+.. code-block:: python
+    
+    from routes import setup_static_routes
+    
+    setup_static_routes(app)
+
 
 
 .. _aiohttp-demos-polls-middlewares:
@@ -633,22 +712,8 @@ For other exceptions, we log the error and render our 500 template. Without the
 
 We have registered middleware in ``app`` by adding it to ``app.middlewares``.
 
-Now, add a ``setup_middlewares`` step to the main file:
+Now, import and add a ``setup_middlewares`` step to the main file:
 
-.. code-block:: python
-    :emphasize-lines: 6, 10
-
-    # aiohttpdemo_polls/main.py
-    from aiohttp import web
-
-    from settings import config
-    from routes import setup_routes
-    from middlewares import setup_middlewares
-
-    app = web.Application()
-    setup_routes(app)
-    setup_middlewares(app)
-    app['config'] = config
-    web.run_app(app)
+.. literalinclude:: ../demos/polls/aiohttpdemo_polls/main.py
 
 Run the app again. To test, try an invalid url.
