@@ -213,7 +213,6 @@ clean and short:
 Next, load the config into the application:
 
 .. code-block:: python
-    :emphasize-lines: 9
 
     # aiohttpdemo_polls/main.py
     from aiohttp import web
@@ -394,12 +393,11 @@ could be done by the following async generator function:
             minsize=conf['minsize'],
             maxsize=conf['maxsize'],
         )
-        async_session = async_sessionmaker(engine)
-        app["db"] = async_session
+        app["db"] = async_sessionmaker(engine)
 
         yield
 
-        await app["db"].dispose()
+        await engine.dispose()
 
 Add the code to ``aiohttpdemo_polls/db.py`` file.
 
@@ -425,7 +423,6 @@ Complete files with changes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
-    :emphasize-lines: 4, 27, 28, 29, 30, 31, 32, 33, 34, 35
     
     # aiohttpdemo_polls/db.py
     from sqlalchemy import MetaData, ForeignKey, String
@@ -456,15 +453,13 @@ Complete files with changes
     async def pg_context(app):
         conf = app["config"]["postgres"]
         engine = create_async_engine("sqlite+aiosqlite:///polls.db")
-        async_session = async_sessionmaker(engine)
-        app["db"] = async_session
+        app["db"] = async_sessionmaker(engine)
 
         yield
 
-        await app["db"].dispose()
+        await engine.dispose()
 
 .. code-block:: python
-    :emphasize-lines: 6, 11
 
     # aiohttpdemo_polls/main.py
     from aiohttp import web
@@ -474,8 +469,8 @@ Complete files with changes
     from db import pg_context
 
     app = web.Application()
-    setup_routes(app)
     app["config"] = config
+    setup_routes(app)
     app.cleanup_ctx.append(pg_context)
     web.run_app(app)
 
@@ -483,7 +478,6 @@ Complete files with changes
 Since we now have database connection on start - let's use it! Modify index view:
 
 .. code-block:: python
-    :emphasize-lines: 3, 7, 8, 9 , 10, 11
 
     # aiohttpdemo_polls/views.py
     from aiohttp import web
@@ -517,7 +511,6 @@ library first:
 After installing, setup the library:
 
 .. code-block:: python
-    :emphasize-lines: 3, 4, 12, 13
 
     # aiohttpdemo_polls/main.py
     from aiohttp import web
@@ -529,9 +522,11 @@ After installing, setup the library:
     from db import pg_context
 
     app = web.Application()
-    app['config'] = config
+    app["config"] = config
     aiohttp_jinja2.setup(app,
-        loader=jinja2.FileSystemLoader(str(BASE_DIR / 'aiohttpdemo_polls' / 'templates')))
+        loader=jinja2.FileSystemLoader(
+            str(BASE_DIR / 'aiohttpdemo_polls' / 'templates')
+            ))
     setup_routes(app)
     app.cleanup_ctx.append(pg_context)
     web.run_app(app)
@@ -562,19 +557,19 @@ dict with page content, the ``aiohttp_jinja2.template`` decorator
 processes the dict using the jinja2 template renderer.
 
 .. code-block:: python
-    :emphasize-lines: 5, 11
 
     # aiohttpdemo_polls/views.py
     import aiohttp_jinja2
+    from aiohttp import web
+    from sqlalchemy import select
     import db
 
-    @aiohttp_jinja2.template('index.html')
+
+    @aiohttp_jinja2.template("index.html")
     async def index(request):
-        async with request.app['db'].acquire() as conn:
-            cursor = await conn.execute(db.question.select())
-            records = await cursor.fetchall()
-            questions = [dict(q) for q in records]
-            return {"questions": questions}
+        async with request.app["db"]() as sess:
+            questions = await sess.scalars(select(db.Question))
+            return {"questions": questions.all()}
 
 
 Run the server and you should see a question decorated in html list element.
