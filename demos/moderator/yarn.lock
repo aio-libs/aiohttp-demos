@@ -1535,10 +1535,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@npmcli/arborist@^6.2.0":
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/@npmcli/arborist/-/arborist-6.2.0.tgz#37698594170d3f3d6848b9a8f714abdadf7a4d37"
-  integrity sha512-hFo2SMBI1BeGQ9K9gbTXwr0Cnf4Ua5mrtMvv534T8Xk5jjET9IJKgdMPt8kxAI7nyfBGhkLFQM/p5bcWXuBa9A==
+"@npmcli/arborist@^6.2.1":
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/@npmcli/arborist/-/arborist-6.2.1.tgz#caaa29eff7fb369653ccf1ddb1bca1b279c7debb"
+  integrity sha512-5bpihPqBgAMdOoM7pCeziVVP5NHmAqnjTUq9v8qrzrFcesEbBRpeiD0h3M4tw16NtQ6f024sI6EvWASUrxTHHw==
   dependencies:
     "@isaacs/string-locale-compare" "^1.1.0"
     "@npmcli/fs" "^3.1.0"
@@ -1574,10 +1574,10 @@
     treeverse "^3.0.0"
     walk-up-path "^1.0.0"
 
-"@npmcli/config@^6.1.1":
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/@npmcli/config/-/config-6.1.1.tgz#d65bd3974dd4bef66a1ce11024cb7bb461a022f8"
-  integrity sha512-R09ig+5UGrA1lxTWMyfyUwwzR9OAtJwMHGF4opu0/ysM3nMujzVvp0DVD/BnbmcQ0w6jM4IrsCSsq6ZdcvLW/Q==
+"@npmcli/config@^6.1.2":
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/@npmcli/config/-/config-6.1.2.tgz#8e5f280088d391e60ad1716c3f69fc8f56cbbf9c"
+  integrity sha512-4Hme9jhshXF0xOV64II5GmwtuCZWOlHT9zcqBPzfrIJ0AYb8/EfUtIu4LQxOWFojGdstTrGZLNHktvl9V6M9+A==
   dependencies:
     "@npmcli/map-workspaces" "^3.0.0"
     ini "^3.0.0"
@@ -7422,12 +7422,12 @@ libnpmaccess@^7.0.1:
     npm-package-arg "^10.1.0"
     npm-registry-fetch "^14.0.3"
 
-libnpmdiff@^5.0.8:
-  version "5.0.8"
-  resolved "https://registry.yarnpkg.com/libnpmdiff/-/libnpmdiff-5.0.8.tgz#b169fe6c894affd6edab21a0fd3eda80201ac0f0"
-  integrity sha512-bauR8F1FM4/k5Fco49lbEqFQbNEy966uhZaJzoinZ5j1WJGhI6jpFX2+WSpGQUa0NKue6QMN1TAw077RVM5YhA==
+libnpmdiff@^5.0.9:
+  version "5.0.9"
+  resolved "https://registry.yarnpkg.com/libnpmdiff/-/libnpmdiff-5.0.9.tgz#d4446e34bda46aecf4e85c128a39591575ad0173"
+  integrity sha512-xvT9D9Gdn1W9eVpHypXveSrx6asvNQSr+ceic9K3amnXNeYl+By+rX70jgwinKjdx0cBer0MWTY1ZX52kIOKBw==
   dependencies:
-    "@npmcli/arborist" "^6.2.0"
+    "@npmcli/arborist" "^6.2.1"
     "@npmcli/disparity-colors" "^3.0.0"
     "@npmcli/installed-package-contents" "^2.0.0"
     binary-extensions "^2.2.0"
@@ -7437,12 +7437,12 @@ libnpmdiff@^5.0.8:
     pacote "^15.0.7"
     tar "^6.1.13"
 
-libnpmexec@^5.0.8:
-  version "5.0.8"
-  resolved "https://registry.yarnpkg.com/libnpmexec/-/libnpmexec-5.0.8.tgz#b2033f5d645c020a04eed90b3bb4c3915ea6bf82"
-  integrity sha512-EcR9LtpisjHMj2qmzI53rJ6ZkCK1w7G87ilG8WU78e2H64N/1ziXbUBf25yKhFCOrcNKLZrh1AsHn4ZU96usiQ==
+libnpmexec@^5.0.9:
+  version "5.0.9"
+  resolved "https://registry.yarnpkg.com/libnpmexec/-/libnpmexec-5.0.9.tgz#c92630c449d810238c0b21a9fad6638d3697a968"
+  integrity sha512-tlyfSDloZ7FxrP1IoiecQLSHEXRDArnW461WGovcAu982jZfibLaR77YkwJxnCGAoB8CZzLYZSTp4uUeDkmFqQ==
   dependencies:
-    "@npmcli/arborist" "^6.2.0"
+    "@npmcli/arborist" "^6.2.1"
     "@npmcli/run-script" "^6.0.0"
     chalk "^4.1.0"
     ci-info "^3.7.0"
@@ -7455,12 +7455,12 @@ libnpmexec@^5.0.8:
     semver "^7.3.7"
     walk-up-path "^1.0.0"
 
-libnpmfund@^4.0.8:
-  version "4.0.8"
-  resolved "https://registry.yarnpkg.com/libnpmfund/-/libnpmfund-4.0.8.tgz#86df3936dbb350ba25bfc36ae65cc9cd87a0cfbd"
-  integrity sha512-zKxl+NT0HyMg0rsTtCLVpqCYkjquYDcpF/37PyqbrGPaDupl9QJukHSjovUiYshOR4s/OjE6da6V/ezWeDg8fw==
+libnpmfund@^4.0.9:
+  version "4.0.9"
+  resolved "https://registry.yarnpkg.com/libnpmfund/-/libnpmfund-4.0.9.tgz#d0f3aa84fcfd65f73c8153a6c65548171d63128d"
+  integrity sha512-9bsUjxIG5vNPiEGbOUT1mzDGzisK0onzGR9ntHedaVHZLptkiFJ4Ju2I6h4CQ8yr90DL1lAdLAPKYFfaEocYtg==
   dependencies:
-    "@npmcli/arborist" "^6.2.0"
+    "@npmcli/arborist" "^6.2.1"
 
 libnpmhook@^9.0.1:
   version "9.0.1"
@@ -7478,12 +7478,12 @@ libnpmorg@^5.0.1:
     aproba "^2.0.0"
     npm-registry-fetch "^14.0.3"
 
-libnpmpack@^5.0.8:
-  version "5.0.8"
-  resolved "https://registry.yarnpkg.com/libnpmpack/-/libnpmpack-5.0.8.tgz#f41d1205aebf823bf4f996fb9259658f617bad05"
-  integrity sha512-RyNyQCb+cczd8TdsfNYxqXj9iaXKoMVcWs7dmKOmthjGBzxe3/pC51v0MYzstKByThZZUKPE6I1vBaUWlJnsBQ==
+libnpmpack@^5.0.9:
+  version "5.0.9"
+  resolved "https://registry.yarnpkg.com/libnpmpack/-/libnpmpack-5.0.9.tgz#cf84663ea8523416d1a156b4696c684c91dbde6f"
+  integrity sha512-ZMEYUCDh5x32TUZSwzHcxqCexopVxw5jo5nkamfvJ+bLiyeYq0PgRPMT1w7euemEm7SWeIQN0u3Jc5+JtMSvhA==
   dependencies:
-    "@npmcli/arborist" "^6.2.0"
+    "@npmcli/arborist" "^6.2.1"
     "@npmcli/run-script" "^6.0.0"
     npm-package-arg "^10.1.0"
     pacote "^15.0.7"
@@ -8507,14 +8507,14 @@ npm-user-validate@^1.0.1:
   resolved "https://registry.yarnpkg.com/npm-user-validate/-/npm-user-validate-1.0.1.tgz#31428fc5475fe8416023f178c0ab47935ad8c561"
   integrity sha512-uQwcd/tY+h1jnEaze6cdX/LrhWhoBxfSknxentoqmIuStxUExxjWd3ULMLFPiFUrZKbOVMowH6Jq2FRWfmhcEw==
 
-npm@^9.4.0:
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/npm/-/npm-9.4.0.tgz#6e92558bed18063189dac5b5cd239dd2dca931a4"
-  integrity sha512-eT/yB9VFgnqJjMZN++RDcKPyuvEl3iM//bfJzAa3F9+x9l/x8XJUYnHAy0K6ep4JVNTxCUAp/wgy0pBicTZr5A==
+npm@^9.4.1:
+  version "9.4.1"
+  resolved "https://registry.yarnpkg.com/npm/-/npm-9.4.1.tgz#75897a0a891b017cd9a317527aa388ffccac8721"
+  integrity sha512-yCtrPwN/vPtc2KRyIBLdTqPMFy0R9pPurr8wJKtDvDfzICY/3IBG6t2z+zHA79pl5R8+mVH8EcJICLUeU48oQQ==
   dependencies:
     "@isaacs/string-locale-compare" "^1.1.0"
-    "@npmcli/arborist" "^6.2.0"
-    "@npmcli/config" "^6.1.1"
+    "@npmcli/arborist" "^6.2.1"
+    "@npmcli/config" "^6.1.2"
     "@npmcli/map-workspaces" "^3.0.0"
     "@npmcli/package-json" "^3.0.0"
     "@npmcli/run-script" "^6.0.0"
@@ -8536,12 +8536,12 @@ npm@^9.4.0:
     is-cidr "^4.0.2"
     json-parse-even-better-errors "^3.0.0"
     libnpmaccess "^7.0.1"
-    libnpmdiff "^5.0.8"
-    libnpmexec "^5.0.8"
-    libnpmfund "^4.0.8"
+    libnpmdiff "^5.0.9"
+    libnpmexec "^5.0.9"
+    libnpmfund "^4.0.9"
     libnpmhook "^9.0.1"
     libnpmorg "^5.0.1"
-    libnpmpack "^5.0.8"
+    libnpmpack "^5.0.9"
     libnpmpublish "^7.0.6"
     libnpmsearch "^6.0.1"
     libnpmteam "^5.0.1"
