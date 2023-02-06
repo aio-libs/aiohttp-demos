@@ -1,6 +1,6 @@
 # polls/init_db.py
-from sqlalchemy import create_engine, MetaData
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 from datetime import date
 
 from aiohttpdemo_polls.db import Question, Choice, Base

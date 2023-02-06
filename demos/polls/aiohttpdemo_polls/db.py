@@ -1,10 +1,11 @@
 # aiohttpdemo_polls/db.py
-from sqlalchemy import MetaData, ForeignKey, String, select
-from sqlalchemy.orm import declarative_base, Mapped, mapped_column
+from sqlalchemy import ForeignKey, String, select
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from datetime import date
 
-Base = declarative_base()
+class Base(DeclarativeBase):
+    pass
 
 class Question(Base):
     __tablename__ = "question"
@@ -30,7 +31,7 @@ class RecordNotFound(Exception):
     """Requested record in database was not found"""
 
 
-DSN = "postgresql+asyncgp://{user}:{password}@{host}:{port}/{database}"
+DSN = "postgresql+asyncpg://{user}:{password}@{host}:{port}/{database}"
 
 
 async def pg_context(app):
