@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, MetaData
 
 from aiohttpdemo_blog.db import construct_db_url
-from aiohttpdemo_blog.db import users, posts
+from aiohttpdemo_blog.db import Users, Posts
 from aiohttpdemo_blog.security import generate_password_hash
 from aiohttpdemo_blog.settings import load_config
 
@@ -48,21 +48,21 @@ def create_tables(target_config=None):
     engine = get_engine(target_config)
 
     meta = MetaData()
-    meta.create_all(bind=engine, tables=[users, posts])
+    meta.create_all(bind=engine, tables=[Users, Posts])
 
 
 def drop_tables(target_config=None):
     engine = get_engine(target_config)
 
     meta = MetaData()
-    meta.drop_all(bind=engine, tables=[users, posts])
+    meta.drop_all(bind=engine, tables=[Users, Posts])
 
 
 def create_sample_data(target_config=None):
     engine = get_engine(target_config)
 
     with engine.connect() as conn:
-        conn.execute(users.insert(), [
+        conn.execute(Users.insert(), [
             {'username': 'Adam',
              'email': 'adam@one.com',
              'password_hash': generate_password_hash('adam')},
@@ -70,7 +70,7 @@ def create_sample_data(target_config=None):
              'email': 'bob@two.com',
              'password_hash': generate_password_hash('bob')},
         ])
-        conn.execute(posts.insert(), [
+        conn.execute(Posts.insert(), [
             {'user_id': 1, 'body': 'Lovely day'},
             {'user_id': 2, 'body': 'Roses are red'},
             {'user_id': 2, 'body': 'Lorem ipsum'},

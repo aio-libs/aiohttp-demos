@@ -40,7 +40,7 @@ async def init_db(app):
 
 
 def construct_db_url(config):
-    DSN = "postgresql://{user}:{password}@{host}:{port}/{database}"
+    DSN = "postgresql+asyncpg://{user}:{password}@{host}:{port}/{database}"
     return DSN.format(
         user=config['DB_USER'],
         password=config['DB_PASS'],
