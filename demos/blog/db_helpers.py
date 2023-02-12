@@ -1,5 +1,6 @@
 import asyncio
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from sqlalchemy import text
 
 from aiohttpdemo_blog.db import construct_db_url
 from aiohttpdemo_blog.db import Users, Posts, Base
@@ -9,34 +10,34 @@ from aiohttpdemo_blog.settings import load_config
 
 async def setup_db(executor_config=None, target_config=None):
     engine = get_engine(executor_config)
-
     db_name = target_config['DB_NAME']
     db_user = target_config['DB_USER']
     db_pass = target_config['DB_PASS']
 
     async with engine.connect() as conn:
-        await conn.execute("CREATE USER %s WITH PASSWORD '%s'" % (db_user, db_pass))
-        await conn.execute("CREATE DATABASE %s" % db_name)
-        await conn.execute("ALTER DATABASE %s OWNER TO %s" % (db_name, db_user))
-        await conn.execute("GRANT ALL ON SCHEMA public TO %s" % db_user)
+        await conn.execute(text("CREATE USER %s WITH PASSWORD '%s'" % (db_user, db_pass)))
+        await conn.execute(text("CREATE DATABASE %s" % db_name))
+        await conn.execute(text("ALTER DATABASE %s OWNER TO %s" % (db_name, db_user)))
+        await conn.execute(text("GRANT ALL ON SCHEMA public TO %s" % db_user))
+        conn.commit()
 
 
 async def teardown_db(executor_config=None, target_config=None):
     engine = get_engine(executor_config)
-
     db_name = target_config['DB_NAME']
     db_user = target_config['DB_USER']
 
     async with engine.connect() as conn:
         # terminate all connections to be able to drop database
-        await conn.execute("""
+        await conn.execute(text("""
           SELECT pg_terminate_backend(pg_stat_activity.pid)
           FROM pg_stat_activity
           WHERE pg_stat_activity.datname = '%s'
-            AND pid <> pg_backend_pid();""" % db_name)
-        await conn.execute("DROP DATABASE IF EXISTS %s" % db_name)
-        await conn.execute("REVOKE ALL ON SCHEMA public FROM %s" % db_user)
-        await conn.execute("DROP ROLE IF EXISTS %s" % db_user)
+            AND pid <> pg_backend_pid();""" % db_name))
+        await conn.execute(text("DROP DATABASE IF EXISTS %s" % db_name))
+        await conn.execute(text("REVOKE ALL ON SCHEMA public FROM %s" % db_user))
+        await conn.execute(text("DROP ROLE IF EXISTS %s" % db_user))
+        conn.commit()
 
 
 def get_engine(db_config):
@@ -47,15 +48,13 @@ def get_engine(db_config):
 
 async def create_tables(target_config=None):
     engine = get_engine(target_config)
-    Session = async_sessionmaker(engine)
-    async with Session.begin() as sess:
-        await sess.run_sync(Base.metadata.create_all)
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
 async def drop_tables(target_config=None):
     engine = get_engine(target_config)
-    Session = async_sessionmaker(engine)
-    async with Session.begin() as sess:
-        await sess.run_sync(Base.metadata.drop_all)
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
 
 
 async def create_sample_data(target_config=None):
