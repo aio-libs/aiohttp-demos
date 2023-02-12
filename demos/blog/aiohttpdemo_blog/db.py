@@ -51,8 +51,8 @@ def construct_db_url(config):
 
 
 async def get_user_by_name(sess, username):
-    result = await sess.scalars(select(Users).where(Users.username == username))
-    return result.all()
+    result = await sess.scalar(select(Users).where(Users.username == username))
+    return result
 
 
 async def get_users(sess):

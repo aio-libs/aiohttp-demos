@@ -42,7 +42,7 @@ async def login(request):
                 response = redirect(request.app.router, 'index')
 
                 user = await db.get_user_by_name(sess, form['username'])
-                await remember(request, response, user['username'])
+                await remember(request, response, user.username)
 
                 raise response
 
@@ -66,7 +66,7 @@ async def create_post(request):
 
         async with request.app['db_pool'].begin() as sess:
             current_user = await db.get_user_by_name(sess, username)
-            await db.create_post(sess, form['body'], current_user['id'])
+            await db.create_post(sess, form['body'], current_user.id)
             raise redirect(request.app.router, 'index')
 
     return {}
