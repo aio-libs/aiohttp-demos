@@ -1,4 +1,5 @@
 import pytest
+import asyncio
 
 from aiohttpdemo_blog.main import init_app
 from aiohttpdemo_blog.settings import load_config, BASE_DIR
@@ -13,6 +14,13 @@ async def client(aiohttp_client):
     config = load_config(BASE_DIR / 'config' / 'test_config.toml')
     app = await init_app(config)
     return await aiohttp_client(app)
+
+
+@pytest.fixture(scope='session')
+def event_loop(request):
+    loop = asyncio.get_event_loop_policy().new_event_loop()
+    yield loop
+    loop.close()
 
 
 @pytest.fixture(scope='session')
