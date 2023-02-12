@@ -16,25 +16,25 @@ async def client(aiohttp_client):
 
 
 @pytest.fixture(scope='session')
-def database():
+async def database():
     admin_db_config = load_config(
         BASE_DIR / 'config' / 'admin_config.toml')['database']
     test_db_config = load_config(
         BASE_DIR / 'config' / 'test_config.toml')['database']
 
-    setup_db(executor_config=admin_db_config, target_config=test_db_config)
+    await setup_db(executor_config=admin_db_config, target_config=test_db_config)
     yield
-    teardown_db(executor_config=admin_db_config, target_config=test_db_config)
+    await teardown_db(executor_config=admin_db_config, target_config=test_db_config)
 
 
 @pytest.fixture
-def tables_and_data(database):
+async def tables_and_data(database):
     test_db_config = load_config(
         BASE_DIR / 'config' / 'test_config.toml')['database']
 
-    create_tables(target_config=test_db_config)
-    create_sample_data(target_config=test_db_config)
+    await create_tables(target_config=test_db_config)
+    await create_sample_data(target_config=test_db_config)
 
     yield
 
-    drop_tables(target_config=test_db_config)
+    await drop_tables(target_config=test_db_config)
