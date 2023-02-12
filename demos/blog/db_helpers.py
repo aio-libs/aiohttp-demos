@@ -21,6 +21,8 @@ async def setup_db(executor_config=None, target_config=None):
         await conn.execute(text("GRANT ALL ON SCHEMA public TO %s" % db_user))
         await conn.commit()
 
+    await engine.dispose()
+
 
 async def teardown_db(executor_config=None, target_config=None):
     engine = get_engine(executor_config)
@@ -38,7 +40,8 @@ async def teardown_db(executor_config=None, target_config=None):
         await conn.execute(text("REVOKE ALL ON SCHEMA public FROM %s" % db_user))
         await conn.execute(text("DROP ROLE IF EXISTS %s" % db_user))
         await conn.commit()
-
+    
+    await engine.dispose()
 
 def get_engine(db_config):
     db_url = construct_db_url(db_config)
@@ -50,12 +53,13 @@ async def create_tables(target_config=None):
     engine = get_engine(target_config)
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+    await engine.dispose()
 
 async def drop_tables(target_config=None):
     engine = get_engine(target_config)
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
-
+    await engine.dispose()
 
 async def create_sample_data(target_config=None):
     engine = get_engine(target_config)
@@ -71,6 +75,8 @@ async def create_sample_data(target_config=None):
             Posts(user_id=2, body="Roses are red"),
             Posts(user_id=2, body="Lorem ipsum")
         ))
+        
+    await engine.dispose()
 
 
 if __name__ == '__main__':
