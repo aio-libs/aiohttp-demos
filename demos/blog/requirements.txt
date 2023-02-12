@@ -4,8 +4,8 @@ aiohttp_security[session]==0.4.0
 asyncpg==0.27.0
 bcrypt==4.0.1
 pytoml==0.1.21
-redis==4.4.2
-SQLalchemy==2.0.0rc3
+redis==4.5.1
+SQLalchemy==2.0.3
 
 # testing
 pytest==7.2.1

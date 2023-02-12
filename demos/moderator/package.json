@@ -17,11 +17,11 @@
   },
   "license": "MIT",
   "dependencies": {
-    "npm": "^9.4.1",
+    "npm": "^9.4.2",
     "package.json": "^2.0.1",
     "parcel": "^2.8.3",
-    "preact": "10.11.3",
-    "snyk": "^1.1096.0",
+    "preact": "10.12.1",
+    "snyk": "^1.1100.0",
     "whatwg-fetch": "3.6.2",
     "yarn": "^1.22.19"
   },
@@ -36,12 +36,12 @@
     "eslint-plugin-json": "3.1.0",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-react": "7.32.2",
-    "jest-cli": "29.4.1",
+    "jest-cli": "29.4.2",
     "node-sass": "8.0.0",
     "npm-run-all": "4.1.5",
     "parcel-bundler": "1.12.5",
     "postcss-modules": "3.2.2",
-    "prettier": "2.8.3",
+    "prettier": "2.8.4",
     "prettier-eslint": "15.0.1"
   },
   "snyk": true
