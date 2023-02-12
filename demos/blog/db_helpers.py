@@ -19,7 +19,7 @@ async def setup_db(executor_config=None, target_config=None):
         await conn.execute(text("CREATE DATABASE %s" % db_name))
         await conn.execute(text("ALTER DATABASE %s OWNER TO %s" % (db_name, db_user)))
         await conn.execute(text("GRANT ALL ON SCHEMA public TO %s" % db_user))
-        conn.commit()
+        await conn.commit()
 
 
 async def teardown_db(executor_config=None, target_config=None):
@@ -37,7 +37,7 @@ async def teardown_db(executor_config=None, target_config=None):
         await conn.execute(text("DROP DATABASE IF EXISTS %s" % db_name))
         await conn.execute(text("REVOKE ALL ON SCHEMA public FROM %s" % db_user))
         await conn.execute(text("DROP ROLE IF EXISTS %s" % db_user))
-        conn.commit()
+        await conn.commit()
 
 
 def get_engine(db_config):
