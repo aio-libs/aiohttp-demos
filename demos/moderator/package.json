@@ -17,7 +17,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "npm": "^9.4.2",
+    "npm": "^9.5.0",
     "package.json": "^2.0.1",
     "parcel": "^2.8.3",
     "preact": "10.12.1",
