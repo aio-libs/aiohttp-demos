@@ -3961,10 +3961,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.3.tgz#1015eced4741e15d06664a957dbbf50d041e26ac"
   integrity sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==
 
-ci-info@^3.2.0, ci-info@^3.7.1:
-  version "3.7.1"
-  resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-3.7.1.tgz#708a6cdae38915d597afdf3b145f2f8e1ff55f3f"
-  integrity sha512-4jYS4MOAaCIStSRwiuxc4B8MYhIe676yO1sYGzARnjXkWpmzZMMYxY6zu8WYWDhSuth5zhrQ1rhNSibyyvv4/w==
+ci-info@^3.2.0, ci-info@^3.6.1, ci-info@^3.7.1, ci-info@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-3.8.0.tgz#81408265a5380c929f0bc665d62256628ce9ef91"
+  integrity sha512-eXTggHWSooYhq49F2opQhuHWgzucfF2YgODK4e1566GQs5BIfP30B0oenwBJHfWxAs2fyPB1s7Mg949zLf61Yw==
 
 cidr-regex@^3.1.1:
   version "3.1.1"
@@ -7495,15 +7495,17 @@ libnpmpack@^5.0.10:
     npm-package-arg "^10.1.0"
     pacote "^15.0.8"
 
-libnpmpublish@^7.0.8:
-  version "7.0.8"
-  resolved "https://registry.yarnpkg.com/libnpmpublish/-/libnpmpublish-7.0.8.tgz#929bb73e713ce02d902ff41e5c97a8350019e882"
-  integrity sha512-HvcZbqt5z7bOdzaYjb46DkIWeAHb1E9UWTHHFdMIZJKrYAY6TEY1luI1PZ70/BL3mPfmjpZpsGsfP0Du1kMUPA==
+libnpmpublish@^7.1.0:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/libnpmpublish/-/libnpmpublish-7.1.0.tgz#b178419b8f3968c7bba32c405ca29c6afe5b4aa4"
+  integrity sha512-AAw/84u6aLo6IzXFhf3s+VCg5/eqICRZFJgRfBpnbCjubRY33WXJh57aWYP0WPlqnFI3E2M1adIqQDbYVyRwgA==
   dependencies:
+    ci-info "^3.6.1"
     normalize-package-data "^5.0.0"
     npm-package-arg "^10.1.0"
     npm-registry-fetch "^14.0.3"
     semver "^7.3.7"
+    sigstore "^1.0.0"
     ssri "^10.0.1"
 
 libnpmsearch@^6.0.2:
@@ -7513,10 +7515,10 @@ libnpmsearch@^6.0.2:
   dependencies:
     npm-registry-fetch "^14.0.3"
 
-libnpmteam@^5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/libnpmteam/-/libnpmteam-5.0.2.tgz#4b3916640479da28c234b1d2890de8e34b191142"
-  integrity sha512-+PVTtOgqinJMCusAfzpQiIauZCKa1i+s6KgSlJ8KHgB4wrOPsfdlHpAMzcrCSzdnoz0IuWYt9ApdAh0iyRL/DQ==
+libnpmteam@^5.0.3:
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/libnpmteam/-/libnpmteam-5.0.3.tgz#196657e9d87c0cc914c44fee588ad2b838074a3c"
+  integrity sha512-7XOGhi45s+ml6TyrhJUTyrErcoDMKGKfEtiTEco4ofU7BGGAUOalVztKMVLLJgJOOXdIAIlzCHqkTXEuSiyCiA==
   dependencies:
     aproba "^2.0.0"
     npm-registry-fetch "^14.0.3"
@@ -7771,7 +7773,7 @@ make-fetch-happen@^10.0.3, make-fetch-happen@^10.0.4:
     socks-proxy-agent "^7.0.0"
     ssri "^9.0.0"
 
-make-fetch-happen@^11.0.0, make-fetch-happen@^11.0.3:
+make-fetch-happen@^11.0.0, make-fetch-happen@^11.0.1, make-fetch-happen@^11.0.3:
   version "11.0.3"
   resolved "https://registry.yarnpkg.com/make-fetch-happen/-/make-fetch-happen-11.0.3.tgz#ed83dd3685b97f75607156d2721848f6eca561b9"
   integrity sha512-oPLh5m10lRNNZDjJ2kP8UpboUx2uFXVaVweVe/lWut4iHWcQEmfqSVJt2ihZsFI8HbpwyyocaXbCAWf0g1ukIA==
@@ -7993,10 +7995,10 @@ minimatch@^5.0.1:
   dependencies:
     brace-expansion "^2.0.1"
 
-minimatch@^6.1.6:
-  version "6.1.6"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-6.1.6.tgz#5384bb324be5b5dae12a567c03d22908febd0ddd"
-  integrity sha512-6bR3UIeh/DF8+p6A9Spyuy67ShOq42rOkHWi7eUe3Ua99Zo5lZfGC6lJJWkeoK4k9jQFT3Pl7czhTXimG2XheA==
+minimatch@^6.1.0, minimatch@^6.1.6, minimatch@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-6.2.0.tgz#2b70fd13294178c69c04dfc05aebdb97a4e79e42"
+  integrity sha512-sauLxniAmvnhhRjFwPNnJKaPFYyddAgbYdeUpHULtCT/GhzdCx/MDNy+Y40lBxTQUrMzDE8e0S43Z5uqfO0REg==
   dependencies:
     brace-expansion "^2.0.1"
 
@@ -8097,7 +8099,7 @@ minipass@^3.0.0, minipass@^3.1.0, minipass@^3.1.1, minipass@^3.1.3, minipass@^3.
   dependencies:
     yallist "^4.0.0"
 
-minipass@^4.0.0, minipass@^4.0.2:
+minipass@^4.0.0, minipass@^4.0.3:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/minipass/-/minipass-4.0.3.tgz#00bfbaf1e16e35e804f4aa31a7c1f6b8d9f0ee72"
   integrity sha512-OW2r4sQ0sI+z5ckEt5c1Tri4xTgZwYDxpE54eqWlQloQRoWtXjqt9udJ5Z4dSv7wK+nfFI7FRXyCpBSft+gpFw==
@@ -8518,10 +8520,10 @@ npm-user-validate@^2.0.0:
   resolved "https://registry.yarnpkg.com/npm-user-validate/-/npm-user-validate-2.0.0.tgz#7b69bbbff6f7992a1d9a8968d52fd6b6db5431b6"
   integrity sha512-sSWeqAYJ2dUPStJB+AEj0DyLRltr/f6YNcvCA7phkB8/RMLMnVsQ41GMwHo/ERZLYNDsyB2wPm7pZo1mqPOl7Q==
 
-npm@^9.4.2:
-  version "9.4.2"
-  resolved "https://registry.yarnpkg.com/npm/-/npm-9.4.2.tgz#7afe401ba7e9a091018259fabc5f85d6f747abcc"
-  integrity sha512-dIkwrPCq4+oeNU9I4B+tO4t+5lUL04XIgizpcwDbPM9vMeoVW54g3f5725FRLp10TH/5/KQWiTziGgILoCxP7w==
+npm@^9.5.0:
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/npm/-/npm-9.5.0.tgz#75f0d6d27c0a4cc403cd9e1e68ac574555e3b43d"
+  integrity sha512-GqVETDu5xX4+drrjdZmWyxl3BVLToDamB0Wz1+k0mLcraYRVb80gOYSnSEZbHvulw4RyU/Hq6AiUfUBxmm/2gw==
   dependencies:
     "@isaacs/string-locale-compare" "^1.1.0"
     "@npmcli/arborist" "^6.2.2"
@@ -8533,7 +8535,7 @@ npm@^9.4.2:
     archy "~1.0.0"
     cacache "^17.0.4"
     chalk "^4.1.2"
-    ci-info "^3.7.1"
+    ci-info "^3.8.0"
     cli-columns "^4.0.0"
     cli-table3 "^0.6.3"
     columnify "^1.6.0"
@@ -8553,13 +8555,13 @@ npm@^9.4.2:
     libnpmhook "^9.0.3"
     libnpmorg "^5.0.3"
     libnpmpack "^5.0.10"
-    libnpmpublish "^7.0.8"
+    libnpmpublish "^7.1.0"
     libnpmsearch "^6.0.2"
-    libnpmteam "^5.0.2"
+    libnpmteam "^5.0.3"
     libnpmversion "^4.0.2"
     make-fetch-happen "^11.0.3"
-    minimatch "^6.1.6"
-    minipass "^4.0.2"
+    minimatch "^6.2.0"
+    minipass "^4.0.3"
     minipass-pipeline "^1.2.4"
     ms "^2.1.2"
     node-gyp "^9.3.1"
@@ -8573,7 +8575,7 @@ npm@^9.4.2:
     npm-user-validate "^2.0.0"
     npmlog "^7.0.1"
     p-map "^4.0.0"
-    pacote "^15.0.8"
+    pacote "^15.1.0"
     parse-conflict-json "^3.0.0"
     proc-log "^3.0.0"
     qrcode-terminal "^0.12.0"
@@ -8921,10 +8923,10 @@ package.json@^2.0.1:
     git-source "^1.1.0"
     package-json "^2.3.1"
 
-pacote@^15.0.0, pacote@^15.0.8:
-  version "15.0.8"
-  resolved "https://registry.yarnpkg.com/pacote/-/pacote-15.0.8.tgz#8a1cb1e0207f9f3c74894feaa716aaa9e35f890e"
-  integrity sha512-UlcumB/XS6xyyIMwg/WwMAyUmga+RivB5KgkRwA1hZNtrx+0Bt41KxHCvg1kr0pZ/ZeD8qjhW4fph6VaYRCbLw==
+pacote@^15.0.0, pacote@^15.0.8, pacote@^15.1.0:
+  version "15.1.0"
+  resolved "https://registry.yarnpkg.com/pacote/-/pacote-15.1.0.tgz#2e0b12a4f55ffd801a8134a1ae28ef361dc3f243"
+  integrity sha512-FFcjtIl+BQNfeliSm7MZz5cpdohvUV1yjGnqgVM4UnVF7JslRY0ImXAygdaCDV0jjUADEWu4y5xsDV8brtrTLg==
   dependencies:
     "@npmcli/git" "^4.0.0"
     "@npmcli/installed-package-contents" "^2.0.1"
@@ -8941,6 +8943,7 @@ pacote@^15.0.0, pacote@^15.0.8:
     promise-retry "^2.0.1"
     read-package-json "^6.0.0"
     read-package-json-fast "^3.0.0"
+    sigstore "^1.0.0"
     ssri "^10.0.0"
     tar "^6.1.11"
 
@@ -10626,6 +10629,14 @@ signal-exit@^3.0.3, signal-exit@^3.0.7:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.7.tgz#a9a1767f8af84155114eaabd73f99273c8f59ad9"
   integrity sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==
 
+sigstore@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/sigstore/-/sigstore-1.0.0.tgz#3c7a8bbacf99d0f978276bd29bd94911006b72c7"
+  integrity sha512-e+qfbn/zf1+rCza/BhIA//Awmf0v1pa5HQS8Xk8iXrn9bgytytVLqYD0P7NSqZ6IELTgq+tcDvLPkQjNHyWLNg==
+  dependencies:
+    make-fetch-happen "^11.0.1"
+    tuf-js "^1.0.0"
+
 simple-swizzle@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/simple-swizzle/-/simple-swizzle-0.2.2.tgz#a4da6b635ffcccca33f70d17cb92592de95e557a"
@@ -11375,6 +11386,14 @@ tty-browserify@0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/tty-browserify/-/tty-browserify-0.0.0.tgz#a157ba402da24e9bf957f9aa69d524eed42901a6"
   integrity sha1-oVe6QC2iTpv5V/mqadUk7tQpAaY=
+
+tuf-js@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/tuf-js/-/tuf-js-1.0.0.tgz#c89daaf69b348081a86e9f766151dfd7ce0f5078"
+  integrity sha512-1dxsQwESDzACJjTdYHQ4wJ1f/of7jALWKfJEHSBWUQB/5UTJUx9SW6GHXp4mZ1KvdBRJCpGjssoPFGi4hvw8/A==
+  dependencies:
+    make-fetch-happen "^11.0.1"
+    minimatch "^6.1.0"
 
 tunnel-agent@^0.6.0:
   version "0.6.0"
