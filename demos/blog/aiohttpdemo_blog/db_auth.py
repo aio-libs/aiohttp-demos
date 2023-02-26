@@ -9,11 +9,10 @@ class DBAuthorizationPolicy(AbstractAuthorizationPolicy):
         self.db_pool = db_pool
 
     async def authorized_userid(self, identity):
-        async with self.db_pool.acquire() as conn:
+        async with self.db_pool() as conn:
             user = await db.get_user_by_name(conn, identity)
             if user:
                 return identity
-
         return None
 
     async def permits(self, identity, permission, context=None):
