@@ -1,9 +1,9 @@
-aiohttp==3.8.3
+aiohttp==3.8.4
 aiopg[sa]==1.4.0
 aiohttp_jinja2==1.5.1
 aiohttp_graphql==1.1.0
-aiodataloader==0.3.0
-faker==16.8.1
+aiodataloader==0.4.0
+faker==17.0.0
 trafaret_config==2.0.2
 graphene==2.1.9
 graphql-core==2.3.2
@@ -11,7 +11,7 @@ graphql-ws==0.4.4
 psycopg2-binary==2.9.5
 redis==4.5.1
 
-mypy==1.0.0
+mypy==1.0.1
 flake8==6.0.0
 pytest==7.2.1
 pytest-cov==4.0.0

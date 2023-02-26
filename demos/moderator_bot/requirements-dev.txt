@@ -1,5 +1,5 @@
 -i https://pypi.org/simple/
-aiohttp==3.8.3
+aiohttp==3.8.4
 aioslacker==0.0.11
 async-timeout==4.0.2
 atomicwrites==1.4.1
@@ -22,4 +22,4 @@ six==1.16.0
 slacker==0.9.42
 urllib3==1.26.14
 yarl==1.8.2
-zipp==3.13.0
+zipp==3.14.0
