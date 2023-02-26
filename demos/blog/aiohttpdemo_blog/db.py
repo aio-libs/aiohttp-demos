@@ -66,7 +66,7 @@ async def get_posts(sess):
 
 
 async def get_posts_with_joined_users(sess):
-    records = await sess.scalars(select(Users).join(Users.posts).order_by(Posts.timestamp))
+    records = await sess.scalars(select(Posts).join(Posts.user_id).order_by(Posts.timestamp))
     return records.all()
 
 
