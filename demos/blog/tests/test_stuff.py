@@ -1,4 +1,3 @@
-from sqlalchemy.ext.asyncio import async_sessionmaker
 from aiohttpdemo_blog.forms import validate_login_form
 from aiohttpdemo_blog.security import (
     generate_password_hash,

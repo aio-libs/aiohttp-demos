@@ -1,3 +1,4 @@
+from sqlalchemy.ext.asyncio import async_sessionmaker
 from aiohttp_security.abc import AbstractAuthorizationPolicy
 
 from aiohttpdemo_blog import db
@@ -9,8 +10,9 @@ class DBAuthorizationPolicy(AbstractAuthorizationPolicy):
         self.db_pool = db_pool
 
     async def authorized_userid(self, identity):
-        async with self.db_pool() as conn:
-            user = await db.get_user_by_name(conn, identity)
+        Session = async_sessionmaker(self.db_pool)
+        async with Session() as sess:
+            user = await db.get_user_by_name(sess, identity)
             if user:
                 return identity
         return None
