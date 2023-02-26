@@ -1,3 +1,4 @@
+from sqlalchemy.ext.asyncio import async_sessionmaker
 from aiohttpdemo_blog.forms import validate_login_form
 from aiohttpdemo_blog.security import (
     generate_password_hash,
@@ -25,12 +26,12 @@ async def test_login_form(tables_and_data, client):
         'username': 'Adam',
         'password': 'adam'
     }
-
-    async with client.server.app['db_pool']() as conn:
-        error = await validate_login_form(conn, invalid_form)
+    Session = async_sessionmaker(client.server.app['db_pool'])
+    async with Session.begin() as sess:
+        error = await validate_login_form(sess, invalid_form)
         assert error
 
-        no_error = await validate_login_form(conn, valid_form)
+        no_error = await validate_login_form(sess, valid_form)
         assert not no_error
 
 
