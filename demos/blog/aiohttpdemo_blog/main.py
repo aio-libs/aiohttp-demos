@@ -42,7 +42,7 @@ async def init_app(config):
 
     setup_routes(app)
 
-    db_pool = await init_db(app)
+    app.cleanup_ctx.append(init_db)
 
     redis = await setup_redis(app)
     setup_session(app, RedisStorage(redis))
@@ -57,7 +57,7 @@ async def init_app(config):
     setup_security(
         app,
         SessionIdentityPolicy(),
-        DBAuthorizationPolicy(db_pool)
+        DBAuthorizationPolicy(app)
     )
 
     log.debug(app['config'])

@@ -35,9 +35,12 @@ class Posts(Base):
 
 async def init_db(app):
     dsn = construct_db_url(app['config']['database'])
-    pool = create_async_engine(dsn)
-    app['db_pool'] = async_sessionmaker(pool)
-    return pool
+    engine = create_async_engine(dsn)
+    app['db_pool'] = async_sessionmaker(engine)
+
+    yield
+
+    await engine.dispose()
 
 
 def construct_db_url(config):
