@@ -2,7 +2,7 @@ from datetime import datetime
 
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.sql import select
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, selectinload
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 class Base(DeclarativeBase):
@@ -17,7 +17,7 @@ class Users(Base):
     email: Mapped[str] = mapped_column(String(120))
     password_hash: Mapped[str] = mapped_column(String(128), nullable=False)
 
-    posts: Mapped[list["Posts"]] = relationship(back_populates="user")
+    posts: Mapped[list["Posts"]] = relationship(back_populates="user", lazy="raise_on_sql")
 
 
 class Posts(Base):
@@ -28,7 +28,7 @@ class Posts(Base):
     timestamp: Mapped[datetime] = mapped_column(index=True, default=datetime.utcnow)
 
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-    user: Mapped[Users] = relationship(back_populates="posts")
+    user: Mapped[Users] = relationship(back_populates="posts", lazy="raise_on_sql")
 
 
 
@@ -70,7 +70,7 @@ async def get_posts(sess):
 
 
 async def get_posts_with_joined_users(sess):
-    records = await sess.scalars(select(Posts).order_by(Posts.timestamp))
+    records = await sess.scalars(select(Posts).options(selectinload(Posts.user)).order_by(Posts.timestamp))
     return records.all()
 
 
