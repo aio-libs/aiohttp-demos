@@ -6,12 +6,11 @@ from aiohttpdemo_blog import db
 
 class DBAuthorizationPolicy(AbstractAuthorizationPolicy):
 
-    def __init__(self, db_pool):
-        self.db_pool = db_pool
+    def __init__(self, app):
+        self.app = app
 
     async def authorized_userid(self, identity):
-        Session = async_sessionmaker(self.db_pool)
-        async with Session() as sess:
+        async with self.app["db_pool"]() as sess:
             user = await db.get_user_by_name(sess, identity)
             if user:
                 return identity
