@@ -17,7 +17,7 @@ class Users(Base):
     email: Mapped[str] = mapped_column(String(120))
     password_hash: Mapped[str] = mapped_column(String(128), nullable=False)
 
-    posts: Mapped[list["Posts"]] = relationship()
+    posts: Mapped[list["Posts"]] = relationship(back_populates="user")
 
 
 class Posts(Base):
@@ -28,6 +28,7 @@ class Posts(Base):
     timestamp: Mapped[datetime] = mapped_column(index=True, default=datetime.utcnow)
 
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    user: Mapped[Users] = relationship(back_populates="posts")
 
 
 
@@ -66,7 +67,7 @@ async def get_posts(sess):
 
 
 async def get_posts_with_joined_users(sess):
-    records = await sess.scalars(select(Posts).join(Posts.user_id).order_by(Posts.timestamp))
+    records = await sess.scalars(select(Posts).order_by(Posts.timestamp))
     return records.all()
 
 
