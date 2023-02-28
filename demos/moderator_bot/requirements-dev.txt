@@ -9,7 +9,7 @@ chardet==5.1.0
 idna==3.4
 importlib-metadata==0.23 ; python_version < '3.8'
 joblib==1.2.0
-more-itertools==9.0.0
+more-itertools==9.1.0
 multidict==6.0.4
 numpy==1.23.4
 pluggy==1.0.0
