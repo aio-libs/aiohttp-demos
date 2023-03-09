@@ -1,3 +1,14 @@
+# Workaround for https://github.com/dependabot/dependabot-core/issues/2178
+-r blog/requirements.txt
+-r chat/requirements.txt
+-r graphql-demo/requirements-dev.txt
+-r imagetagger/requirements.txt
+-r moderator/requirements-dev.txt
+-r moderator_bot/requirements-dev.txt
+-r motortwit/requirements.txt
+-r polls/requirements-dev.txt
+-r shortify/requirements.txt
+
 # lint
 flake8==6.0.0
 flake8-bugbear==23.2.13
