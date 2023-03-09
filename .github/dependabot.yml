@@ -10,3 +10,12 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+
+  - package-ecosystem: "npm"
+    directory: "/demos/graphql-demo/ui"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/demos/moderator"
+    schedule:
+      interval: "daily"
