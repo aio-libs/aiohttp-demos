@@ -19,7 +19,7 @@ pyyaml==6.0
 scikit-learn==0.21.3
 scipy==1.9.3
 six==1.16.0
-slacker==0.9.42
+slacker==0.14.0
 urllib3==1.26.14
 yarl==1.8.2
 zipp==3.15.0
