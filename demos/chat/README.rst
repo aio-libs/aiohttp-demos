@@ -18,6 +18,7 @@ Install the app::
 
 Run application::
 
+    $ cd aiohttpdemo_chat
     $ python main.py
 
 Open browser::
