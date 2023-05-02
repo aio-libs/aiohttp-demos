@@ -1,10 +1,7 @@
 from aiohttp import web
 from graphql_server.aiohttp import GraphQLView
+from graphql_server.render_graphiql import GRAPHIQL_VERSION, process_var
 from graphql_ws.aiohttp import AiohttpSubscriptionServer
-from aiohttp_graphql.render_graphiql import (
-    GRAPHIQL_VERSION,
-    process_var,
-)
 
 
 GQPHIQL_TEMPLATE = """
