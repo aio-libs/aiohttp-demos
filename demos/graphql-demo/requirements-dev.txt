@@ -1,12 +1,12 @@
 aiohttp==3.8.4
 aiopg[sa]==1.4.0
 aiohttp_jinja2==1.5.1
-aiohttp_graphql==1.1.0
 aiodataloader==0.4.0
 faker==18.4.0
 trafaret_config==2.0.2
 graphene==2.1.9
 graphql-core==2.3.2
+graphql-server==3.0.0b6
 graphql-ws==0.4.4
 psycopg2-binary==2.9.6
 redis==4.5.4
