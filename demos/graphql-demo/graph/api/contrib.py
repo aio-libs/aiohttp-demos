@@ -1,5 +1,5 @@
 from aiohttp import web
-from aiohttp_graphql import GraphQLView
+from graphql_server.aiohttp import GraphQLView
 from graphql_ws.aiohttp import AiohttpSubscriptionServer
 from aiohttp_graphql.render_graphiql import (
     GRAPHIQL_VERSION,
