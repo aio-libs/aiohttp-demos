@@ -25,7 +25,7 @@ install_requires = [
     'aiopg[sa]',
     'aiohttp_jinja2',
     'aiodataloader',
-    'graphql-server>=3',
+    'graphql-server[aiohttp]>=3',
     'trafaret_config',
     'graphene==2.1.7',
     'graphql-core==2.2.1',
