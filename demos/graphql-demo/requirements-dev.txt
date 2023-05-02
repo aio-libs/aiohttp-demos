@@ -6,7 +6,7 @@ faker==18.4.0
 trafaret_config==2.0.2
 graphene==2.1.9
 graphql-core==2.3.2
-graphql-server==3.0.0b6
+graphql-server[aiohttp]==3.0.0b6
 graphql-ws==0.4.4
 psycopg2-binary==2.9.6
 redis==4.5.4
