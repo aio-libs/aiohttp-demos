@@ -2,7 +2,7 @@ aiohttp==3.8.4
 aiohttp_jinja2==1.5.1
 aiohttp_security==0.4.0
 bcrypt==4.0.1
-faker==18.4.0
+faker==18.10.0
 motor==3.1.2
 pytz==2023.3
 pyyaml==6.0
