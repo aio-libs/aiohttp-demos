@@ -3,7 +3,6 @@
 -r demos/chat/requirements.txt
 -r demos/graphql-demo/requirements-dev.txt
 -r demos/imagetagger/requirements.txt
-numpy==1.23.4 # TODO: Remove once #188 fixed
 -r demos/moderator/requirements-dev.txt
 -r demos/moderator_bot/requirements-dev.txt
 -r demos/motortwit/requirements.txt
