@@ -31,7 +31,6 @@ install:
 	pip install -r demos/blog/requirements.txt
 	pip install -r demos/chat/requirements.txt
 	pip install -r demos/graphql-demo/requirements-dev.txt
-	pip install numpy==1.23.4  # TODO: Remove once #188 fixed
 	pip install -r demos/imagetagger/requirements.txt
 	pip install -r demos/moderator/requirements-dev.txt
 	pip install -r demos/moderator_bot/requirements-dev.txt
