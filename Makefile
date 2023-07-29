@@ -26,7 +26,7 @@ doc-spelling:
 	@make -C docs spelling SPHINXOPTS="-W -E"
 
 install:
-	pip install -U pip setuptools cython
+	pip install -U 'pip<23.1' setuptools cython
 	pip install numpy==1.23.4 # TODO: Remove once #188 fixed
 	pip install -r requirements-dev.txt
 	pip install -r demos/blog/requirements.txt
