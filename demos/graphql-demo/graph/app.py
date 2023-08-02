@@ -1,6 +1,6 @@
 from functools import partial
 
-import aiopg.sa
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from aiohttp import web
 import aioredis
 import aiohttp_jinja2
@@ -20,15 +20,26 @@ def init_jinja2(app: web.Application) -> None:
 
 async def database_ctx(app: web.Application) -> None:
     """This is signal for success creating connection with database."""
-    config = app['config']['postgres']
+    dsn = construct_db_url(app['config']['postgres'])
 
-    engine = await aiopg.sa.create_engine(**config)
+    engine = create_async_engine(dsn)
     app['db'] = engine
 
     yield
 
-    app['db'].close()
-    await app['db'].wait_closed()
+    await engine.dispose()
+
+
+def construct_db_url(config) -> str:
+    """Construct the database's url from the given config dictionary."""
+    DSN = "postgresql+asyncpg://{user}:{password}@{host}:{port}/{database}"
+    return DSN.format(
+        user=config['DB_USER'],
+        password=config['DB_PASS'],
+        database=config['DB_NAME'],
+        host=config['DB_HOST'],
+        port=config['DB_PORT'],
+    )
 
 
 async def redis_ctx(app: web.Application) -> None:

@@ -1,52 +1,31 @@
 from sqlalchemy.sql import func
-from sqlalchemy.dialects import postgresql
-import sqlalchemy as sa
+from sqlalchemy import ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column
+from datetime import datetime
 
-from graph.db import metadata
-from graph.auth.tables import users
+from graph.auth.tables import Users
+from graph.db import Base
 
+class Rooms(Base):
+    __tablename__ = "rooms"
 
-__all__ = ['rooms', 'messages', ]
-
-
-rooms = sa.Table(
-    'rooms', metadata,
-
-    sa.Column('id', sa.Integer, primary_key=True, index=True),
-    sa.Column('name', sa.String(20), unique=True),
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    name: Mapped[str] = mapped_column(String(20), unique=True)
 
     # ForeignKey
-    sa.Column(
-        'owner_id',
-        sa.ForeignKey(users.c.id, ondelete='CASCADE'),
-        nullable=False,
-    ),
-)
+    owner_id: Mapped[int] = mapped_column(
+        ForeignKey("Users.id", ondelete="CASCADE"))
 
+class Messages(Base):
+    __tablename__ = "messages"
 
-messages = sa.Table(
-    'messages', metadata,
-
-    sa.Column('id', sa.Integer, primary_key=True, index=True),
-    sa.Column('body', sa.Text, nullable=False),
-    sa.Column('created_at', sa.DateTime, server_default=func.now()),
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    body: Mapped[str]
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    who_like: Mapped[list[int]] = mapped_column(server_default="{}")
 
     # ForeignKey
-    sa.Column(
-        'who_like',
-        postgresql.ARRAY(sa.Integer),
-        server_default='{}',
-    ),
-    sa.Column(
-        'owner_id',
-        sa.Integer,
-        sa.ForeignKey(users.c.id, ondelete='CASCADE'),
-        nullable=False,
-    ),
-    sa.Column(
-        'room_id',
-        sa.Integer,
-        sa.ForeignKey(rooms.c.id, ondelete='CASCADE'),
-        nullable=False,
-    ),
-)
+    owner_id: Mapped[int] = mapped_column(
+        ForeignKey(Users.id, ondelete="CASCADE"))
+    room_id: Mapped[int] = mapped_column(
+        ForeignKey(Rooms.id, ondelete="CASCADE"))

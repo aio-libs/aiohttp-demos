@@ -29,7 +29,7 @@ async def poll(request):
 @aiohttp_jinja2.template('results.html')
 async def results(request):
     async with request.app['db']() as sess:
-        question_id = request.match_info['question_id']
+        question_id = int(request.match_info['question_id'])
 
         try:
             question, choices = await db.get_question(sess,

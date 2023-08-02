@@ -28,11 +28,11 @@ class RoomsQuery(graphene.ObjectType):
     async def resolve_rooms(self, info: ResolveInfo) -> List[RowProxy]:
         app = info.context['request'].app
 
-        async with app['db'].acquire() as conn:
-            return await select_rooms(conn)
+        async with app['db'].begin() as sess:
+            return await select_rooms(sess)
 
     async def resolve_room(self, info: ResolveInfo, id: int) -> RowProxy:
         app = info.context['request'].app
 
-        async with app['db'].acquire() as conn:
-            return await select_room(conn, id)
+        async with app['db'].begin() as sess:
+            return await select_room(sess, id)

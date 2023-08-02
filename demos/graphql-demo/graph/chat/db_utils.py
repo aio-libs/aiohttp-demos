@@ -1,12 +1,11 @@
-from aiopg.sa import SAConnection as SAConn
-from aiopg.sa.result import RowProxy
-
 from graph.types import RowsProxy
 from graph.constants import OBJECT_NOT_FOUND_ERROR
 from graph.chat.tables import (
-    rooms,
-    messages,
+    Rooms,
+    Messages,
 )
+
+from sqlalchemy.sql import select, insert, delete
 
 
 __all__ = [
@@ -20,58 +19,51 @@ __all__ = [
 
 # selects
 
-async def select_rooms(conn: SAConn) -> RowsProxy:
-    cursor = await conn.execute(
-        rooms.select().order_by(rooms.c.id)
-    )
+async def select_rooms(session):
+    cursor = await session.scalars(select(Rooms)
+                                   .order_by(Rooms.id))
 
-    return await cursor.fetchall()
+    return await cursor.all()
 
 
-async def select_room(conn: SAConn, id: int) -> RowProxy:
-    cursor = await conn.execute(
-        rooms.select().where(rooms.c.id == id)
-    )
-    item = await cursor.fetchone()
+async def select_room(session, id: int):
+    cursor = await session.scalars(select(Rooms)
+                                   .where(Rooms.id == id))
+    item = await cursor.first()
     assert item, OBJECT_NOT_FOUND_ERROR
 
     return item
 
 
-async def select_messages_by_room_id(conn: SAConn, room_id: int) -> RowsProxy:
-    query = messages\
-        .select()\
-        .where(messages.c.room_id == room_id)\
-        .order_by(messages.c.id)
+async def select_messages_by_room_id(session, room_id: int):
+    cursor = await session.scalars(select(Messages)
+                                   .where(Messages.room_id == room_id)
+                                   .order_by(Messages.id))
 
-    cursor = await conn.execute(query)
-
-    return await cursor.fetchall()
+    return await cursor.all()
 
 
 # create
 
 async def create_message(
-        conn: SAConn,
+        session,
         room_id: int,
         owner_id: int,
         body: str,
-) -> RowProxy:
+):
 
-    query = messages\
-        .insert()\
-        .values(body=body, owner_id=owner_id, room_id=room_id)\
-        .returning(messages.c.id, messages.c.owner_id)
+    new_msg = Messages(body=body, owner_id=owner_id, room_id=room_id)
 
-    res = await conn.execute(query)
+    await session.add(new_msg)
 
-    return await res.fetchone()
+    return new_msg
 
 
 # delete
 
-async def delete_message(conn: SAConn, id: int) -> None:
+async def delete_message(session, id: int):
+    msg = await session.scalars(select(Messages)
+                                .where(Messages.id == id))
 
-    await conn.execute(
-        messages.delete().where(messages.c.id == id)
-    )
+    await session.delete(msg.one())
+
