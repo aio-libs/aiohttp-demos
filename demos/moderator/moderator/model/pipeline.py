@@ -1,10 +1,8 @@
 import pandas as pd
-import numpy as np
 
 import pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import cross_val_score
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.pipeline import Pipeline
 
