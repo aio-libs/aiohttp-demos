@@ -46,15 +46,7 @@ def build_model(dataset_path, model_path):
     pipeline = build_pipeline()
     pipeline.fit(train, targets)
 
-    scores = cross_val_score(
-        pipeline,
-        train,
-        targets,
-        cv=5,
-        scoring='roc_auc')
-
-    score = np.mean(scores)
-    name = 'pipeline_{score}.dat'.format(score=score)
+    name = 'pipeline.dat'
 
     with open(name, 'wb') as f:
         pickle.dump(pipeline, f)
