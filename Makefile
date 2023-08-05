@@ -26,16 +26,16 @@ doc-spelling:
 	@make -C docs spelling SPHINXOPTS="-W -E"
 
 install:
-	@pip install -U pip setuptools cython
-	@pip install -r requirements-dev.txt
-	@pip install -r demos/blog/requirements.txt
-	@pip install -r demos/chat/requirements.txt
-	@pip install -r demos/graphql-demo/requirements-dev.txt
-	@pip install -r demos/imagetagger/requirements.txt
-	@pip install -r demos/moderator/requirements-dev.txt
-	@pip install -r demos/moderator_bot/requirements-dev.txt
-	@pip install -r demos/motortwit/requirements.txt
-	@pip install -r demos/polls/requirements-dev.txt
-	@pip install -r demos/shortify/requirements.txt
+	pip install -U pip setuptools cython
+	pip install -r requirements-dev.txt
+	pip install -r demos/blog/requirements.txt
+	pip install -r demos/chat/requirements.txt
+	pip install -r demos/graphql-demo/requirements-dev.txt
+	pip install -r demos/imagetagger/requirements.txt
+	pip install -r demos/moderator/requirements-dev.txt
+	pip install -r demos/moderator_bot/requirements-dev.txt
+	pip install -r demos/motortwit/requirements.txt
+	pip install -r demos/polls/requirements-dev.txt
+	pip install -r demos/shortify/requirements.txt
 
 .PHONY: clean doc
