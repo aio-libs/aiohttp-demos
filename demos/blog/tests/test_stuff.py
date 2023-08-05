@@ -12,8 +12,8 @@ def test_security():
 
 
 async def test_index_view(tables_and_data, client):
-    resp = await client.get('/')
-    assert resp.status == 200
+    async with client.get("/") as resp:
+        assert resp.status == 200
 
 
 async def test_login_form(tables_and_data, client):
@@ -43,10 +43,10 @@ async def test_login_view(tables_and_data, client):
         'password': 'adam'
     }
 
-    resp = await client.post('/login', data=invalid_form)
-    assert resp.status == 200
-    assert 'Invalid username' in await resp.text()
+    async with client.post("/login", data=invalid_form) as resp:
+        assert resp.status == 200
+        assert "Invalid username" in await resp.text()
 
-    resp = await client.post('/login', data=valid_form)
-    assert resp.status == 200
-    assert 'Hi, Adam!' in await resp.text()
+    async with await client.post("/login", data=valid_form) as resp:
+        assert resp.status == 200
+        assert "Hi, Adam!" in await resp.text()
