@@ -3,7 +3,7 @@ aiohttp==3.8.4
 aioslacker==0.0.11
 async-timeout==4.0.2
 atomicwrites==1.4.1
-attrs==22.2.0
+attrs==23.1.0
 certifi==2023.7.22
 chardet==5.1.0
 idna==3.4
