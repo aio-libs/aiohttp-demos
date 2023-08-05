@@ -26,6 +26,7 @@ doc-spelling:
 	@make -C docs spelling SPHINXOPTS="-W -E"
 
 install:
+        pip install -U pip setuptools cython
 	pip install -r requirements-dev.txt
 	pip install -r demos/blog/requirements.txt
 	pip install -r demos/chat/requirements.txt
