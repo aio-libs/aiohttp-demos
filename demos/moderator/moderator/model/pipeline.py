@@ -44,7 +44,5 @@ def build_model(dataset_path, model_path):
     pipeline = build_pipeline()
     pipeline.fit(train, targets)
 
-    name = 'pipeline.dat'
-
-    with open(name, 'wb') as f:
+    with open("pipeline.dat", "wb") as f:
         pickle.dump(pipeline, f)
