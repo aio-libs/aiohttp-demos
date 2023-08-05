@@ -3,8 +3,8 @@ trafaret==2.1.1
 pyyaml==6.0
 numpy==1.23.4
 pandas==1.5.3
-scikit-learn==0.21.3
-scipy==1.9.3
+scikit-learn==1.3.0
+scipy==1.11.1
 
 
 flake8==6.0.0
