@@ -1,6 +1,8 @@
+import pickle
+from pathlib import Path
+
 import pandas as pd
 
-import pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.multioutput import MultiOutputClassifier
@@ -38,11 +40,12 @@ def build_pipeline():
     return pipeline
 
 
-def build_model(dataset_path, model_path):
+def build_model(dataset_path: Path, model_path: Path) -> None:
     train, targets = read_data(dataset_path)
 
     pipeline = build_pipeline()
     pipeline.fit(train, targets)
 
-    with open("pipeline.dat", "wb") as f:
+    output_path = model_path / "pipeline.dat"
+    with output_path.open("wb") as f:
         pickle.dump(pipeline, f)
