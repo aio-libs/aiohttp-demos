@@ -11,7 +11,7 @@ flake8==6.0.0
 flake8-bugbear==23.3.12
 flake8-quotes==3.3.2
 ipdb==0.13.13
-mypy==1.2.0
+mypy==1.4.1
 pytest==7.4.0
 pytest-aiohttp==1.0.4
 pytest-asyncio==0.21.1
