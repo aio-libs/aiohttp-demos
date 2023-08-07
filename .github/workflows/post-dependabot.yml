@@ -40,9 +40,9 @@ jobs:
       cache: 'pip'
       cache-dependency-path: '**/requirements*.txt'
     - name: Download train.csv
+      # Original file can be found at: https://www.kaggle.com/code/piumallick/toxic-comments-sentiment-analysis/input?select=train.csv.zip
       run: curl "$MODERATOR_TRAINING_URL" > train.csv
     - name: Rebuild model
-      # Original file can be found at: https://www.kaggle.com/code/piumallick/toxic-comments-sentiment-analysis/input?select=train.csv.zip
       run: PYTHONPATH='demos/moderator' python -m moderator.build_model train.csv
     - name: Commit and push if needed
       uses: stefanzweifel/git-auto-commit-action@v4
