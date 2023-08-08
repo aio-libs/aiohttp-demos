@@ -1,5 +1,5 @@
 aiohttp==3.8.5
 aiohttp_jinja2==1.5.1
 pyyaml==6.0
-redis==4.5.4
+redis==4.6.0
 trafaret==2.1.1
