@@ -5,5 +5,5 @@ bcrypt==4.0.1
 faker==18.13.0
 motor==3.2.0
 pytz==2023.3
-pyyaml==6.0
+pyyaml==6.0.1
 trafaret==2.1.1
