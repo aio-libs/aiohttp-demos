@@ -1,10 +1,10 @@
 from unittest.mock import Mock
 
-import aiopg.sa
 import pytest
 import random
-from sqlalchemy import create_engine
 
+from sqlalchemy import create_engine
+from sqlalchemy.ext.asyncio import create_async_engine
 from graph.api.dataloaders import UserDataLoader
 from graph.api.views import schema
 from graph.auth.tables import users
@@ -130,7 +130,7 @@ def init_sample_data(engine) -> None:
 @pytest.fixture
 async def sa_engine(event_loop):
     """The fixture initialize async engine for PostgresSQl."""
-    async with aiopg.sa.create_engine(**test_config["postgres"]) as db:
+    async with create_async_engine(**test_config["postgres"]) as db:
         yield db
 
 
