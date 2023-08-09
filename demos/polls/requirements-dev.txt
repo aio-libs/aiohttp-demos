@@ -1,6 +1,6 @@
 aiohttp==3.8.5
 aiohttp-jinja2==1.5.1
-asyncpg==0.27.0
+asyncpg==0.28.0
 trafaret_config==2.0.2
 SQLalchemy==2.0.19
 
