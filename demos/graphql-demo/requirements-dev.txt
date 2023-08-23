@@ -12,6 +12,6 @@ psycopg2-binary==2.9.7
 redis==5.0.0
 
 mypy==1.5.1
-flake8==6.0.0
+flake8==6.1.0
 pytest==7.4.0
 pytest-cov==4.1.0
