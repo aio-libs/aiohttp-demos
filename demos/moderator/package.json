@@ -22,7 +22,7 @@
     "parcel": "^2.9.3",
     "preact": "10.17.1",
     "snyk": "^1.1216.0",
-    "whatwg-fetch": "3.6.18",
+    "whatwg-fetch": "3.6.19",
     "yarn": "^1.22.19"
   },
   "devDependencies": {
