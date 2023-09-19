@@ -29,7 +29,7 @@ def get_db_url(config: dict) -> str:
     """Generate a url for db connection from the config."""
 
     return (
-        f"postgresql://"
+        f"postgresql+asyncpg://"
         f"{config['postgres']['user']}"
         f":{config['postgres']['password']}"
         f"@{config['postgres']['host']}"
