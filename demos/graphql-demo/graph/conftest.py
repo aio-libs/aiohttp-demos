@@ -4,7 +4,7 @@ import pytest
 import random
 
 from sqlalchemy import create_engine
-from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from graph.api.dataloaders import UserDataLoader
 from graph.api.views import schema
 from graph.auth.models import User
