@@ -117,7 +117,7 @@ async def init_sample_data(engine) -> None:
 async def sa_engine(event_loop):
     """The fixture initialize async engine for PostgresSQl."""
     db = create_async_engine(get_db_url(test_config))
-    yield async_sessionmaker(engine, expire_on_commit=False)
+    yield async_sessionmaker(db, expire_on_commit=False)
     await db.dispose()
 
 
