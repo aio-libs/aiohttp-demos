@@ -9,7 +9,7 @@ from graph.api.dataloaders import UserDataLoader
 from graph.api.views import schema
 from graph.auth.models import User
 from graph.chat.models import Room, Message
-from graph.db import metadata
+from graph.db import Base
 from graph.utils import (
     APP_PATH as PATH,
     get_config,
@@ -153,11 +153,11 @@ def db():
 async def tables(db):
     """The fixture for create all tables and init simple data."""
     async with test_engine.begin() as conn:
-        await conn.run_sync(metadata.create_all)
+        await conn.run_sync(Base.metadata.create_all)
     await init_sample_data(test_engine)
     yield
     async with test_engine.begin() as conn:
-        await conn.run_sync(metadata.drop_all)
+        await conn.run_sync(Base.metadata.drop_all)
 
 
 @pytest.fixture(scope='session')
