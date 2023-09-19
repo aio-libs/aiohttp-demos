@@ -116,8 +116,9 @@ async def init_sample_data(engine) -> None:
 @pytest.fixture
 async def sa_engine(event_loop):
     """The fixture initialize async engine for PostgresSQl."""
-    async with create_async_engine(get_db_url(test_config)) as db:
-        yield db
+    db = create_async_engine(get_db_url(test_config))
+    yield db
+    await db.dispose()
 
 
 @pytest.fixture
