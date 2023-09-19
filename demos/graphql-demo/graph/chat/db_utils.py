@@ -1,9 +1,6 @@
 from graph.types import RowsProxy
 from graph.constants import OBJECT_NOT_FOUND_ERROR
-from graph.chat.tables import (
-    Rooms,
-    Messages,
-)
+from graph.chat.models import Room, Message
 
 from sqlalchemy.sql import select, insert, delete
 
@@ -19,26 +16,22 @@ __all__ = [
 
 # selects
 
-async def select_rooms(session):
-    cursor = await session.scalars(select(Rooms)
-                                   .order_by(Rooms.id))
+async def select_rooms(session) -> list[Room]:
+    cursor = await session.scalars(select(Room).order_by(Room.id))
 
     return await cursor.all()
 
 
-async def select_room(session, id: int):
-    cursor = await session.scalars(select(Rooms)
-                                   .where(Rooms.id == id))
+async def select_room(session, id: int) -> Room:
+    cursor = await session.scalars(select(Room).where(Room.id == id))
     item = await cursor.first()
     assert item, OBJECT_NOT_FOUND_ERROR
 
     return item
 
 
-async def select_messages_by_room_id(session, room_id: int):
-    cursor = await session.scalars(select(Messages)
-                                   .where(Messages.room_id == room_id)
-                                   .order_by(Messages.id))
+async def select_messages_by_room_id(session, room_id: int) -> list[Message]:
+    cursor = await session.scalars(select(Message).where(Message.room_id == room_id).order_by(Message.id))
 
     return await cursor.all()
 
@@ -50,9 +43,9 @@ async def create_message(
         room_id: int,
         owner_id: int,
         body: str,
-):
+) -> Message:
 
-    new_msg = Messages(body=body, owner_id=owner_id, room_id=room_id)
+    new_msg = Message(body=body, owner_id=owner_id, room_id=room_id)
 
     await session.add(new_msg)
 
