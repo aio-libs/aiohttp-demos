@@ -22,7 +22,7 @@ class BaseAIODataLoader(DataLoader):
         self.engine = engine
         self.session = async_sessionmaker(self.engine)
 
-    def sorted_by_keys(self, items: RowsProxy, keys: List[int]) -> list[User]:
+    def sorted_by_keys(self, items: list[User], keys: List[int]) -> list[User]:
         """Help ordering of returned items In `aiodataloader`."""
         items_dict = {
             key: value for key, value in zip(sorted(set(keys)), items)
