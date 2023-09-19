@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy.sql import func
-from sqlalchemy import ForeignKey, String
+from sqlalchemy import ARRAY, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from graph.auth.models import User
@@ -22,7 +22,7 @@ class Message(Base):
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     body: Mapped[str]
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
-    who_like: Mapped[list[int]] = mapped_column(server_default="{}")
+    who_like: Mapped[list[int]] = mapped_column(ARRAY(Integer), server_default="{}")
 
     # ForeignKey
     owner_id: Mapped[int] = mapped_column(ForeignKey(User.id, ondelete="CASCADE"))
