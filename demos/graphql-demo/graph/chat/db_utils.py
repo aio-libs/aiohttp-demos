@@ -1,4 +1,3 @@
-from graph.types import RowsProxy
 from graph.constants import OBJECT_NOT_FOUND_ERROR
 from graph.chat.models import Room, Message
 
