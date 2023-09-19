@@ -11,7 +11,7 @@ from graph.chat.db_utils import (
 
 @pytest.mark.asyncio
 async def test_select_room(sa_engine):
-    async with sa_engine.acquire() as conn:
+    async with sa_engine() as conn:
         res = await select_room(conn, 1)
 
     assert res.id == 1
@@ -19,7 +19,7 @@ async def test_select_room(sa_engine):
 
 @pytest.mark.asyncio
 async def test_select_rooms(sa_engine):
-    async with sa_engine.acquire() as conn:
+    async with sa_engine() as conn:
         res = await select_rooms(conn)
 
     assert isinstance(res, list)
@@ -28,7 +28,7 @@ async def test_select_rooms(sa_engine):
 
 @pytest.mark.asyncio
 async def test_select_messages_by_room_id(sa_engine):
-    async with sa_engine.acquire() as conn:
+    async with sa_engine() as conn:
         res = await select_messages_by_room_id(conn, 1)
 
     assert isinstance(res, list)
@@ -36,11 +36,11 @@ async def test_select_messages_by_room_id(sa_engine):
 
 @pytest.mark.asyncio
 async def test_create_message(sa_engine):
-    async with sa_engine.acquire() as conn:
+    async with sa_engine() as conn:
         await create_message(conn, 1, 1, 'Text')
 
 
 @pytest.mark.asyncio
 async def test_delete_message(sa_engine):
-    async with sa_engine.acquire() as conn:
+    async with sa_engine() as conn:
         await delete_message(conn, 1)
