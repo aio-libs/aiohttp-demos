@@ -7,11 +7,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.asyncio import create_async_engine
 from graph.api.dataloaders import UserDataLoader
 from graph.api.views import schema
-from graph.auth.tables import users
-from graph.chat.tables import (
-    rooms,
-    messages,
-)
+from graph.auth.models import User
+from graph.chat.models import Room, Message
 from graph.db import metadata
 from graph.utils import (
     APP_PATH as PATH,
@@ -45,7 +42,7 @@ engine = create_engine(
     get_db_url(config),
     isolation_level='AUTOCOMMIT',
 )
-test_engine = create_engine(
+test_engine = create_async_engine(
     get_db_url(test_config),
     isolation_level='AUTOCOMMIT',
 )
@@ -89,41 +86,30 @@ def teardown_test_db(engine) -> None:
         conn.execute(f"drop role if exists {db_user}")
 
 
-def init_sample_data(engine) -> None:
-    with engine.connect() as conn:
-        values = [{
-            "id": idx,
-            "username": f"test#{idx}",
-            "email": f"test#{idx}",
-            "password": f"{idx}"
-        } for idx in range(1000)]
-        query = users.insert().values(values).returning(users.c.id)
+async def init_sample_data(engine) -> None:
+    session = async_sessionmaker(engine, expire_on_commit=False)
+    async with session.begin() as sess:
+        for idx in range(1000):
+            sess.add(User(
+                id=idx,
+                username=f"test#{idx}",
+                email=f"test#{idx}",
+                password=f"{idx}"
+            ))
 
-        response = conn.execute(query)
-        users_idx = [user[0] for user in response]
+    async with session.begin() as sess:
+        for idx in range(1000):
+            sess.add(Room(name=f"test#{idx}", owner_id=random.randint(0, 999)))
 
-        query = rooms\
-            .insert()\
-            .values([{
-                'name': f'test#{idx}',
-                'owner_id': random.choice(users_idx)} for idx in users_idx
-            ])\
-            .returning(rooms.c.id)
-
-        response = conn.execute(query)
-        rooms_idx = [room[0] for room in response]
-        values = []
-
-        for room in rooms_idx:
+    async with session.begin() as sess:
+        for idx in range(1000):
             for _ in range(10):
-                values.append({
-                    'body': "test",
-                    'who_like': random.sample(users_idx, random.randint(0, 5)),
-                    'owner_id': random.choice(users_idx),
-                    'room_id': room,
-                })
-
-        conn.execute(messages.insert().values(values))
+                sess.add(Message(
+                    body="test",
+                    who_like=[random.randint(0, 999) for x in range(random.randint(0, 6))],
+                    owner_id=random.randint(0, 999),
+                    room_id=idx
+                ))
 
 
 # fixtures
@@ -164,12 +150,14 @@ def db():
 
 
 @pytest.fixture(scope="session")
-def tables(db):
+async def tables(db):
     """The fixture for create all tables and init simple data."""
-    metadata.create_all(test_engine)
-    init_sample_data(test_engine)
+    async with test_engine.begin() as conn:
+        await conn.run_sync(metadata.create_all)
+    await init_sample_data(test_engine)
     yield
-    metadata.drop_all(test_engine)
+    async with test_engine.begin() as conn:
+        await conn.run_sync(metadata.drop_all)
 
 
 @pytest.fixture(scope='session')
