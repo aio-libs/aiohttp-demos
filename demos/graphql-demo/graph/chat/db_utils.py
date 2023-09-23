@@ -13,17 +13,15 @@ __all__ = [
 ]
 
 
-# selects
-
 async def select_rooms(session) -> list[Room]:
     cursor = await session.scalars(select(Room).order_by(Room.id))
 
-    return await cursor.all()
+    return cursor.all()
 
 
 async def select_room(session, id: int) -> Room:
     cursor = await session.scalars(select(Room).where(Room.id == id))
-    item = await cursor.first()
+    item = cursor.first()
     assert item, OBJECT_NOT_FOUND_ERROR
 
     return item
@@ -32,10 +30,8 @@ async def select_room(session, id: int) -> Room:
 async def select_messages_by_room_id(session, room_id: int) -> list[Message]:
     cursor = await session.scalars(select(Message).where(Message.room_id == room_id).order_by(Message.id))
 
-    return await cursor.all()
+    return cursor.all()
 
-
-# create
 
 async def create_message(
         session,
@@ -43,19 +39,12 @@ async def create_message(
         owner_id: int,
         body: str,
 ) -> Message:
-
     new_msg = Message(body=body, owner_id=owner_id, room_id=room_id)
-
-    await session.add(new_msg)
-
+    session.add(new_msg)
     return new_msg
 
 
-# delete
-
 async def delete_message(session, id: int):
-    msg = await session.scalars(select(Messages)
-                                .where(Messages.id == id))
-
-    await session.delete(msg.one())
+    msg = await session.get(Message, id)
+    session.delete(msg)
 
