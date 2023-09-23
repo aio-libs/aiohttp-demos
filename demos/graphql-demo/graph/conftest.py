@@ -38,7 +38,7 @@ def get_db_url(config: dict) -> str:
     )
 
 
-engine = create_engine(
+engine = create_async_engine(
     get_db_url(config),
     isolation_level='AUTOCOMMIT',
 )
@@ -48,32 +48,32 @@ test_engine = create_async_engine(
 )
 
 
-def setup_test_db(engine) -> None:
+async def setup_test_db(engine) -> None:
     """Creating new test database environment."""
     # test params
     db_name = test_config['postgres']['database']
     db_user = test_config['postgres']['user']
     db_password = test_config['postgres']['password']
 
-    with engine.connect() as conn:
-        conn.execute(
+    async with engine.connect() as conn:
+        await conn.execute(
             f"create user {db_user} with password '{db_password}'"
         )
-        conn.execute(
+        await conn.execute(
             f"create database {db_name} encoding 'UTF8'"
         )
-        conn.execute(f"alter database {db_name} owner to {db_user}")
-        conn.execute(f"grant all on schema public to {db_user}")
+        await conn.execute(f"alter database {db_name} owner to {db_user}")
+        await conn.execute(f"grant all on schema public to {db_user}")
 
 
-def teardown_test_db(engine) -> None:
+async def teardown_test_db(engine) -> None:
     """Remove the test database environment."""
     # test params
     db_name = test_config['postgres']['database']
     db_user = test_config['postgres']['user']
 
-    with engine.connect() as conn:
-        conn.execute(
+    async with engine.connect() as conn:
+        await conn.execute(
             f"""
             SELECT pg_terminate_backend(pg_stat_activity.pid)
             FROM pg_stat_activity
@@ -81,9 +81,9 @@ def teardown_test_db(engine) -> None:
             AND pid <> pg_backend_pid();
             """
         )
-        conn.execute(f"drop database if exists {db_name}")
-        conn.execute(f"REVOKE ALL ON SCHEMA public FROM {db_user}")
-        conn.execute(f"drop role if exists {db_user}")
+        await conn.execute(f"drop database if exists {db_name}")
+        await conn.execute(f"REVOKE ALL ON SCHEMA public FROM {db_user}")
+        await conn.execute(f"drop role if exists {db_user}")
 
 
 async def init_sample_data(engine) -> None:
@@ -143,11 +143,11 @@ async def requests(sa_engine):
 
 
 @pytest.fixture(scope="session")
-def db():
+async def db():
     """The fixture for running and turn down database."""
-    setup_test_db(engine)
+    await setup_test_db(engine)
     yield
-    teardown_test_db(engine)
+    await teardown_test_db(engine)
 
 
 @pytest.fixture(scope="session")
