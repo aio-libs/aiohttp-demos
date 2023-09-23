@@ -1,14 +1,8 @@
-from typing import List
-
 import graphene
 from graphql import ResolveInfo
-from aiopg.sa.result import RowProxy
 
 from graph.api.models.room import Room
-from graph.chat.db_utils import (
-    select_rooms,
-    select_room,
-)
+from graph.chat.db_utils import select_rooms, select_room
 
 
 __all__ = ['RoomsQuery', ]
@@ -25,14 +19,14 @@ class RoomsQuery(graphene.ObjectType):
         description='A room with given id',
     )
 
-    async def resolve_rooms(self, info: ResolveInfo) -> List[RowProxy]:
+    async def resolve_rooms(self, info: ResolveInfo) -> list[list[Room]]:
         app = info.context['request'].app
 
-        async with app['db'].acquire() as conn:
-            return await select_rooms(conn)
+        async with app['db'].begin() as sess:
+            return await select_rooms(sess)
 
-    async def resolve_room(self, info: ResolveInfo, id: int) -> RowProxy:
+    async def resolve_room(self, info: ResolveInfo, id: int) -> list[Room]:
         app = info.context['request'].app
 
-        async with app['db'].acquire() as conn:
-            return await select_room(conn, id)
+        async with app['db'].begin() as sess:
+            return await select_room(sess, id)

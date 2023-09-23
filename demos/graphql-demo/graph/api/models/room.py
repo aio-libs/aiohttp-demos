@@ -2,7 +2,6 @@ from typing import List
 
 import graphene
 from graphql import ResolveInfo
-from aiopg.sa.result import RowProxy
 
 from graph.api.models.user import User
 from graph.chat.db_utils import select_messages_by_room_id
@@ -28,7 +27,7 @@ class Message(graphene.ObjectType):
         description="An creator of message",
     )
 
-    async def resolve_owner(self, info: ResolveInfo) -> List[RowProxy]:
+    async def resolve_owner(self, info: ResolveInfo):
         app = info.context['request'].app
 
         return await app['loaders'].users.load(self['owner_id'])
@@ -52,13 +51,13 @@ class Room(graphene.ObjectType):
         description='The messages of the current room',
     )
 
-    async def resolve_owner(self, info: ResolveInfo) -> List[RowProxy]:
+    async def resolve_owner(self, info: ResolveInfo):
         app = info.context['request'].app
 
         return await app['loaders'].users.load(self['owner_id'])
 
-    async def resolve_messages(self, info: ResolveInfo) -> List[RowProxy]:
+    async def resolve_messages(self, info: ResolveInfo):
         app = info.context['request'].app
 
-        async with app['db'].acquire() as conn:
-            return await select_messages_by_room_id(conn, self['id'])
+        async with app['db'].begin() as sess:
+            return await select_messages_by_room_id(sess, self['id'])

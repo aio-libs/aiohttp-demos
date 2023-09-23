@@ -22,7 +22,6 @@ def read_version():
 
 install_requires = [
     'aiohttp',
-    'aiopg[sa]',
     'aiohttp_jinja2',
     'aiohttp_graphql',
     'aiodataloader',
@@ -33,6 +32,7 @@ install_requires = [
     'psycopg2-binary',
     'redis>=4.2',
     'Faker',
+    'sqlalchemy',
 ]
 
 

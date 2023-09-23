@@ -2,8 +2,9 @@ from typing import Any, List
 
 from aiodataloader import DataLoader
 
+from sqlalchemy.ext.asyncio import async_sessionmaker
 from graph.auth.db_utils import select_users
-from graph.types import RowsProxy
+from graph.auth.models import User
 
 
 __all__ = ['UserDataLoader', ]
@@ -19,8 +20,9 @@ class BaseAIODataLoader(DataLoader):
     def __init__(self, engine, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.engine = engine
+        self.session = async_sessionmaker(self.engine)
 
-    def sorted_by_keys(self, items: RowsProxy, keys: List[int]) -> RowsProxy:
+    def sorted_by_keys(self, items: list[User], keys: List[int]) -> list[User]:
         """Help ordering of returned items In `aiodataloader`."""
         items_dict = {
             key: value for key, value in zip(sorted(set(keys)), items)
@@ -34,8 +36,8 @@ class UserDataLoader(BaseAIODataLoader):
 
     Should be used everywhere, when it is possible problem N + 1 requests.
     """
-    async def batch_load_fn(self, keys: List[int]) -> RowsProxy:
-        async with self.engine.acquire() as conn:
-            response = await select_users(conn, keys)
+    async def batch_load_fn(self, keys: List[int]) -> list[User]:
+        async with self.session.begin() as sess:
+            response = await select_users(sess, keys)
 
         return self.sorted_by_keys(response, keys)
