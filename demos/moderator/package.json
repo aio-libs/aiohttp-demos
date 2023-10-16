@@ -42,7 +42,7 @@
     "parcel-bundler": "1.12.5",
     "postcss-modules": "3.2.2",
     "prettier": "3.0.3",
-    "prettier-eslint": "15.0.1"
+    "prettier-eslint": "16.1.1"
   },
   "snyk": true
 }
