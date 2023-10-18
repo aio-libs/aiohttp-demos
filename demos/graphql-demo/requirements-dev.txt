@@ -11,7 +11,7 @@ graphql-ws==0.4.4
 psycopg2-binary==2.9.9
 redis==5.0.1
 
-mypy==1.6.0
+mypy==1.6.1
 flake8==6.1.0
 pytest==7.4.2
 pytest-cov==4.1.0
