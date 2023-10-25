@@ -3,7 +3,7 @@ aiopg[sa]==1.4.0
 aiohttp_jinja2==1.5.1
 aiohttp_graphql==1.1.0
 aiodataloader==0.4.0
-faker==19.11.0
+faker==19.12.0
 trafaret_config==2.0.2
 graphene==2.1.9
 graphql-core==2.3.2
