@@ -23,7 +23,7 @@
     "preact": "10.19.2",
     "snyk": "^1.1245.0",
     "whatwg-fetch": "3.6.19",
-    "yarn": "^1.22.19"
+    "yarn": "^1.22.21"
   },
   "devDependencies": {
     "autoprefixer": "9.8.8",
