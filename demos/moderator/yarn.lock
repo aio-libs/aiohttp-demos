@@ -11818,10 +11818,10 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
-snyk@^1.1268.0:
-  version "1.1268.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.1268.0.tgz#a1db02317d54463ee0ee95531cb4289b8caa8e79"
-  integrity sha512-T0qy+Nb6/ymSwNnlgkqxkKerDEl0MZiJclm+oxAegswNiptkVTjUFUsPtQg9qz+4F5V+FlSrcaa4tX4/Dgk1KQ==
+snyk@^1.1269.0:
+  version "1.1269.0"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.1269.0.tgz#09a20b23cf0433ca19a824b17d1158b0e15013cb"
+  integrity sha512-t+n5qv402wytsVRAIjMU3xdZCyLZo5BRdQMF+g6/u/WAnpl/fjxR1/XtMqKxW5dNaHnqi+6pRBWJEWK3lFMUcg==
   dependencies:
     "@sentry/node" "^7.36.0"
     global-agent "^3.0.0"
