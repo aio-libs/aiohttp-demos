@@ -2564,6 +2564,11 @@
   resolved "https://registry.yarnpkg.com/@sigstore/protobuf-specs/-/protobuf-specs-0.2.1.tgz#be9ef4f3c38052c43bd399d3f792c97ff9e2277b"
   integrity sha512-XTWVxnWJu+c1oCshMLwnKvz8ZQJJDVOlciMfgpJBQbThVjKTCG8dwyhgLngBD2KN0ap9F/gOV8rFDEx8uh7R2A==
 
+"@sigstore/protobuf-specs@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@sigstore/protobuf-specs/-/protobuf-specs-0.3.0.tgz#bdcc773671f625bb81591bca86ec5314d57297f3"
+  integrity sha512-zxiQ66JFOjVvP9hbhGj/F/qNdsZfkGb/dVXSanNRNuAzMlr4MC95voPUBX8//ZNnmv3uSYzdfR/JSkrgvZTGxA==
+
 "@sigstore/sign@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@sigstore/sign/-/sign-2.1.0.tgz#801f4b5f60e13ecd1925117a7d084ab7b2199f01"
@@ -2583,12 +2588,12 @@
     "@sigstore/protobuf-specs" "^0.2.1"
     make-fetch-happen "^13.0.0"
 
-"@sigstore/tuf@^2.1.0", "@sigstore/tuf@^2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@sigstore/tuf/-/tuf-2.3.0.tgz#de64925ea10b16f3a7e77535d91eaf22be4dd904"
-  integrity sha512-S98jo9cpJwO1mtQ+2zY7bOdcYyfVYCUaofCG6wWRzk3pxKHVAkSfshkfecto2+LKsx7Ovtqbgb2LS8zTRhxJ9Q==
+"@sigstore/tuf@^2.1.0", "@sigstore/tuf@^2.3.0", "@sigstore/tuf@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@sigstore/tuf/-/tuf-2.3.1.tgz#86ff3c3c907e271696c88de0108d9063a8cbcc45"
+  integrity sha512-9Iv40z652td/QbV0o5n/x25H9w6IYRt2pIGbTX55yFDYlApDQn/6YZomjz6+KBx69rXHLzHcbtTS586mDdFD+Q==
   dependencies:
-    "@sigstore/protobuf-specs" "^0.2.1"
+    "@sigstore/protobuf-specs" "^0.3.0"
     tuf-js "^2.2.0"
 
 "@sigstore/verify@^0.1.0":
@@ -9499,10 +9504,10 @@ npm-user-validate@^2.0.0:
   resolved "https://registry.yarnpkg.com/npm-user-validate/-/npm-user-validate-2.0.0.tgz#7b69bbbff6f7992a1d9a8968d52fd6b6db5431b6"
   integrity sha512-sSWeqAYJ2dUPStJB+AEj0DyLRltr/f6YNcvCA7phkB8/RMLMnVsQ41GMwHo/ERZLYNDsyB2wPm7pZo1mqPOl7Q==
 
-npm@^10.4.0:
-  version "10.4.0"
-  resolved "https://registry.yarnpkg.com/npm/-/npm-10.4.0.tgz#904025b4d932cfaed8799e644a1c5ae7f02729fc"
-  integrity sha512-RS7Mx0OVfXlOcQLRePuDIYdFCVBPCNapWHplDK+mh7GDdP/Tvor4ocuybRRPSvfcRb2vjRJt1fHCqw3cr8qACQ==
+npm@^10.5.0:
+  version "10.5.0"
+  resolved "https://registry.yarnpkg.com/npm/-/npm-10.5.0.tgz#726f91df5b1b14d9637c8819d7e71cb873c395a1"
+  integrity sha512-Ejxwvfh9YnWVU2yA5FzoYLTW52vxHCz+MHrOFg9Cc8IFgF/6f5AGPAvb5WTay5DIUP1NIfN3VBZ0cLlGO0Ys+A==
   dependencies:
     "@isaacs/string-locale-compare" "^1.1.0"
     "@npmcli/arborist" "^7.2.1"
@@ -9512,7 +9517,7 @@ npm@^10.4.0:
     "@npmcli/package-json" "^5.0.0"
     "@npmcli/promise-spawn" "^7.0.1"
     "@npmcli/run-script" "^7.0.4"
-    "@sigstore/tuf" "^2.3.0"
+    "@sigstore/tuf" "^2.3.1"
     abbrev "^2.0.0"
     archy "~1.0.0"
     cacache "^18.0.2"
@@ -9563,7 +9568,7 @@ npm@^10.4.0:
     proc-log "^3.0.0"
     qrcode-terminal "^0.12.0"
     read "^2.1.0"
-    semver "^7.5.4"
+    semver "^7.6.0"
     spdx-expression-parse "^3.0.1"
     ssri "^10.0.5"
     supports-color "^9.4.0"
@@ -11617,10 +11622,10 @@ semver@^6.0.0, semver@^6.1.1, semver@^6.1.2, semver@^6.3.0, semver@^6.3.1:
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.1.tgz#556d2ef8689146e46dcea4bfdd095f3434dffcb4"
   integrity sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==
 
-semver@^7.0.0, semver@^7.1.1, semver@^7.3.2, semver@^7.3.4, semver@^7.3.5, semver@^7.3.6, semver@^7.3.7, semver@^7.5.2, semver@^7.5.3, semver@^7.5.4:
-  version "7.5.4"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-7.5.4.tgz#483986ec4ed38e1c6c48c34894a9182dbff68a6e"
-  integrity sha512-1bCSESV6Pv+i21Hvpxp3Dx+pSD8lIPt8uVjRrxAUt/nbswYc+tK6Y2btiULjd4+fnq15PX+nqQDC7Oft7WkwcA==
+semver@^7.0.0, semver@^7.1.1, semver@^7.3.2, semver@^7.3.4, semver@^7.3.5, semver@^7.3.6, semver@^7.3.7, semver@^7.5.2, semver@^7.5.3, semver@^7.5.4, semver@^7.6.0:
+  version "7.6.0"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.6.0.tgz#1a46a4db4bffcccd97b743b5005c8325f23d4e2d"
+  integrity sha512-EnwXhrlwXMk9gKu5/flx5sv/an57AkRplG3hTK68W7FRDN+k+OWBj65M7719OkA82XLBxrcX0KSHj+X5COhOVg==
   dependencies:
     lru-cache "^6.0.0"
 
