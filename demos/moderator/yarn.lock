@@ -10946,10 +10946,10 @@ posthtml@^0.16.4, posthtml@^0.16.5:
     posthtml-parser "^0.11.0"
     posthtml-render "^3.0.0"
 
-preact@10.20.0:
-  version "10.20.0"
-  resolved "https://registry.yarnpkg.com/preact/-/preact-10.20.0.tgz#191c10a2ee3b9fca1a7ded6375266266380212f6"
-  integrity sha512-wU7iZw2BjsaKDal3pDRDy/HpPB6cuFOnVUCcw9aIPKG98+ZrXx3F+szkos8BVME5bquyKDKvRlOJFG8kMkcAbg==
+preact@10.20.1:
+  version "10.20.1"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.20.1.tgz#1bc598ab630d8612978f7533da45809a8298542b"
+  integrity sha512-JIFjgFg9B2qnOoGiYMVBtrcFxHqn+dNXbq76bVmcaHYJFYR4lW67AOcXgAYQQTDYXDOg/kTZrKPNCdRgJ2UJmw==
 
 prelude-ls@^1.2.1:
   version "1.2.1"
