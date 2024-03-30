@@ -11,19 +11,19 @@
 
 # lint
 flake8==6.1.0
-flake8-bugbear==23.7.10
+flake8-bugbear==23.9.16
 flake8-quotes==3.3.2
 
 # test
-pytest==7.4.0
-pytest-aiohttp==1.0.4
+pytest==7.4.3
+pytest-aiohttp==1.0.5
 
 
 # dev
-psycopg2==2.9.7
+psycopg2==2.9.9
 
 # docs
 pygments==2.16.1
-sphinx==7.2.3
+sphinx==7.2.6
 sphinxcontrib-asyncio==0.3.0
 sphinxcontrib-spelling==8.0.0; platform_system!="Windows"  # We only use it in CI
