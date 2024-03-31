@@ -75,7 +75,7 @@ jobs:
         make install
     - name: Run tests
       run: |
-        make test
+        PYTHONASYNCIODEBUG=1 make test
 
   doc:
     name: Documentation

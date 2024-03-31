@@ -27,9 +27,9 @@ class AddMessageMutation(graphene.Mutation):
     async def mutate(self, info, room_id: int, owner_id: int, body: str):
         app = info.context['request'].app
 
-        async with app['db'].acquire() as conn:
-            message = await create_message(conn, room_id, owner_id, body)
-            owner = await select_user(conn, owner_id)
+        async with app['db'].begin() as sess:
+            message = await create_message(sess, room_id, owner_id, body)
+            owner = await select_user(sess, owner_id)
 
         await app['redis_pub'].publish_json(
             f'chat:{room_id}',
@@ -54,8 +54,8 @@ class RemoveMessageMutation(graphene.Mutation):
     async def mutate(self, info, id: int):
         app = info.context['request'].app
 
-        async with app['db'].acquire() as conn:
-            await delete_message(conn, id)
+        async with app['db'].begin() as sess:
+            await delete_message(sess, id)
 
         return RemoveMessageMutation(is_removed=True)
 
@@ -72,8 +72,8 @@ class StartTypingMessageMutation(graphene.Mutation):
     async def mutate(self, info, room_id: int, user_id: int):
         app = info.context['request'].app
 
-        async with app['db'].acquire() as conn:
-            user = await select_user(conn, user_id)
+        async with app['db'].begin() as sess:
+            user = await select_user(sess, user_id)
 
         await app['redis_pub'].publish_json(
             f'chat:typing:{room_id}',
