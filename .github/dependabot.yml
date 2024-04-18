@@ -2,6 +2,7 @@ version: 2
 updates:
   - package-ecosystem: "pip"
     directory: "/"
+    open-pull-requests-limit: 10
     schedule:
       interval: "daily"
 
@@ -10,47 +11,11 @@ updates:
     schedule:
       interval: "monthly"
 
-  - package-ecosystem: "pip"
-    directory: "/demos/blog"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pip"
-    directory: "/demos/chat"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pip"
-    directory: "/demos/graphql-demo"
-    schedule:
-      interval: "daily"
   - package-ecosystem: "npm"
     directory: "/demos/graphql-demo/ui"
     schedule:
       interval: "daily"
-  - package-ecosystem: "pip"
-    directory: "/demos/imagetagger"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pip"
-    directory: "/demos/moderator"
-    schedule:
-      interval: "daily"
   - package-ecosystem: "npm"
     directory: "/demos/moderator"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pip"
-    directory: "/demos/moderator_bot"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pip"
-    directory: "/demos/motortwit"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pip"
-    directory: "/demos/polls"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pip"
-    directory: "/demos/shortify"
     schedule:
       interval: "daily"
