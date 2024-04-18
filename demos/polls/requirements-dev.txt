@@ -1,6 +1,6 @@
 aiohttp==3.8.6
 aiopg[sa]==1.4.0
-aiohttp-jinja2==1.5.1
+aiohttp-jinja2==1.6
 trafaret_config==2.0.2
 
 # For testing
