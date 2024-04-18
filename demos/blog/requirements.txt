@@ -1,7 +1,7 @@
-aiohttp==3.8.5
+aiohttp==3.8.6
 aiohttp-jinja2==1.5.1
 aiohttp_security[session]==0.4.0
-asyncpg==0.28.0
+asyncpg==0.29.0
 asyncpgsa==0.27.1
 bcrypt==4.0.1
 pytoml==0.1.21
@@ -9,7 +9,7 @@ redis==5.0.1
 sqlalchemy==1.4.45
 
 # testing
-pytest==7.4.2
+pytest==7.4.3
 pytest-aiohttp==1.0.5
 pytest-asyncio==0.21.1
 flake8==6.1.0

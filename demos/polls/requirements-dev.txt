@@ -1,9 +1,9 @@
-aiohttp==3.8.5
+aiohttp==3.8.6
 aiopg[sa]==1.4.0
 aiohttp-jinja2==1.5.1
 trafaret_config==2.0.2
 
 # For testing
-pytest==7.4.2
+pytest==7.4.3
 pytest-aiohttp==1.0.5
 flake8==6.1.0

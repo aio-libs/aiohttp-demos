@@ -15,12 +15,12 @@ flake8-bugbear==23.9.16
 flake8-quotes==3.3.2
 
 # test
-pytest==7.4.2
+pytest==7.4.3
 pytest-aiohttp==1.0.5
 
 
 # dev
-psycopg2==2.9.8
+psycopg2==2.9.9
 
 # docs
 pygments==2.16.1
