@@ -9,7 +9,7 @@ scipy==1.11.3
 
 flake8==6.1.0
 flake8-bugbear==23.9.16
-flake8-quotes==3.3.2
+flake8-quotes==3.4.0
 ipdb==0.13.13
 mypy==1.7.0
 pytest==7.4.3
