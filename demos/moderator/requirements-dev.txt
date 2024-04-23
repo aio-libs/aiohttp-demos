@@ -7,7 +7,7 @@ scikit-learn==1.4.2
 scipy==1.11.3
 
 
-flake8==6.1.0
+flake8==7.0.0
 flake8-bugbear==23.9.16
 flake8-quotes==3.4.0
 ipdb==0.13.13
