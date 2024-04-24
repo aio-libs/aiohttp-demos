@@ -13,5 +13,5 @@ redis==5.0.1
 
 mypy==1.9.0
 flake8==7.0.0
-pytest==7.4.3
+pytest==8.1.1
 pytest-cov==5.0.0
