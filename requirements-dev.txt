@@ -23,7 +23,7 @@ pytest-aiohttp==1.0.5
 psycopg2==2.9.9
 
 # docs
-pygments==2.17.2
+pygments==2.18.0
 sphinx==7.3.7
 sphinxcontrib-asyncio==0.3.0
 sphinxcontrib-spelling==8.0.0; platform_system!="Windows"  # We only use it in CI
