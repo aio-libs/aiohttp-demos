@@ -22,4 +22,4 @@ six==1.16.0
 slacker==0.9.42
 urllib3==2.2.1
 yarl==1.9.4
-zipp==3.18.1
+zipp==3.18.2
