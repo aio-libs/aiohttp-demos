@@ -4,7 +4,7 @@ aioslacker==0.0.11
 async-timeout==4.0.3
 atomicwrites==1.4.1
 attrs==23.2.0
-certifi==2024.2.2
+certifi==2024.6.2
 chardet==5.2.0
 idna==3.7
 importlib-metadata==0.23 ; python_version < '3.8'
