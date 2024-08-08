@@ -5876,10 +5876,10 @@ eslint-plugin-import@2.29.1:
     semver "^6.3.1"
     tsconfig-paths "^3.15.0"
 
-eslint-plugin-json@4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-json/-/eslint-plugin-json-4.0.0.tgz#0969f2a80823369e8414125a98c91cc98016ec7a"
-  integrity sha512-l/P3WTzl2HI8PbwsbDIrZ+6jvwQI4TGuz20ReJkG3Y+gZS5ZurTgx+gBmuLpOgiqMyDJWyJ7+GCjevWtNYQcUg==
+eslint-plugin-json@4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-json/-/eslint-plugin-json-4.0.1.tgz#c99e0e465b2a33fbdce6dac040f507d75e940a74"
+  integrity sha512-3An5ISV5dq/kHfXdNyY5TUe2ONC3yXFSkLX2gu+W8xAhKhfvrRvkSAeKXCxZqZ0KJLX15ojBuLPyj+UikQMkOA==
   dependencies:
     lodash "^4.17.21"
     vscode-json-languageservice "^4.1.6"
