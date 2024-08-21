@@ -17,7 +17,7 @@ pytest==8.1.1
 pytest-aiohttp==1.0.5
 pyyaml==6.0.1
 scikit-learn==1.5.1
-scipy==1.13.1
+scipy==1.14.1
 six==1.16.0
 slacker==0.9.42
 urllib3==2.2.2
