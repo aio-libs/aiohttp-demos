@@ -9,7 +9,7 @@ redis==5.0.7
 sqlalchemy==1.4.45
 
 # testing
-pytest==8.1.1
+pytest==8.3.3
 pytest-aiohttp==1.0.5
 pytest-asyncio==0.21.1
 flake8==7.1.0
