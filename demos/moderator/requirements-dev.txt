@@ -1,4 +1,4 @@
-aiohttp==3.8.6
+aiohttp==3.10.8
 trafaret==2.1.1
 pyyaml==6.0.1
 numpy==1.26.4
