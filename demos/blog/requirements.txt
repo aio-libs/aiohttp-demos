@@ -11,5 +11,5 @@ sqlalchemy==1.4.45
 # testing
 pytest==8.1.1
 pytest-aiohttp==1.0.5
-pytest-asyncio==0.21.1
+pytest-asyncio==0.24.0
 flake8==7.1.0
