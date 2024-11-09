@@ -158,7 +158,7 @@ async def requests(db_sm):
     return {"request": request}
 
 
-@pytest_asyncio.fixture(loop_scope="module", scope="session")
+@pytest_asyncio.fixture(scope="session")
 async def db():
     """The fixture for running and turn down database."""
     await setup_test_db(engine)
