@@ -55,21 +55,10 @@ async def setup_test_db(engine) -> None:
     db_password = test_config["postgres"]["password"]
 
     async with engine.connect() as conn:
-        # await conn.execute(f"create user {db_user} with password '{db_password}'")
         await conn.execute(text(f"CREATE USER {db_user} WITH PASSWORD '{db_password}'"))
-        # await conn.execute(f"create database {db_name} encoding 'UTF8'")
-        await conn.execute(
-            text("CREATE DATABASE :db_name ENCODING 'UTF8'"), {"db_name": db_name}
-        )
-        # await conn.execute(f"alter database {db_name} owner to {db_user}")
-        await conn.execute(
-            text("ALTER DATABASE :db_name OWNER TO :db_user"),
-            {"db_name": db_name, "db_user": db_user},
-        )
-        # await conn.execute(f"grant all on schema public to {db_user}")
-        await conn.execute(
-            text("GRANT ALL ON SCHEMA public TO :db_user"), {"db_user": db_user}
-        )
+        await conn.execute(text(f"CREATE DATABASE {db_name} ENCODING 'UTF8'"))
+        await conn.execute(text(f"ALTER DATABASE {db_name} OWNER TO {db_user}"))
+        await conn.execute(text(f"GRANT ALL ON SCHEMA public TO {db_user}"))
 
 
 async def teardown_test_db(engine) -> None:
