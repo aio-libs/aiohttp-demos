@@ -1,20 +1,18 @@
+import random
 from unittest.mock import Mock
 
 import pytest
-import random
-
-from sqlalchemy import create_engine
+from graphene.test import Client
+from sqlalchemy import create_engine, text
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+
 from graph.api.dataloaders import UserDataLoader
 from graph.api.views import schema
 from graph.auth.models import User
-from graph.chat.models import Room, Message
+from graph.chat.models import Message, Room
 from graph.db import Base
-from graph.utils import (
-    APP_PATH as PATH,
-    get_config,
-)
-from graphene.test import Client
+from graph.utils import APP_PATH as PATH
+from graph.utils import get_config
 
 # constants
 TEST_CONFIG_PATH = PATH / "config" / "api.test.yml"
@@ -56,10 +54,24 @@ async def setup_test_db(engine) -> None:
     db_password = test_config["postgres"]["password"]
 
     async with engine.connect() as conn:
-        await conn.execute(f"create user {db_user} with password '{db_password}'")
-        await conn.execute(f"create database {db_name} encoding 'UTF8'")
-        await conn.execute(f"alter database {db_name} owner to {db_user}")
-        await conn.execute(f"grant all on schema public to {db_user}")
+        # await conn.execute(f"create user {db_user} with password '{db_password}'")
+        await conn.execute(
+            text("CREATE USER :db_user WITH PASSWORD :db_password"),
+            {"db_user": db_user, "db_password": db_password},
+        )
+        # await conn.execute(f"create database {db_name} encoding 'UTF8'")
+        await conn.execute(
+            text("CREATE DATABASE :db_name ENCODING 'UTF8'"), {"db_name": db_name}
+        )
+        # await conn.execute(f"alter database {db_name} owner to {db_user}")
+        await conn.execute(
+            text("ALTER DATABASE :db_name OWNER TO :db_user"),
+            {"db_name": db_name, "db_user": db_user},
+        )
+        # await conn.execute(f"grant all on schema public to {db_user}")
+        await conn.execute(
+            text("GRANT ALL ON SCHEMA public TO :db_user"), {"db_user": db_user}
+        )
 
 
 async def teardown_test_db(engine) -> None:
