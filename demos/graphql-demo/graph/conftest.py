@@ -94,12 +94,16 @@ async def init_sample_data(engine) -> None:
                 )
             )
 
-    async with session.begin() as sess:
-        for idx in range(1000):
-            sess.add(Room(name=f"test#{idx}", owner_id=random.randint(0, 999)))
+    rooms_store = []
 
     async with session.begin() as sess:
         for idx in range(1000):
+            new_room = Room(name=f"test#{idx}", owner_id=random.randint(0, 999))
+            sess.add(new_room)
+            rooms_store.append(new_room)
+
+    async with session.begin() as sess:
+        for room in rooms_store:
             for _ in range(10):
                 sess.add(
                     Message(
@@ -108,7 +112,7 @@ async def init_sample_data(engine) -> None:
                             random.randint(0, 999) for x in range(random.randint(0, 6))
                         ],
                         owner_id=random.randint(0, 999),
-                        room_id=idx,
+                        room_id=room.id,
                     )
                 )
 
