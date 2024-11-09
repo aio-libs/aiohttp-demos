@@ -60,6 +60,7 @@ async def setup_test_db(engine) -> None:
         await conn.execute(f"create database {db_name} encoding 'UTF8'")
         await conn.execute(f"alter database {db_name} owner to {db_user}")
         await conn.execute(f"grant all on schema public to {db_user}")
+        await conn.commit()
 
 
 async def teardown_test_db(engine) -> None:
