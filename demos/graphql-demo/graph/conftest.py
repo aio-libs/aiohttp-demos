@@ -135,7 +135,7 @@ async def db_sm(db_engine):
 
 
 @pytest.fixture
-async def requests(db_engine):
+async def requests(db_engine, db_sm):
     """Request for get resource in program from app."""
 
     class Loaders:
