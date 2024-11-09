@@ -17,11 +17,11 @@ from graph.utils import (
 from graphene.test import Client
 
 # constants
-TEST_CONFIG_PATH = PATH / 'config' / 'api.test.yml'
-CONFIG_PATH = PATH / 'config' / 'api.yml'
+TEST_CONFIG_PATH = PATH / "config" / "api.test.yml"
+CONFIG_PATH = PATH / "config" / "api.yml"
 
-config = get_config(['-c', CONFIG_PATH.as_posix()])
-test_config = get_config(['-c', TEST_CONFIG_PATH.as_posix()])
+config = get_config(["-c", CONFIG_PATH.as_posix()])
+test_config = get_config(["-c", TEST_CONFIG_PATH.as_posix()])
 
 
 # helpers
@@ -40,28 +40,24 @@ def get_db_url(config: dict) -> str:
 
 engine = create_async_engine(
     get_db_url(config),
-    isolation_level='AUTOCOMMIT',
+    isolation_level="AUTOCOMMIT",
 )
 test_engine = create_async_engine(
     get_db_url(test_config),
-    isolation_level='AUTOCOMMIT',
+    isolation_level="AUTOCOMMIT",
 )
 
 
 async def setup_test_db(engine) -> None:
     """Creating new test database environment."""
     # test params
-    db_name = test_config['postgres']['database']
-    db_user = test_config['postgres']['user']
-    db_password = test_config['postgres']['password']
+    db_name = test_config["postgres"]["database"]
+    db_user = test_config["postgres"]["user"]
+    db_password = test_config["postgres"]["password"]
 
     async with engine.connect() as conn:
-        await conn.execute(
-            f"create user {db_user} with password '{db_password}'"
-        )
-        await conn.execute(
-            f"create database {db_name} encoding 'UTF8'"
-        )
+        await conn.execute(f"create user {db_user} with password '{db_password}'")
+        await conn.execute(f"create database {db_name} encoding 'UTF8'")
         await conn.execute(f"alter database {db_name} owner to {db_user}")
         await conn.execute(f"grant all on schema public to {db_user}")
 
@@ -69,8 +65,8 @@ async def setup_test_db(engine) -> None:
 async def teardown_test_db(engine) -> None:
     """Remove the test database environment."""
     # test params
-    db_name = test_config['postgres']['database']
-    db_user = test_config['postgres']['user']
+    db_name = test_config["postgres"]["database"]
+    db_user = test_config["postgres"]["user"]
 
     async with engine.connect() as conn:
         await conn.execute(
@@ -90,12 +86,14 @@ async def init_sample_data(engine) -> None:
     session = async_sessionmaker(engine, expire_on_commit=False)
     async with session.begin() as sess:
         for idx in range(1000):
-            sess.add(User(
-                id=idx,
-                username=f"test#{idx}",
-                email=f"test#{idx}",
-                password=f"{idx}"
-            ))
+            sess.add(
+                User(
+                    id=idx,
+                    username=f"test#{idx}",
+                    email=f"test#{idx}",
+                    password=f"{idx}",
+                )
+            )
 
     async with session.begin() as sess:
         for idx in range(1000):
@@ -104,17 +102,21 @@ async def init_sample_data(engine) -> None:
     async with session.begin() as sess:
         for idx in range(1000):
             for _ in range(10):
-                sess.add(Message(
-                    body="test",
-                    who_like=[random.randint(0, 999) for x in range(random.randint(0, 6))],
-                    owner_id=random.randint(0, 999),
-                    room_id=idx
-                ))
+                sess.add(
+                    Message(
+                        body="test",
+                        who_like=[
+                            random.randint(0, 999) for x in range(random.randint(0, 6))
+                        ],
+                        owner_id=random.randint(0, 999),
+                        room_id=idx,
+                    )
+                )
 
 
 # fixtures
 @pytest.fixture
-async def sa_engine():
+async def db_sm():
     """The fixture initialize async engine for PostgresSQl."""
     db = create_async_engine(get_db_url(test_config))
     yield async_sessionmaker(db, expire_on_commit=False)
@@ -122,10 +124,11 @@ async def sa_engine():
 
 
 @pytest.fixture
-async def requests(sa_engine):
+async def requests(db_sm):
     """Request for get resource in program from app."""
+
     class Loaders:
-        users = UserDataLoader(sa_engine, max_batch_size=100)
+        users = UserDataLoader(db_sm, max_batch_size=100)
 
     class RedisMock:
         @staticmethod
@@ -134,12 +137,12 @@ async def requests(sa_engine):
 
     request = Mock()
     request.app = {
-        'db': sa_engine,
-        'redis_pub': RedisMock(),
-        'loaders': Loaders(),
+        "db": db_sm,
+        "redis_pub": RedisMock(),
+        "loaders": Loaders(),
     }
 
-    return {'request': request}
+    return {"request": request}
 
 
 @pytest.fixture(scope="session")
@@ -161,7 +164,7 @@ async def tables(db):
         await conn.run_sync(Base.metadata.drop_all)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def client(tables):
     """The fixture for the initialize graphene's client."""
     return Client(schema, return_promise=True)

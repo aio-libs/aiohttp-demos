@@ -5,8 +5,8 @@ from graph.auth.db_utils import select_user, select_users
 
 
 @pytest.mark.asyncio
-async def test_select_user(sa_engine):
-    session = async_sessionmaker(sa_engine)
+async def test_select_user(db_sm):
+    session = db_sm()
 
     async with session.begin() as sess:
         res = await select_user(sess, 1)
@@ -15,9 +15,9 @@ async def test_select_user(sa_engine):
 
 
 @pytest.mark.asyncio
-async def test_select_users(sa_engine):
-    session = async_sessionmaker(sa_engine)
-    
+async def test_select_users(db_sm):
+    session = db_sm()
+
     async with session.begin() as sess:
         res = await select_users(sess, [1, 2, 3])
 
