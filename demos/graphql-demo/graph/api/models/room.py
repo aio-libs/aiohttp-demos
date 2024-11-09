@@ -1,11 +1,9 @@
 from typing import List
 
 import graphene
-from graphql import ResolveInfo
-
 from graph.api.models.user import User
 from graph.chat.db_utils import select_messages_by_room_id
-
+from graphql import ResolveInfo
 
 __all__ = [
     "Message",
@@ -31,8 +29,9 @@ class Message(graphene.ObjectType):
 
     async def resolve_owner(self, info: ResolveInfo):
         app = info.context["request"].app
-
-        return await app["loaders"].users.load(self.owner_id)
+        owner = await app["loaders"].users.load(self.owner_id)
+        assert owner is not None, f"Owner was None from {app=} and {info=}"
+        return owner
 
 
 class Room(graphene.ObjectType):
