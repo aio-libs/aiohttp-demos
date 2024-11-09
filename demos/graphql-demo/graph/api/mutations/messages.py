@@ -8,9 +8,9 @@ from graph.chat.db_utils import (
 
 
 __all__ = [
-    'AddMessageMutation',
-    'RemoveMessageMutation',
-    'StartTypingMessageMutation',
+    "AddMessageMutation",
+    "RemoveMessageMutation",
+    "StartTypingMessageMutation",
 ]
 
 
@@ -25,16 +25,17 @@ class AddMessageMutation(graphene.Mutation):
     is_created = graphene.Boolean()
 
     async def mutate(self, info, room_id: int, owner_id: int, body: str):
-        app = info.context['request'].app
+        app = info.context["request"].app
 
-        async with app['db'].begin() as sess:
+        async with app["db"].begin() as sess:
             message = await create_message(sess, room_id, owner_id, body)
             owner = await select_user(sess, owner_id)
 
-        await app['redis_pub'].publish_json(
-            f'chat:{room_id}',
+        await app["redis_pub"].publish_json(
+            f"chat:{room_id}",
             {
-                "body": body, "id": message.id,
+                "body": body,
+                "id": message.id,
                 "username": owner.username,
                 "user_id": owner.id,
             },
@@ -52,9 +53,9 @@ class RemoveMessageMutation(graphene.Mutation):
     is_removed = graphene.Boolean()
 
     async def mutate(self, info, id: int):
-        app = info.context['request'].app
+        app = info.context["request"].app
 
-        async with app['db'].begin() as sess:
+        async with app["db"].begin() as sess:
             await delete_message(sess, id)
 
         return RemoveMessageMutation(is_removed=True)
@@ -70,13 +71,13 @@ class StartTypingMessageMutation(graphene.Mutation):
     is_success = graphene.Boolean()
 
     async def mutate(self, info, room_id: int, user_id: int):
-        app = info.context['request'].app
+        app = info.context["request"].app
 
-        async with app['db'].begin() as sess:
+        async with app["db"].begin() as sess:
             user = await select_user(sess, user_id)
 
-        await app['redis_pub'].publish_json(
-            f'chat:typing:{room_id}',
+        await app["redis_pub"].publish_json(
+            f"chat:typing:{room_id}",
             {"username": user.username, "id": user.id},
         )
 
