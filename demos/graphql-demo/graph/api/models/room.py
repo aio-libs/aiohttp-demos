@@ -54,6 +54,7 @@ class Room(graphene.ObjectType):
     )
 
     async def resolve_owner(self, info: ResolveInfo):
+        assert False, f"{self}, {info=}"
         app = info.context["request"].app
 
         return await app["loaders"].users.load(self.owner_id)
