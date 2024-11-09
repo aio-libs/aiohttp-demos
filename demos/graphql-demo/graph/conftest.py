@@ -69,16 +69,18 @@ async def teardown_test_db(engine) -> None:
 
     async with engine.connect() as conn:
         await conn.execute(
-            f"""
+            text(
+                f"""
             SELECT pg_terminate_backend(pg_stat_activity.pid)
             FROM pg_stat_activity
             WHERE pg_stat_activity.datname = '{db_name}'
             AND pid <> pg_backend_pid();
             """
+            )
         )
-        await conn.execute(f"drop database if exists {db_name}")
-        await conn.execute(f"REVOKE ALL ON SCHEMA public FROM {db_user}")
-        await conn.execute(f"drop role if exists {db_user}")
+        await conn.execute(text(f"drop database if exists {db_name}"))
+        await conn.execute(text(f"REVOKE ALL ON SCHEMA public FROM {db_user}"))
+        await conn.execute(text(f"drop role if exists {db_user}"))
 
 
 async def init_sample_data(engine) -> None:
