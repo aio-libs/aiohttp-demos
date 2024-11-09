@@ -4,31 +4,25 @@ import asyncio
 from aiohttpdemo_blog.main import init_app
 from aiohttpdemo_blog.settings import load_config, BASE_DIR
 from db_helpers import (
-    setup_db, teardown_db,
-    create_tables, create_sample_data, drop_tables
+    setup_db,
+    teardown_db,
+    create_tables,
+    create_sample_data,
+    drop_tables,
 )
 
 
 @pytest.fixture
 async def client(aiohttp_client):
-    config = load_config(BASE_DIR / 'config' / 'test_config.toml')
+    config = load_config(BASE_DIR / "config" / "test_config.toml")
     app = await init_app(config)
     return await aiohttp_client(app)
 
 
-@pytest.fixture(scope='session')
-def event_loop(request):
-    loop = asyncio.get_event_loop_policy().new_event_loop()
-    yield loop
-    loop.close()
-
-
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 async def database():
-    admin_db_config = load_config(
-        BASE_DIR / 'config' / 'admin_config.toml')['database']
-    test_db_config = load_config(
-        BASE_DIR / 'config' / 'test_config.toml')['database']
+    admin_db_config = load_config(BASE_DIR / "config" / "admin_config.toml")["database"]
+    test_db_config = load_config(BASE_DIR / "config" / "test_config.toml")["database"]
 
     await setup_db(executor_config=admin_db_config, target_config=test_db_config)
     yield
@@ -37,8 +31,7 @@ async def database():
 
 @pytest.fixture
 async def tables_and_data(database):
-    test_db_config = load_config(
-        BASE_DIR / 'config' / 'test_config.toml')['database']
+    test_db_config = load_config(BASE_DIR / "config" / "test_config.toml")["database"]
 
     await create_tables(target_config=test_db_config)
     await create_sample_data(target_config=test_db_config)
