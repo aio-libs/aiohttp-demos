@@ -1,9 +1,7 @@
 import graphene
-from graphql import ResolveInfo
-
 from graph.api.models.room import Room
-from graph.chat.db_utils import select_rooms, select_room
-
+from graph.chat.db_utils import select_room, select_rooms
+from graphql import ResolveInfo
 
 __all__ = [
     "RoomsQuery",
@@ -23,9 +21,13 @@ class RoomsQuery(graphene.ObjectType):
 
     async def resolve_rooms(self, info: ResolveInfo) -> list[list[Room]]:
         app = info.context["request"].app
+        sessionmaker = app["db"]
 
-        async with app["db"].begin() as sess:
-            return await select_rooms(sess)
+        try:
+            async with sessionmaker.begin() as sess:
+                return await select_rooms(sess)
+        except Exception as exc:
+            raise TypeError(repr(sessionmaker)) from exc
 
     async def resolve_room(self, info: ResolveInfo, id: int) -> list[Room]:
         app = info.context["request"].app
