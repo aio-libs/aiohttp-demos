@@ -717,3 +717,12 @@ Now, import and add a ``setup_middlewares`` step to the main file:
 .. literalinclude:: ../demos/polls/aiohttpdemo_polls/main.py
 
 Run the app again. To test, try an invalid url.
+
+More
+----
+
+Ready to build a production app?
+
+- Take a look at how to write tests: :ref:`aiohttp-testing`
+- Consider enabling handler cancellation: :ref:`aiohttp-web-peer-disconnection`
+- Deploy your app: :ref:`aiohttp-deployment`
