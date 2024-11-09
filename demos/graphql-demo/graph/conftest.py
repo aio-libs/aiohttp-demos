@@ -2,6 +2,7 @@ import random
 from unittest.mock import Mock
 
 import pytest
+import pytest_asyncio
 from graphene.test import Client
 from sqlalchemy import create_engine, text
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
@@ -157,7 +158,7 @@ async def requests(db_sm):
     return {"request": request}
 
 
-@pytest.fixture(scope="session")
+@pytest_asyncio.fixture(loop_scope="module", scope="session")
 async def db():
     """The fixture for running and turn down database."""
     await setup_test_db(engine)
