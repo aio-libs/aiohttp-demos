@@ -121,19 +121,25 @@ async def init_sample_data(engine) -> None:
 
 # fixtures
 @pytest.fixture
-async def db_sm():
-    """The fixture initialize async engine for PostgresSQl."""
+async def db_engine():
+    """The fixture provides async engine for PostgresSQl."""
     db = create_async_engine(get_db_url(test_config))
-    yield async_sessionmaker(db, expire_on_commit=False)
+    yield db
     await db.dispose()
 
 
 @pytest.fixture
-async def requests(db_sm):
+async def db_sm(db_engine):
+    """The fixture initialize async engine for PostgresSQl."""
+    yield async_sessionmaker(db_engine, expire_on_commit=False)
+
+
+@pytest.fixture
+async def requests(db_engine):
     """Request for get resource in program from app."""
 
     class Loaders:
-        users = UserDataLoader(db_sm, max_batch_size=100)
+        users = UserDataLoader(db_engine, max_batch_size=100)
 
     class RedisMock:
         @staticmethod
