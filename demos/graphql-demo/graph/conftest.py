@@ -56,10 +56,7 @@ async def setup_test_db(engine) -> None:
 
     async with engine.connect() as conn:
         # await conn.execute(f"create user {db_user} with password '{db_password}'")
-        await conn.execute(
-            text("CREATE USER :db_user WITH PASSWORD ':db_password'"),
-            {"db_user": db_user, "db_password": db_password},
-        )
+        await conn.execute(text(f"CREATE USER {db_user} WITH PASSWORD '{db_password}'"))
         # await conn.execute(f"create database {db_name} encoding 'UTF8'")
         await conn.execute(
             text("CREATE DATABASE :db_name ENCODING 'UTF8'"), {"db_name": db_name}
