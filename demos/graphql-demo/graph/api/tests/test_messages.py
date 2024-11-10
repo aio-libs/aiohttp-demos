@@ -37,7 +37,7 @@ async def test_simple_fetch_messages_from_room(client, requests):
     )
 
     messages = executed_room["data"]["room"]["messages"]
-    errors = executed_room["errors"]
+    errors = executed_room.get("errors", [])
 
     assert messages
 
