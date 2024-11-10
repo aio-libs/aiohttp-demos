@@ -13,8 +13,8 @@ async def test_simple_fetch_messages_from_room(client, requests):
         context_value=requests,
     )
 
-    single_room = executed['data']['rooms'][0]
-    room_id = single_room['id']
+    single_room = executed["data"]["rooms"][0]
+    room_id = single_room["id"]
 
     executed = await client.execute(
         """{
@@ -31,19 +31,21 @@ async def test_simple_fetch_messages_from_room(client, requests):
             }
           }
         }
-        """ % room_id,
+        """
+        % room_id,
         context_value=requests,
     )
 
-    messages = executed['data']['room']['messages']
+    messages = executed["data"]["room"]["messages"]
 
     assert messages
 
     single_messages = messages[0]
-    owner = single_messages['owner']
+    owner = single_messages["owner"]
 
-    assert isinstance(single_messages['id'], int)
-    assert single_messages['body']
-    assert isinstance(owner['id'], int)
-    assert owner['username']
-    assert owner['email']
+    assert isinstance(single_messages["id"], int)
+    assert None not in owner.values()
+    assert single_messages["body"]
+    assert isinstance(owner["id"], int)
+    assert owner["username"]
+    assert owner["email"]
