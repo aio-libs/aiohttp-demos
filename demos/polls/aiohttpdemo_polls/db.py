@@ -1,4 +1,3 @@
-# aiohttpdemo_polls/db.py
 from datetime import date
 
 from sqlalchemy import ForeignKey, String, select

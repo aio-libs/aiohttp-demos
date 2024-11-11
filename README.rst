@@ -15,7 +15,6 @@ aiohttp-demos
 
 Demos for `aiohttp <https://aiohttp.readthedocs.io>`_ project.
 
-(SQLA v2)
 
 .. contents::
 

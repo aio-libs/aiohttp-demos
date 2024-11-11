@@ -81,8 +81,3 @@ async def get_posts_with_joined_users(sess):
         select(Posts).options(selectinload(Posts.user)).order_by(Posts.timestamp)
     )
     return records.all()
-
-
-async def create_post(sess, post_body, user_id):
-    new_post = Posts(body=post_body, user_id=user_id)
-    await sess.add(new_post)

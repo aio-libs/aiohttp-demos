@@ -4,10 +4,7 @@ from graph.api.models.user import User
 from graph.chat.db_utils import select_messages_by_room_id
 from graphql import ResolveInfo
 
-__all__ = [
-    "Message",
-    "Room",
-]
+__all__ = ("Message", "Room")
 
 
 class Message(graphene.ObjectType):

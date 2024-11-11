@@ -25,14 +25,12 @@ from sqlalchemy.schema import (
     DropTable,
 )
 
-tables = [
+tables = (
     users,
     rooms,
     messages,
-]
-enums = [
-    gender_enum,
-]
+)
+enums = (gender_enum,)
 faker = Faker()
 
 

@@ -43,7 +43,7 @@ async def test_vote(cli, tables_and_data):
         )
         assert response.status == 200
 
-    async with cli.server.app['db'].begin() as sess:
+    async with cli.server.app["db"].begin() as sess:
         result = await sess.scalars(
             select(Choice)
             .where(Choice.question_id == question_id)

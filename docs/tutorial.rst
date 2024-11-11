@@ -213,8 +213,8 @@ clean and short:
 Next, load the config into the application:
 
 .. code-block:: python
+:emphasize-lines: 8
 
-    # aiohttpdemo_polls/main.py
     from aiohttp import web
 
     from settings import config
@@ -267,7 +267,6 @@ Create ``db.py`` file with database schemas:
 
 .. code-block:: python
 
-    # aiohttpdemo_polls/db.py
     from sqlalchemy import MetaData, ForeignKey, String
     from sqlalchemy.orm import declarative_base, Mapped, mapped_column
     from datetime import date
@@ -298,7 +297,6 @@ Helper script can do that for you. Create a new file ``init_db.py`` in project's
 
 .. code-block:: python
 
-    # polls/init_db.py
     from sqlalchemy import create_engine, MetaData
     from sqlalchemy.orm import Session, sessionmaker
     from datetime import date
@@ -333,7 +331,7 @@ Helper script can do that for you. Create a new file ``init_db.py`` in project's
     A more advanced version of this script is mentioned in :ref:`aiohttp-demos-polls-preparations-database` notes.
 
 
-Install both the ``asyncpg`` (we'll be using it later) and ``sqlalchemy`` packages to interact with the database,
+Install both the ``asyncpg`` and ``sqlalchemy`` packages to interact with the database,
 and run the script::
 
     $ pip install asyncpg
@@ -380,17 +378,8 @@ For making DB queries we need an engine instance. Assuming ``conf`` is
 a :class:`dict` with the configuration info for a Postgres connection, this
 could be done by the following generator function:
 
-.. code-block:: python
-
-    DSN = "postgresql+asyncgp://{user}:{password}@{host}:{port}/{database}"
-    
-    async def pg_context(app):
-        engine = await create_async_engine(DSN.format(**app['config']['postgres']))
-        app["db"] = async_sessionmaker(engine)
-
-        yield
-
-        await engine.dispose()
+.. literalinclude:: ../demos/polls/aiohttpdemo_polls/db.py
+  :pyobject: pg_context
 
 Add the code to ``aiohttpdemo_polls/db.py`` file.
 
@@ -417,7 +406,6 @@ Complete files with changes
 
 .. code-block:: python
     
-    # aiohttpdemo_polls/db.py
     from sqlalchemy import MetaData, ForeignKey, String
     from sqlalchemy.orm import declarative_base, Mapped, mapped_column
     from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
@@ -455,7 +443,6 @@ Complete files with changes
 
 .. code-block:: python
 
-    # aiohttpdemo_polls/main.py
     from aiohttp import web
 
     from settings import config
@@ -505,10 +492,12 @@ library first:
 After installing, setup the library:
 
 .. code-block:: python
+    :emphasize-lines: 3, 4, 12, 13
 
     # aiohttpdemo_polls/main.py
     from aiohttp import web
-    import aiohttp_jinja2, jinja2
+    import aiohttp_jinja2
+    import jinja2
 
     from settings import config, BASE_DIR
     from routes import setup_routes
@@ -517,9 +506,7 @@ After installing, setup the library:
     app = web.Application()
     app["config"] = config
     aiohttp_jinja2.setup(app,
-        loader=jinja2.FileSystemLoader(
-            str(BASE_DIR / 'aiohttpdemo_polls' / 'templates')
-            ))
+        loader=jinja2.FileSystemLoader(str(BASE_DIR / "aiohttpdemo_polls" / "templates")))
     setup_routes(app)
     app.cleanup_ctx.append(pg_context)
     web.run_app(app)
@@ -576,8 +563,8 @@ dict with page content, the ``aiohttp_jinja2.template`` decorator
 processes the dict using the jinja2 template renderer.
 
 .. code-block:: python
+    :emphasize-lines: 6, 10
 
-    # aiohttpdemo_polls/views.py
     import aiohttp_jinja2
     from aiohttp import web
     from sqlalchemy import select
@@ -598,18 +585,17 @@ Now let's add more views:
 Update ``views.py`` and ``db.py`` one last time, to:
 
 .. literalinclude:: ../demos/polls/aiohttpdemo_polls/views.py
-
-.. literalinclude:: ../demos/polls/aiohttpdemo_polls/db.py
+  :pyobject: poll
 
 
 Add the following to ``routes.py``:
 
 .. code-block:: python
 
-    app.router.add_get('/poll/{question_id}', poll, name='poll')
-    app.router.add_get('/poll/{question_id}/results',
-                       results, name='results')
-    app.router.add_post('/poll/{question_id}/vote', vote, name='vote')
+    app.router.add_get("/poll/{question_id}", poll, name="poll")
+    app.router.add_get("/poll/{question_id}/results",
+                       results, name="results")
+    app.router.add_post("/poll/{question_id}/vote", vote, name="vote")
 
 .. note::
     
@@ -636,15 +622,8 @@ Fortunately, this can be easily done:
 
 First we update ``routes.py``, adding:
 
-.. code-block:: python
-
-    import pathlib
-    PROJECT_ROOT = pathlib.Path(__file__).parent
-    
-    def setup_static_routes(app):
-        app.router.add_static('/static/',
-                              path=PROJECT_ROOT / 'static',
-                              name='static')
+.. literalinclude:: ../demos/polls/aiohttpdemo_polls/routes.py
+  :pyobject: setup_static_routes
 
 where ``project_root`` is the path to the root folder.
 

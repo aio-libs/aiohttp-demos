@@ -1,4 +1,3 @@
-# aiohttpdemo_polls/routes.py
 import pathlib
 
 from aiohttpdemo_polls.views import index, poll, results, vote

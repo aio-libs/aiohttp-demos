@@ -25,7 +25,7 @@ async def test_login_form(tables_and_data, client):
         'username': 'Adam',
         'password': 'adam'
     }
-    async with client.server.app['db_pool']() as sess:
+    async with client.server.app["db_pool"]() as sess:
         error = await validate_login_form(sess, invalid_form)
         assert error
 

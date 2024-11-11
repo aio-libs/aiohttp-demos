@@ -1,4 +1,3 @@
-# aiohttpdemo_polls/main.py
 import logging
 import sys
 

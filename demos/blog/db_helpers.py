@@ -52,7 +52,7 @@ async def teardown_db(executor_config=None, target_config=None):
 
 def get_engine(db_config):
     db_url = construct_db_url(db_config)
-    engine = create_async_engine(db_url, isolation_level="AUTOCOMMIT")
+    engine = create_async_engine(db_url)
     return engine
 
 

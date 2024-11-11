@@ -5,9 +5,7 @@ from graph.auth.db_utils import select_users
 from graph.auth.models import User
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
-__all__ = [
-    "UserDataLoader",
-]
+__all__ = ("UserDataLoader",)
 
 
 class BaseAIODataLoader(DataLoader):
