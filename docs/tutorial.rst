@@ -213,7 +213,7 @@ clean and short:
 Next, load the config into the application:
 
 .. code-block:: python
-:emphasize-lines: 8
+    :emphasize-lines: 8
 
     from aiohttp import web
 
