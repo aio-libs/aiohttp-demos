@@ -1,6 +1,6 @@
 from graph.chat.models import Message, Room
 from graph.constants import OBJECT_NOT_FOUND_ERROR
-from sqlalchemy.sql import delete, insert, select
+from sqlalchemy.sql import select
 
 __all__ = [
     "select_rooms",

@@ -1,11 +1,11 @@
 from datetime import datetime
 
-from sqlalchemy.sql import func
-from sqlalchemy import ARRAY, ForeignKey, Integer, String
-from sqlalchemy.orm import Mapped, mapped_column
-
 from graph.auth.models import User
 from graph.db import Base
+from sqlalchemy import ARRAY, ForeignKey, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.sql import func
+
 
 class Room(Base):
     __tablename__ = "rooms"
@@ -15,6 +15,7 @@ class Room(Base):
 
     # ForeignKey
     owner_id: Mapped[int] = mapped_column(ForeignKey(User.id, ondelete="CASCADE"))
+
 
 class Message(Base):
     __tablename__ = "messages"

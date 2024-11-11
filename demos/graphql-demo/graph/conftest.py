@@ -4,7 +4,7 @@ from unittest.mock import Mock
 import pytest
 import pytest_asyncio
 from graphene.test import Client
-from sqlalchemy import create_engine, text
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from graph.api.dataloaders import UserDataLoader

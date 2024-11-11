@@ -1,6 +1,5 @@
 import pytest
 
-from sqlalchemy.ext.asyncio import async_sessionmaker
 from graph.auth.db_utils import select_user, select_users
 
 

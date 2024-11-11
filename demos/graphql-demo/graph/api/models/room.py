@@ -1,4 +1,3 @@
-from typing import List
 
 import graphene
 from graph.api.models.user import User

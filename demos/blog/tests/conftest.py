@@ -1,5 +1,4 @@
 import pytest
-import asyncio
 
 from aiohttpdemo_blog.main import init_app
 from aiohttpdemo_blog.settings import load_config, BASE_DIR

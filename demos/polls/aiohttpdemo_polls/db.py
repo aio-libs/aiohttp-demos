@@ -1,11 +1,14 @@
 # aiohttpdemo_polls/db.py
-from sqlalchemy import ForeignKey, String, select
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from datetime import date
+
+from sqlalchemy import ForeignKey, String, select
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+
 
 class Base(DeclarativeBase):
     pass
+
 
 class Question(Base):
     __tablename__ = "question"
@@ -35,7 +38,7 @@ DSN = "postgresql+asyncpg://{user}:{password}@{host}:{port}/{database}"
 
 
 async def pg_context(app):
-    engine = create_async_engine(DSN.format(**app['config']['postgres']))
+    engine = create_async_engine(DSN.format(**app["config"]["postgres"]))
     app["db"] = async_sessionmaker(engine)
 
     yield
@@ -44,24 +47,20 @@ async def pg_context(app):
 
 
 async def get_question(sess, question_id):
-    result = await sess.scalars(
-        select(Question).where(Question.id == question_id)
-    )
+    result = await sess.scalars(select(Question).where(Question.id == question_id))
     question_record = result.first()
     if not question_record:
         msg = "Question with id: {} does not exists"
         raise RecordNotFound(msg.format(question_id))
     result = await sess.scalars(
-        select(Choice)
-        .where(Choice.question_id == question_id)
-        .order_by(Choice.id)
+        select(Choice).where(Choice.question_id == question_id).order_by(Choice.id)
     )
     choice_records = result.all()
     return question_record, choice_records
 
 
 async def vote(app, question_id, choice_id):
-    async with app['db'].begin() as sess:
+    async with app["db"].begin() as sess:
         result = await sess.get(Choice, choice_id)
         result.votes += 1
         if not result:
