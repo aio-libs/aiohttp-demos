@@ -45,6 +45,7 @@ async def init_app(config):
     app.cleanup_ctx.append(init_db)
 
     redis = await setup_redis(app)
+    app.on_shutdown.append(lambda _: redis.aclose())
     setup_session(app, RedisStorage(redis))
 
     # needs to be after session setup because of `current_user_ctx_processor`
