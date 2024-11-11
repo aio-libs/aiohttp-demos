@@ -16,7 +16,7 @@ ADMIN_DB_URL = DSN.format(
     host="localhost",
     port=5432,
 )
-admin_engine = create_async_engine(ADMIN_DB_URL)
+admin_engine = create_async_engine(ADMIN_DB_URL, isolation_level="AUTOCOMMIT")
 
 USER_CONFIG_PATH = BASE_DIR / "config" / "polls.yaml"
 USER_CONFIG = get_config(["-c", USER_CONFIG_PATH.as_posix()])
