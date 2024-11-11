@@ -66,7 +66,7 @@ async def create_post(request):
 
         async with request.app['db_pool'].begin() as sess:
             current_user = await db.get_user_by_name(sess, username)
-            sess.add(Posts(body=form["body"], user_id=current_user.id))
+            sess.add(db.Posts(body=form["body"], user_id=current_user.id))
             raise redirect(request.app.router, 'index')
 
     return {}
