@@ -180,5 +180,5 @@ class SiteHandler:
                  'email': user['email'],
                  'username': user['username'],
                  'text': form['text'],
-                 'pub_date': datetime.datetime.utcnow()})
+                 'pub_date': datetime.datetime.now(datetime.UTC)})
         return redirect(request, 'timeline')
