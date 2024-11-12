@@ -1,6 +1,7 @@
 """Require running database server"""
 from sqlalchemy import select
 from aiohttpdemo_polls.db import Choice
+from aiohttpdemo_polls.typedefs import db_key
 
 
 async def test_index(cli, tables_and_data):
@@ -27,7 +28,7 @@ async def test_vote(cli, tables_and_data):
     question_id = 1
     choice_text = 'Not much'
 
-    async with cli.server.app['db'].begin() as sess:
+    async with cli.server.app[db_key].begin() as sess:
         result = await sess.scalars(
             select(Choice)
             .where(Choice.question_id == question_id)
@@ -43,7 +44,7 @@ async def test_vote(cli, tables_and_data):
         )
         assert response.status == 200
 
-    async with cli.server.app["db"].begin() as sess:
+    async with cli.server.app[db_key].begin() as sess:
         result = await sess.scalars(
             select(Choice)
             .where(Choice.question_id == question_id)

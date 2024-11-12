@@ -4,6 +4,8 @@ from sqlalchemy import ForeignKey, String, select
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
+from aiohttpdemo_polls.typedefs import config_key, db_key
+
 
 class Base(DeclarativeBase):
     pass
@@ -37,8 +39,8 @@ DSN = "postgresql+asyncpg://{user}:{password}@{host}:{port}/{database}"
 
 
 async def pg_context(app):
-    engine = create_async_engine(DSN.format(**app["config"]["postgres"]))
-    app["db"] = async_sessionmaker(engine)
+    engine = create_async_engine(DSN.format(**app[config_key]["postgres"]))
+    app[db_key] = async_sessionmaker(engine)
 
     yield
 
@@ -59,7 +61,7 @@ async def get_question(sess, question_id):
 
 
 async def vote(app, question_id, choice_id):
-    async with app["db"].begin() as sess:
+    async with app[db_key].begin() as sess:
         result = await sess.get(Choice, choice_id)
         result.votes += 1
         if not result:

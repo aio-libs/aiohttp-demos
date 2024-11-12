@@ -7,6 +7,8 @@ from faker import Faker
 
 log = logging.getLogger(__name__)
 
+ws_key = web.AppKey("ws_key", dict[str, web.WebSocketResponse])
+
 
 def get_random_name():
     fake = Faker()
@@ -26,24 +28,24 @@ async def index(request):
 
     await ws_current.send_json({'action': 'connect', 'name': name})
 
-    for ws in request.app['websockets'].values():
+    for ws in request.app[ws_key].values():
         await ws.send_json({'action': 'join', 'name': name})
-    request.app['websockets'][name] = ws_current
+    request.app[ws_key][name] = ws_current
 
     while True:
         msg = await ws_current.receive()
 
         if msg.type == aiohttp.WSMsgType.text:
-            for ws in request.app['websockets'].values():
+            for ws in request.app[ws_key].values():
                 if ws is not ws_current:
                     await ws.send_json(
                         {'action': 'sent', 'name': name, 'text': msg.data})
         else:
             break
 
-    del request.app['websockets'][name]
+    del request.app[ws_key][name]
     log.info('%s disconnected.', name)
-    for ws in request.app['websockets'].values():
+    for ws in request.app[ws_key].values():
         await ws.send_json({'action': 'disconnect', 'name': name})
 
     return ws_current

@@ -4,14 +4,14 @@ import jinja2
 
 import aiohttp_jinja2
 from aiohttp import web
-from aiohttpdemo_chat.views import index
+from aiohttpdemo_chat.views import index, ws_key
 
 
 async def init_app():
 
     app = web.Application()
 
-    app['websockets'] = {}
+    app[ws_key] = {}
 
     app.on_shutdown.append(shutdown)
 
@@ -24,9 +24,9 @@ async def init_app():
 
 
 async def shutdown(app):
-    for ws in app['websockets'].values():
+    for ws in app[ws_key].values():
         await ws.close()
-    app['websockets'].clear()
+    app[ws_key].clear()
 
 
 async def get_app():
