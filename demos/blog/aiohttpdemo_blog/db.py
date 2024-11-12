@@ -1,7 +1,7 @@
 from datetime import datetime, UTC
 from functools import partial
 
-from sqlalchemy import ForeignKey, String
+from sqlalchemy import DateTime, ForeignKey, String
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.orm import (
     DeclarativeBase,
@@ -37,7 +37,7 @@ class Posts(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     body: Mapped[str] = mapped_column(String(140))
-    timestamp: Mapped[datetime] = mapped_column(index=True, default=partial(datetime.now, UTC))
+    timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True, default=partial(datetime.now, UTC))
 
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     user: Mapped[Users] = relationship(back_populates="posts", lazy="raise_on_sql")
