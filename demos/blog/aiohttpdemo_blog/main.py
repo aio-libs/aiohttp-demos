@@ -42,9 +42,10 @@ async def init_app(config):
 
     setup_routes(app)
 
-    db_pool = await init_db(app)
+    app.cleanup_ctx.append(init_db)
 
     redis = await setup_redis(app)
+    app.on_shutdown.append(lambda _: redis.aclose())
     setup_session(app, RedisStorage(redis))
 
     # needs to be after session setup because of `current_user_ctx_processor`
@@ -57,7 +58,7 @@ async def init_app(config):
     setup_security(
         app,
         SessionIdentityPolicy(),
-        DBAuthorizationPolicy(db_pool)
+        DBAuthorizationPolicy(app)
     )
 
     log.debug(app['config'])

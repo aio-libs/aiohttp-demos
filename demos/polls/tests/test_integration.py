@@ -1,6 +1,6 @@
 """Require running database server"""
-
-from aiohttpdemo_polls.db import choice
+from sqlalchemy import select
+from aiohttpdemo_polls.db import Choice
 
 
 async def test_index(cli, tables_and_data):
@@ -27,13 +27,13 @@ async def test_vote(cli, tables_and_data):
     question_id = 1
     choice_text = 'Not much'
 
-    async with cli.server.app['db'].acquire() as conn:
-        res = await conn.execute(
-            choice.select(
-            ).where(choice.c.question_id == question_id)
-             .where(choice.c.choice_text == choice_text)
+    async with cli.server.app['db'].begin() as sess:
+        result = await sess.scalars(
+            select(Choice)
+            .where(Choice.question_id == question_id)
+            .where(Choice.choice_text == choice_text)
         )
-        not_much_choice = await res.first()
+        not_much_choice = result.first()
         not_much_choice_id = not_much_choice.id
         votes_before = not_much_choice.votes
 
@@ -43,12 +43,13 @@ async def test_vote(cli, tables_and_data):
         )
         assert response.status == 200
 
-        res = await conn.execute(
-            choice.select(
-            ).where(choice.c.question_id == question_id)
-             .where(choice.c.choice_text == choice_text)
+    async with cli.server.app["db"].begin() as sess:
+        result = await sess.scalars(
+            select(Choice)
+            .where(Choice.question_id == question_id)
+            .where(Choice.choice_text == choice_text)
         )
-        not_much_choice = await res.first()
+        not_much_choice = result.first()
         votes_after = not_much_choice.votes
 
         assert votes_after == votes_before + 1

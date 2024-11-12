@@ -7,7 +7,7 @@ from aiohttp import web
 
 from aiohttpdemo_polls.db import pg_context
 from aiohttpdemo_polls.middlewares import setup_middlewares
-from aiohttpdemo_polls.routes import setup_routes
+from aiohttpdemo_polls.routes import setup_routes, setup_static_routes
 from aiohttpdemo_polls.settings import get_config
 
 
@@ -26,7 +26,7 @@ async def init_app(argv=None):
 
     # setup views and routes
     setup_routes(app)
-
+    setup_static_routes(app)
     setup_middlewares(app)
 
     return app

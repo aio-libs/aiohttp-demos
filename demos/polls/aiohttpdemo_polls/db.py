@@ -1,81 +1,67 @@
-import aiopg.sa
-from sqlalchemy import (
-    MetaData, Table, Column, ForeignKey,
-    Integer, String, Date
-)
+from datetime import date
 
-__all__ = ['question', 'choice']
+from sqlalchemy import ForeignKey, String, select
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-meta = MetaData()
 
-question = Table(
-    'question', meta,
+class Base(DeclarativeBase):
+    pass
 
-    Column('id', Integer, primary_key=True),
-    Column('question_text', String(200), nullable=False),
-    Column('pub_date', Date, nullable=False)
-)
 
-choice = Table(
-    'choice', meta,
+class Question(Base):
+    __tablename__ = "question"
 
-    Column('id', Integer, primary_key=True),
-    Column('choice_text', String(200), nullable=False),
-    Column('votes', Integer, server_default="0", nullable=False),
+    id: Mapped[int] = mapped_column(primary_key=True)
+    question_text: Mapped[str] = mapped_column(String(200), nullable=False)
+    pub_date: Mapped[date]
 
-    Column('question_id',
-           Integer,
-           ForeignKey('question.id', ondelete='CASCADE'))
-)
+
+class Choice(Base):
+    __tablename__ = "choice"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    choice_text: Mapped[str] = mapped_column(String(200), nullable=False)
+    votes: Mapped[int] = mapped_column(server_default="0", nullable=False)
+
+    question_id: Mapped[int] = mapped_column(
+        ForeignKey("question.id", ondelete="CASCADE")
+    )
 
 
 class RecordNotFound(Exception):
     """Requested record in database was not found"""
 
 
+DSN = "postgresql+asyncpg://{user}:{password}@{host}:{port}/{database}"
+
+
 async def pg_context(app):
-    conf = app['config']['postgres']
-    engine = await aiopg.sa.create_engine(
-        database=conf['database'],
-        user=conf['user'],
-        password=conf['password'],
-        host=conf['host'],
-        port=conf['port'],
-        minsize=conf['minsize'],
-        maxsize=conf['maxsize'],
-    )
-    app['db'] = engine
+    engine = create_async_engine(DSN.format(**app["config"]["postgres"]))
+    app["db"] = async_sessionmaker(engine)
 
     yield
 
-    app['db'].close()
-    await app['db'].wait_closed()
+    await engine.dispose()
 
 
-async def get_question(conn, question_id):
-    result = await conn.execute(
-        question.select()
-        .where(question.c.id == question_id))
-    question_record = await result.first()
+async def get_question(sess, question_id):
+    result = await sess.scalars(select(Question).where(Question.id == question_id))
+    question_record = result.first()
     if not question_record:
         msg = "Question with id: {} does not exists"
         raise RecordNotFound(msg.format(question_id))
-    result = await conn.execute(
-        choice.select()
-        .where(choice.c.question_id == question_id)
-        .order_by(choice.c.id))
-    choice_records = await result.fetchall()
+    result = await sess.scalars(
+        select(Choice).where(Choice.question_id == question_id).order_by(Choice.id)
+    )
+    choice_records = result.all()
     return question_record, choice_records
 
 
-async def vote(conn, question_id, choice_id):
-    result = await conn.execute(
-        choice.update()
-        .returning(*choice.c)
-        .where(choice.c.question_id == question_id)
-        .where(choice.c.id == choice_id)
-        .values(votes=choice.c.votes+1))
-    record = await result.fetchone()
-    if not record:
-        msg = "Question with id: {} or choice id: {} does not exists"
-        raise RecordNotFound(msg.format(question_id, choice_id))
+async def vote(app, question_id, choice_id):
+    async with app["db"].begin() as sess:
+        result = await sess.get(Choice, choice_id)
+        result.votes += 1
+        if not result:
+            msg = "Question with id: {} or choice id: {} does not exists"
+            raise RecordNotFound(msg.format(question_id, choice_id))
