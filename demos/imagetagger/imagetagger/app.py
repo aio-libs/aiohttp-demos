@@ -7,7 +7,7 @@ import jinja2
 from aiohttp import web
 
 from .routes import init_routes
-from .utils import init_config, Config, get_config, init_workers
+from .utils import Config, get_config, init_workers
 from .views import SiteHandler
 
 
