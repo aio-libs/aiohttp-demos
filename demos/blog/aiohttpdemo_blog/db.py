@@ -1,4 +1,5 @@
 from datetime import datetime, UTC
+from functools import partial
 
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
