@@ -24,7 +24,6 @@ def init_jinja2(app: web.Application) -> None:
 async def init_app(conf: Config) -> web.Application:
     app = web.Application()
     executor = await init_workers(app, conf.workers)
-    init_config(app, conf)
     init_jinja2(app)
     handler = SiteHandler(conf, executor)
     init_routes(app, handler)

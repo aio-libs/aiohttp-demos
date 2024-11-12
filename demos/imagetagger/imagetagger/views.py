@@ -6,7 +6,7 @@ import aiohttp_jinja2
 from aiohttp import web
 
 from .worker import predict
-from .utils import Config
+from .utils import Config, executor_key
 
 
 class SiteHandler:
@@ -23,7 +23,7 @@ class SiteHandler:
         form = await request.post()
         raw_data = form['file'].file.read()
         form["file"].file.close()  # Not needed in aiohttp 4+.
-        executor = request.app['executor']
+        executor = request.app[executor_key]
         r = self._loop.run_in_executor
         raw_data = await r(executor, predict, raw_data)
         # raw_data = predict(raw_data)

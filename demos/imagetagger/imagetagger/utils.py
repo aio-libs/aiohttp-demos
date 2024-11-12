@@ -12,6 +12,7 @@ from aiohttp import web
 from trafaret_config import commandline
 from .worker import warm, clean
 
+executor_key = web.AppKey("executor_key", ProcessPoolExecutor)
 
 PATH = pathlib.Path(__file__).parent.parent
 settings_file = os.environ.get('SETTINGS_FILE', 'api.dev.yml')
@@ -69,10 +70,6 @@ def get_config(argv: Any = None) -> Config:
     return config_from_dict(d)
 
 
-def init_config(app: web.Application, config: Config) -> None:
-    app['config'] = config
-
-
 async def init_workers(
     app: web.Application, conf: WorkersConfig
 ) -> ProcessPoolExecutor:
@@ -90,5 +87,5 @@ async def init_workers(
         executor.shutdown(wait=True)
 
     app.on_cleanup.append(close_executor)
-    app['executor'] = executor
+    app[executor_key] = executor
     return executor
