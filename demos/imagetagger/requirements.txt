@@ -1,5 +1,5 @@
 aiohttp==3.10.10
-aiohttp-jinja2==1.5.1
+aiohttp-jinja2==1.6
 keras==3.6.0
 Pillow==11.0.0
 tensorflow==2.16.1
