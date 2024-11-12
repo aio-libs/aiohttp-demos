@@ -1,6 +1,6 @@
 aiohttp==3.10.10
-aiohttp_jinja2==1.5.1
-aiohttp_graphql==1.1.0
+aiohttp-jinja2==1.6
+aiohttp-graphql==1.1.0
 aiodataloader==0.4.0
 faker==26.0.0
 trafaret_config==2.0.2
