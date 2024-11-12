@@ -63,5 +63,4 @@ async def setup_executor(app, conf):
         executor.shutdown(wait=True)
 
     app.on_cleanup.append(close_executor)
-    app['executor'] = executor
     return executor

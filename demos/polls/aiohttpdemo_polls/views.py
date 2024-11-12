@@ -2,19 +2,20 @@ import aiohttp_jinja2
 from aiohttp import web
 from sqlalchemy import select
 
-from . import db
+from aiohttpdemo_polls import db
+from aiohttpdemo_polls.typedefs import db_key
 
 
 @aiohttp_jinja2.template("index.html")
 async def index(request):
-    async with request.app["db"]() as sess:
+    async with request.app[db_key]() as sess:
         questions = await sess.scalars(select(db.Question))
         return {"questions": questions.all()}
 
 
 @aiohttp_jinja2.template("detail.html")
 async def poll(request):
-    async with request.app["db"]() as sess:
+    async with request.app[db_key]() as sess:
         question_id = request.match_info["question_id"]
         try:
             question, choices = await db.get_question(sess, question_id)
@@ -25,7 +26,7 @@ async def poll(request):
 
 @aiohttp_jinja2.template("results.html")
 async def results(request):
-    async with request.app["db"]() as sess:
+    async with request.app[db_key]() as sess:
         question_id = int(request.match_info["question_id"])
 
         try:

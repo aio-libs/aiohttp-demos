@@ -4,6 +4,7 @@ from aiohttp_security import remember, forget, authorized_userid
 
 from aiohttpdemo_blog import db
 from aiohttpdemo_blog.forms import validate_login_form
+from aiohttpdemo_blog.typedefs import db_key
 
 
 def redirect(router, route_name):
@@ -17,7 +18,7 @@ async def index(request):
     if not username:
         raise redirect(request.app.router, 'login')
 
-    async with request.app['db_pool']() as sess:
+    async with request.app[db_key]() as sess:
         current_user = await db.get_user_by_name(sess, username)
         posts = await db.get_posts_with_joined_users(sess)
 
@@ -33,7 +34,7 @@ async def login(request):
     if request.method == 'POST':
         form = await request.post()
 
-        async with request.app['db_pool']() as sess:
+        async with request.app[db_key]() as sess:
             error = await validate_login_form(sess, form)
 
             if error:
@@ -64,7 +65,7 @@ async def create_post(request):
     if request.method == 'POST':
         form = await request.post()
 
-        async with request.app['db_pool'].begin() as sess:
+        async with request.app[db_key].begin() as sess:
             current_user = await db.get_user_by_name(sess, username)
             sess.add(db.Posts(body=form["body"], user_id=current_user.id))
             raise redirect(request.app.router, 'index')

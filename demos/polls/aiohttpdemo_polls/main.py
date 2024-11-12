@@ -9,13 +9,14 @@ from aiohttpdemo_polls.db import pg_context
 from aiohttpdemo_polls.middlewares import setup_middlewares
 from aiohttpdemo_polls.routes import setup_routes, setup_static_routes
 from aiohttpdemo_polls.settings import get_config
+from aiohttpdemo_polls.typedefs import config_key
 
 
 async def init_app(argv=None):
 
     app = web.Application()
 
-    app['config'] = get_config(argv)
+    app[config_key] = get_config(argv)
 
     # setup Jinja2 template renderer
     aiohttp_jinja2.setup(

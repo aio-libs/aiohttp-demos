@@ -11,6 +11,8 @@ from sqlalchemy.orm import (
 )
 from sqlalchemy.sql import select
 
+from aiohttpdemo_blog.typedefs import config_key, db_key
+
 
 class Base(DeclarativeBase):
     pass
@@ -41,9 +43,9 @@ class Posts(Base):
 
 
 async def init_db(app):
-    dsn = construct_db_url(app["config"]["database"])
+    dsn = construct_db_url(app[config_key]["database"])
     engine = create_async_engine(dsn)
-    app["db_pool"] = async_sessionmaker(engine)
+    app[db_key] = async_sessionmaker(engine)
 
     yield
 
