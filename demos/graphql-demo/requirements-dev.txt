@@ -5,8 +5,8 @@ aiodataloader==0.3.0
 faker==15.3.2
 trafaret_config==2.0.2
 graphene==3.1.1
-graphql-core==3.2.3
-graphql-server[aiohttp]==3.0.0b5
+graphql-core==3.2.5
+graphql-server[aiohttp]==3.0.0b7
 graphql-ws==0.4.4
 psycopg2-binary==2.9.5
 redis==4.3.4
