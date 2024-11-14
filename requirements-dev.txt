@@ -20,7 +20,7 @@ pytest-aiohttp==1.0.5
 
 
 # dev
-psycopg2==2.9.9
+psycopg2==2.9.10
 
 # docs
 pygments==2.18.0
