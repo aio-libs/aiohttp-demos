@@ -10,7 +10,7 @@
 -r demos/shortify/requirements.txt
 
 # lint
-flake8==7.1.0
+flake8==7.1.1
 flake8-bugbear==24.10.31
 flake8-quotes==3.4.0
 
