@@ -10,7 +10,7 @@ Model reused from [Moderator AI](https://github.com/aio-libs/aiohttp-demos/tree/
 
 ## Requirements
  - [aiohttp](https://github.com/aio-libs/aiohttp)
- - [aioslacker](https://github.com/aio-libs/aioslacker)
+ - [slack_sdk](https://github.com/slackapi/python-slack-sdk)
 
 
 ## Prerequisites
