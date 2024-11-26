@@ -1,6 +1,5 @@
 -i https://pypi.org/simple/
 aiohttp==3.11.7
-aioslacker==0.0.11
 async-timeout==5.0.1
 atomicwrites==1.4.1
 attrs==24.2.0
@@ -19,7 +18,7 @@ pyyaml==6.0.2
 scikit-learn==1.5.2
 scipy==1.13.1
 six==1.16.0
-slacker==0.9.42
+slack_sdk==3.33.4
 urllib3==2.2.3
 yarl==1.18.0
 zipp==3.21.0
