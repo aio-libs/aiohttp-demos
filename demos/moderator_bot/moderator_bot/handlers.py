@@ -36,8 +36,8 @@ class MainHandler:
         text = (f"Hey <@{event['user']}>, please be polite! "
                 f"Here is a funny cat GIF for you {image_url}")
 
-        await self.slack_client.chat.post_message(
-            event["channel"],
+        await self.slack_client.chat_postMessage(
+            channel=event["channel"],
             text=text,
         )
 
