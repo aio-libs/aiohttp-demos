@@ -1,4 +1,4 @@
-aiohttp==3.11.7
+aiohttp==3.11.8
 aiohttp-jinja2==1.6
 keras==3.7.0
 Pillow==11.0.0
