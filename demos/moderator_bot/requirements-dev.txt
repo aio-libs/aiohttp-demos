@@ -20,5 +20,5 @@ scipy==1.14.1
 six==1.16.0
 slack_sdk==3.33.4
 urllib3==2.2.3
-yarl==1.18.0
+yarl==1.18.3
 zipp==3.21.0
