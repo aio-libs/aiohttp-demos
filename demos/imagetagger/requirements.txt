@@ -1,6 +1,6 @@
 aiohttp==3.11.11
 aiohttp-jinja2==1.6
 keras==3.7.0
-Pillow==11.0.0
+Pillow==11.1.0
 tensorflow==2.18.0
 trafaret_config==2.0.2
