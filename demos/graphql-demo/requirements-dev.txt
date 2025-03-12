@@ -14,4 +14,4 @@ mypy==1.15.0
 flake8==7.1.2
 pytest==8.3.5
 pytest-cov==6.0.0
-sqlalchemy==2.0.38
+sqlalchemy==2.0.39
