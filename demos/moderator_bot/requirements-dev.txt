@@ -18,7 +18,7 @@ pyyaml==6.0.2
 scikit-learn==1.6.1
 scipy==1.15.2
 six==1.17.0
-slack_sdk==3.34.0
+slack_sdk==3.35.0
 urllib3==2.3.0
 yarl==1.18.3
 zipp==3.21.0
