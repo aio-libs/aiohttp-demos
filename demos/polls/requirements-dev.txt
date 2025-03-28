@@ -2,7 +2,7 @@ aiohttp==3.11.14
 aiohttp-jinja2==1.6
 asyncpg==0.30.0
 trafaret_config==2.0.2
-SQLalchemy==2.0.39
+SQLalchemy==2.0.40
 
 # For testing
 pytest==8.3.5
