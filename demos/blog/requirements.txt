@@ -11,4 +11,4 @@ SQLalchemy==2.0.40
 pytest==8.3.5
 pytest-aiohttp==1.1.0
 pytest-asyncio==0.26.0
-flake8==7.1.2
+flake8==7.2.0
