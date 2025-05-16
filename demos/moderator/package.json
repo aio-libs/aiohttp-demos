@@ -19,7 +19,7 @@
   "dependencies": {
     "npm": "^11.3.0",
     "package.json": "^2.0.1",
-    "parcel": "^2.15.0",
+    "parcel": "^2.15.1",
     "preact": "10.26.6",
     "snyk": "^1.1297.0",
     "whatwg-fetch": "3.6.20",
