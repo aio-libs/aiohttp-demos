@@ -14,10 +14,13 @@ from shortify.views import SiteHandler
 PROJ_ROOT = pathlib.Path(__file__).parent.parent
 TEMPLATES_ROOT = pathlib.Path(__file__).parent / 'templates'
 
+# Define AppKey for Redis
+REDIS_KEY = web.AppKey('redis', 'Redis client')
+
 
 async def setup_redis(app, conf):
     redis = await init_redis(conf["redis"])
-    app["redis"] = redis
+    app[REDIS_KEY] = redis  # Use REDIS_KEY instead of string key
     return redis
 
 
@@ -28,7 +31,7 @@ def setup_jinja(app):
 
 
 async def init():
-    conf = load_config(PROJ_ROOT / 'config' / 'config.yml')
+    conf = load_config(PROJ_ROOT / 'config' / 'shortify.yml')
 
     app = web.Application()
     redis = await setup_redis(app, conf)
