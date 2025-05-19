@@ -11,12 +11,12 @@ joblib==1.5.0
 more-itertools==10.7.0
 multidict==6.4.3
 numpy==1.26.4
-pluggy==1.5.0
+pluggy==1.6.0
 pytest==8.3.5
 pytest-aiohttp==1.1.0
 pyyaml==6.0.2
 scikit-learn==1.6.1
-scipy==1.15.2
+scipy==1.15.3
 six==1.17.0
 slack_sdk==3.35.0
 urllib3==2.4.0
