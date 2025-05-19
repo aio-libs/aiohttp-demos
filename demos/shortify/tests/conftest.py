@@ -23,11 +23,13 @@ async def redis():
     )
     yield redis
     await redis.aclose()
+    # Give time for all connections to close properly
+    await asyncio.sleep(0.1)
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 async def clean_redis(redis):
     """Clean Redis database before each test."""
     await redis.flushdb()
-    yield
-    await redis.flushdb()
+    # Give time for all connections to close properly
+    await asyncio.sleep(0.1)

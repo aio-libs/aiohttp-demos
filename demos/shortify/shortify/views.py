@@ -19,10 +19,9 @@ class SiteHandler:
         long_url = fetch_url(data)
 
         index = await self._redis.incr("shortify:count")
-        path = encode(index)
+        path = encode(index - 1)
         key = "shortify:{}".format(path)
         await self._redis.set(key, long_url)
-        await asyncio.sleep(0)
 
         url = "http://{host}:{port}/{path}".format(
             host=self._conf['host'],
