@@ -15,7 +15,7 @@ PROJ_ROOT = pathlib.Path(__file__).parent.parent
 TEMPLATES_ROOT = pathlib.Path(__file__).parent / 'templates'
 
 # Define AppKey for Redis
-REDIS_KEY = web.AppKey('REDIS_KEY', Redis)
+REDIS_KEY = web.AppKey("REDIS_KEY", Redis)
 
 
 async def setup_redis(app, conf):
@@ -31,7 +31,7 @@ def setup_jinja(app):
 
 
 async def init():
-    conf = load_config(PROJ_ROOT / 'config' / 'shortify.yml')
+    conf = load_config(PROJ_ROOT / "config" / "shortify.yml")
 
     app = web.Application()
     redis = await setup_redis(app, conf)
