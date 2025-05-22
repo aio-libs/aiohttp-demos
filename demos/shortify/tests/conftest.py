@@ -6,7 +6,7 @@ from redis import asyncio as aioredis
 from shortify.main import init, PROJ_ROOT
 from shortify.utils import load_config
 
-TEST_CONFIG_PATH = PROJ_ROOT / "config" / "config.yaml"
+TEST_CONFIG_PATH = PROJ_ROOT / "config" / "config.yml"
 TEST_CONFIG = load_config(TEST_CONFIG_PATH.as_posix())
 
 
