@@ -6,6 +6,7 @@ import aiohttp_jinja2
 import jinja2
 from aiohttp import web
 from redis.asyncio import Redis
+
 from shortify.routes import setup_routes
 from shortify.utils import init_redis, load_config
 from shortify.views import SiteHandler
