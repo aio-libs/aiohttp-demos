@@ -15,6 +15,7 @@ async def cli(aiohttp_client):
     app, _, _ = await init()
     return await aiohttp_client(app)
 
+
 @pytest.fixture
 async def redis():
     """Create a Redis connection for testing."""
