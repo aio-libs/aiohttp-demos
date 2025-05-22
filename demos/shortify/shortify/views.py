@@ -1,6 +1,8 @@
+import asyncio
+
 import aiohttp_jinja2
 from aiohttp import web
-import asyncio
+
 from .utils import encode, fetch_url
 
 
