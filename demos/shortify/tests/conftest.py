@@ -13,8 +13,7 @@ TEST_CONFIG = load_config(TEST_CONFIG_PATH.as_posix())
 @pytest.fixture
 async def cli(aiohttp_client):
     app, _, _ = await init()
-    client = await aiohttp_client(app)
-    return client
+    return await aiohttp_client(app)
 
 @pytest.fixture
 async def redis():
