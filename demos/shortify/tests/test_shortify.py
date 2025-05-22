@@ -1,9 +1,4 @@
 import pytest
-import logging
-
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
-
 
 
 async def test_create_short_url(cli, clean_redis):  
