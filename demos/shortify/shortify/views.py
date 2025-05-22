@@ -19,7 +19,7 @@ class SiteHandler:
         long_url = fetch_url(data)
 
         index = await self._redis.incr("shortify:count")
-        path = encode(index)
+        path = encode(index - 1)
         key = "shortify:{}".format(path)
         await self._redis.set(key, long_url)
 
@@ -36,4 +36,4 @@ class SiteHandler:
         location = await self._redis.get(key)
         if not location:
             raise web.HTTPNotFound()
-        return web.HTTPFound(location=location.decode())
+        raise web.HTTPFound(location=location.decode())

@@ -5,6 +5,7 @@ import pathlib
 import aiohttp_jinja2
 import jinja2
 from aiohttp import web
+from redis.asyncio import Redis
 
 from shortify.routes import setup_routes
 from shortify.utils import init_redis, load_config
@@ -14,10 +15,13 @@ from shortify.views import SiteHandler
 PROJ_ROOT = pathlib.Path(__file__).parent.parent
 TEMPLATES_ROOT = pathlib.Path(__file__).parent / 'templates'
 
+# Define AppKey for Redis
+REDIS_KEY = web.AppKey("REDIS_KEY", Redis)
+
 
 async def setup_redis(app, conf):
     redis = await init_redis(conf["redis"])
-    app["redis"] = redis
+    app[REDIS_KEY] = redis
     return redis
 
 
@@ -28,7 +32,7 @@ def setup_jinja(app):
 
 
 async def init():
-    conf = load_config(PROJ_ROOT / 'config' / 'config.yml')
+    conf = load_config(PROJ_ROOT / "config" / "config.yml")
 
     app = web.Application()
     redis = await setup_redis(app, conf)

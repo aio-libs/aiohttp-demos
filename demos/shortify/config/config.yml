@@ -6,4 +6,4 @@ redis:
   maxsize: 5
 
 host: 127.0.0.1
-port: 9002
+port: 9001
