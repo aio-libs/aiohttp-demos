@@ -32,7 +32,7 @@ def setup_jinja(app):
 
 
 async def init():
-    conf = load_config(PROJ_ROOT / "config" / "shortify.yml")
+    conf = load_config(PROJ_ROOT / "config" / "config.yml")
 
     app = web.Application()
     redis = await setup_redis(app, conf)
