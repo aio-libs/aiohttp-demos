@@ -1,4 +1,4 @@
-aiohttp==3.11.18
+aiohttp==3.12.2
 aiohttp-jinja2==1.6
 aiohttp-security[session]==0.5.0
 asyncpg==0.30.0
