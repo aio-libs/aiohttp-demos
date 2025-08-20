@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import pathlib
+from collections.abc import AsyncIterator
 
 import aiohttp_jinja2
 import jinja2
@@ -19,10 +20,13 @@ TEMPLATES_ROOT = pathlib.Path(__file__).parent / 'templates'
 REDIS_KEY = web.AppKey("REDIS_KEY", Redis)
 
 
-async def setup_redis(app, conf):
-    redis = await init_redis(conf["redis"])
-    app[REDIS_KEY] = redis
-    return redis
+async def redis_ctx(app: web.Application) -> AsyncIterator[None]:
+    redis_conf = app["conf"]["redis"]
+    async with await aioredis.from_url(
+        f"redis://{redis_conf['host']}:{redis_conf['port']}",
+    ) as redis:
+        app[REDIS_KEY] = redis
+        yield
 
 
 def setup_jinja(app):
@@ -35,7 +39,8 @@ async def init():
     conf = load_config(PROJ_ROOT / "config" / "config.yml")
 
     app = web.Application()
-    redis = await setup_redis(app, conf)
+    app["conf"] = conf
+    app.cleanup_ctx.append(redis_ctx)
     setup_jinja(app)
 
     handler = SiteHandler(redis, conf)
