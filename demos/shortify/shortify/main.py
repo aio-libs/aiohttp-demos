@@ -21,10 +21,8 @@ REDIS_KEY = web.AppKey("REDIS_KEY", Redis)
 
 
 async def redis_ctx(app: web.Application) -> AsyncIterator[None]:
-    redis_conf = app["conf"]["redis"]
-    async with await aioredis.from_url(
-        f"redis://{redis_conf['host']}:{redis_conf['port']}",
-    ) as redis:
+    conf = app["conf"]["redis"]
+    async with await aioredis.from_url(f"redis://{conf['host']}:{conf['port']}") as redis:
         app[REDIS_KEY] = redis
         yield
 
