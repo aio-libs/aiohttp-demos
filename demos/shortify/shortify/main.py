@@ -15,7 +15,7 @@ PROJ_ROOT = pathlib.Path(__file__).parent.parent
 TEMPLATES_ROOT = pathlib.Path(__file__).parent / 'templates'
 
 
-async def redis_ctx(conf, app: web.Application) -> AsyncIterator[None]:
+async def redis_ctx(app: web.Application) -> AsyncIterator[None]:
     conf = app[CONF_KEY]["redis"]
     async with await aioredis.from_url(f"redis://{conf['host']}:{conf['port']}") as redis:
         app[REDIS_KEY] = redis
