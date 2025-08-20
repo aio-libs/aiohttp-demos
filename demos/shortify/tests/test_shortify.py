@@ -3,10 +3,9 @@ async def test_create_short_url(cli, clean_redis):
     long_url = "https://example.com/very/long/url/that/needs/shortening"
 
     async with cli.post("/shortify", json={"url": long_url}) as resp:
-        await resp.read()
         assert resp.status == 200
+        data = await resp.json()
 
-    data = await resp.json()
     assert "url" in data
     assert data["url"] == "http://127.0.0.1:9001/a"
 
