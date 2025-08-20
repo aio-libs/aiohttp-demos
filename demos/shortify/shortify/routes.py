@@ -1,5 +1,6 @@
 from shortify.views import index, redirect, shortify
 
+
 def setup_routes(app, project_root):
     router = app.router
     router.add_get('/', index, name='index')

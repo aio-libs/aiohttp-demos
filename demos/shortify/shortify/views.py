@@ -8,6 +8,7 @@ from .utils import CONF_KEY, REDIS_KEY, encode, fetch_url
 async def index(request):
     return {}
 
+
 async def shortify(request):
     data = await request.json()
     long_url = fetch_url(data)
@@ -25,6 +26,7 @@ async def shortify(request):
         path=path)
 
     return web.json_response({"url": url})
+
 
 async def redirect(request):
     short_id = request.match_info['short_id']
