@@ -6,7 +6,7 @@ from collections.abc import AsyncIterator
 import aiohttp_jinja2
 import jinja2
 from aiohttp import web
-from redis.asyncio import Redis
+from redis import asyncio as aioredis
 
 from shortify.routes import setup_routes
 from shortify.utils import load_config
@@ -17,13 +17,12 @@ PROJ_ROOT = pathlib.Path(__file__).parent.parent
 TEMPLATES_ROOT = pathlib.Path(__file__).parent / 'templates'
 
 # Define AppKey for Redis
-REDIS_KEY = web.AppKey("REDIS_KEY", Redis)
-
-conf_key = web.AppKey("conf_key", dict[str, object])
+REDIS_KEY = web.AppKey("REDIS_KEY", aioredis.Redis)
+CONF_KEY = web.AppKey("conf_key", dict[str, object])
 
 
 async def redis_ctx(conf, app: web.Application) -> AsyncIterator[None]:
-    conf = app[conf_key]["redis"]
+    conf = app[CONF_KEY]["redis"]
     async with await aioredis.from_url(f"redis://{conf['host']}:{conf['port']}") as redis:
         app[REDIS_KEY] = redis
         yield
@@ -39,7 +38,7 @@ async def init():
     conf = load_config(PROJ_ROOT / "config" / "config.yml")
 
     app = web.Application()
-    app[conf_key] = conf
+    app[CONF_KEY] = conf
     app.cleanup_ctx.append(redis_ctx)
     setup_jinja(app)
 
