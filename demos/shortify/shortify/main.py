@@ -9,16 +9,10 @@ from aiohttp import web
 from redis import asyncio as aioredis
 
 from shortify.routes import setup_routes
-from shortify.utils import load_config
-from shortify.views import SiteHandler
-
+from shortify.utils import CONF_KEY, REDIS_KEY, load_config
 
 PROJ_ROOT = pathlib.Path(__file__).parent.parent
 TEMPLATES_ROOT = pathlib.Path(__file__).parent / 'templates'
-
-# Define AppKey for Redis
-REDIS_KEY = web.AppKey("REDIS_KEY", aioredis.Redis)
-CONF_KEY = web.AppKey("conf_key", dict[str, object])
 
 
 async def redis_ctx(conf, app: web.Application) -> AsyncIterator[None]:
@@ -42,9 +36,7 @@ async def init():
     app.cleanup_ctx.append(redis_ctx)
     setup_jinja(app)
 
-    handler = SiteHandler(redis, conf)
-
-    setup_routes(app, handler, PROJ_ROOT)
+    setup_routes(app, PROJ_ROOT)
     host, port = conf['host'], conf['port']
     return app, host, port
 
