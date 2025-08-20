@@ -1,39 +1,35 @@
 import aiohttp_jinja2
 from aiohttp import web
 
-from .utils import encode, fetch_url
+from .utils import CONF_KEY, REDIS_KEY, encode, fetch_url
 
 
-class SiteHandler:
+@aiohttp_jinja2.template('index.html')
+async def index(request):
+    return {}
 
-    def __init__(self, redis, conf):
-        self._redis = redis
-        self._conf = conf
+async def shortify(request):
+    data = await request.json()
+    long_url = fetch_url(data)
 
-    @aiohttp_jinja2.template('index.html')
-    async def index(self, request):
-        return {}
+    conf = request.app[CONF_KEY]
+    redis = request.app[REDIS_KEY]
+    index = await redis.incr("shortify:count")
+    path = encode(index - 1)
+    key = "shortify:{}".format(path)
+    await redis.set(key, long_url)
 
-    async def shortify(self, request):
-        data = await request.json()
-        long_url = fetch_url(data)
+    url = "http://{host}:{port}/{path}".format(
+        host=conf['host'],
+        port=conf['port'],
+        path=path)
 
-        index = await self._redis.incr("shortify:count")
-        path = encode(index - 1)
-        key = "shortify:{}".format(path)
-        await self._redis.set(key, long_url)
+    return web.json_response({"url": url})
 
-        url = "http://{host}:{port}/{path}".format(
-            host=self._conf['host'],
-            port=self._conf['port'],
-            path=path)
-
-        return web.json_response({"url": url})
-
-    async def redirect(self, request):
-        short_id = request.match_info['short_id']
-        key = 'shortify:{}'.format(short_id)
-        location = await self._redis.get(key)
-        if not location:
-            raise web.HTTPNotFound()
-        raise web.HTTPFound(location=location.decode())
+async def redirect(request):
+    short_id = request.match_info['short_id']
+    key = 'shortify:{}'.format(short_id)
+    location = await request.app[REDIS_KEY].get(key)
+    if not location:
+        raise web.HTTPNotFound()
+    raise web.HTTPFound(location=location.decode())
