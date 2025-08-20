@@ -1,8 +1,10 @@
 import trafaret as t
 import yaml
 from aiohttp import web
+from redis.asyncio import Redis
 
-
+CONF_KEY = web.AppKey("conf_key", dict[str, object])
+REDIS_KEY = web.AppKey("REDIS_KEY", Redis)
 CONFIG_TRAFARET = t.Dict(
     {
         t.Key('redis'): t.Dict(
