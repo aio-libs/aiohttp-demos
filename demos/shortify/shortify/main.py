@@ -9,7 +9,7 @@ from aiohttp import web
 from redis.asyncio import Redis
 
 from shortify.routes import setup_routes
-from shortify.utils import init_redis, load_config
+from shortify.utils import load_config
 from shortify.views import SiteHandler
 
 
