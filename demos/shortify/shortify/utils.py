@@ -27,13 +27,6 @@ def load_config(fname):
     return CONFIG_TRAFARET.check(data)
 
 
-async def init_redis(conf):
-    redis = await aioredis.from_url(
-        f"redis://{conf['host']}:{conf['port']}",
-    )
-    return redis
-
-
 CHARS = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789"
 
 
