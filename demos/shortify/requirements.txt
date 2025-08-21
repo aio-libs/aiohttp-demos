@@ -1,7 +1,7 @@
 aiohttp==3.12.15
 aiohttp-jinja2==1.6
 pyyaml==6.0.2
-redis==6.2.0
+redis==6.4.0
 trafaret==2.1.1
 pytest-aiohttp==1.1.0
 pytest-asyncio==0.26
