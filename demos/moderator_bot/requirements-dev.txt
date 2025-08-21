@@ -12,7 +12,7 @@ more-itertools==10.7.0
 multidict==6.6.3
 numpy==1.26.4
 pluggy==1.6.0
-pytest==8.3.5
+pytest==8.4.1
 pytest-aiohttp==1.1.0
 pyyaml==6.0.2
 scikit-learn==1.7.0
