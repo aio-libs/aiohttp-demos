@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: "pip"
     directories:
       - /
-      - /demos/*/
+      - /demos/
     open-pull-requests-limit: 10
     schedule:
       interval: "daily"
