@@ -3,7 +3,7 @@ import yaml
 from aiohttp import web
 from redis.asyncio import Redis
 
-CONF_KEY = web.AppKey("conf_key", dict[str, object])
+CONF_KEY = web.AppKey("CONF_KEY", dict[str, object])
 REDIS_KEY = web.AppKey("REDIS_KEY", Redis)
 CONFIG_TRAFARET = t.Dict(
     {
