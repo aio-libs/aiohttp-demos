@@ -1,28 +1,25 @@
 import asyncio
 import logging
 import pathlib
+from collections.abc import AsyncIterator
 
 import aiohttp_jinja2
 import jinja2
 from aiohttp import web
-from redis.asyncio import Redis
+from redis import asyncio as aioredis
 
 from shortify.routes import setup_routes
-from shortify.utils import init_redis, load_config
-from shortify.views import SiteHandler
-
+from shortify.utils import CONF_KEY, REDIS_KEY, load_config
 
 PROJ_ROOT = pathlib.Path(__file__).parent.parent
 TEMPLATES_ROOT = pathlib.Path(__file__).parent / 'templates'
 
-# Define AppKey for Redis
-REDIS_KEY = web.AppKey("REDIS_KEY", Redis)
 
-
-async def setup_redis(app, conf):
-    redis = await init_redis(conf["redis"])
-    app[REDIS_KEY] = redis
-    return redis
+async def redis_ctx(app: web.Application) -> AsyncIterator[None]:
+    conf = app[CONF_KEY]["redis"]
+    async with await aioredis.from_url(f"redis://{conf['host']}:{conf['port']}") as redis:
+        app[REDIS_KEY] = redis
+        yield
 
 
 def setup_jinja(app):
@@ -35,12 +32,11 @@ async def init():
     conf = load_config(PROJ_ROOT / "config" / "config.yml")
 
     app = web.Application()
-    redis = await setup_redis(app, conf)
+    app[CONF_KEY] = conf
+    app.cleanup_ctx.append(redis_ctx)
     setup_jinja(app)
 
-    handler = SiteHandler(redis, conf)
-
-    setup_routes(app, handler, PROJ_ROOT)
+    setup_routes(app, PROJ_ROOT)
     host, port = conf['host'], conf['port']
     return app, host, port
 

@@ -1,9 +1,10 @@
-from redis import asyncio as aioredis
 import trafaret as t
 import yaml
 from aiohttp import web
+from redis.asyncio import Redis
 
-
+CONF_KEY = web.AppKey("CONF_KEY", dict[str, object])
+REDIS_KEY = web.AppKey("REDIS_KEY", Redis)
 CONFIG_TRAFARET = t.Dict(
     {
         t.Key('redis'): t.Dict(
@@ -25,13 +26,6 @@ def load_config(fname):
     with open(fname, 'rt') as f:
         data = yaml.safe_load(f)
     return CONFIG_TRAFARET.check(data)
-
-
-async def init_redis(conf):
-    redis = await aioredis.from_url(
-        f"redis://{conf['host']}:{conf['port']}",
-    )
-    return redis
 
 
 CHARS = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789"
