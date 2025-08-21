@@ -10,7 +10,7 @@
 -r demos/shortify/requirements.txt
 
 # lint
-flake8==7.2.0
+flake8==7.3.0
 flake8-bugbear==24.12.12
 flake8-quotes==3.4.0
 
@@ -23,7 +23,7 @@ pytest-aiohttp==1.1.0
 psycopg2==2.9.10
 
 # docs
-pygments==2.19.1
+pygments==2.19.2
 sphinx==8.2.3
 sphinxcontrib-asyncio==0.3.0
 sphinxcontrib-spelling==8.0.1; platform_system!="Windows"  # We only use it in CI
