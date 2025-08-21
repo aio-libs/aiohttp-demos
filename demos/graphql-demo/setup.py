@@ -26,7 +26,7 @@ install_requires = [
     'aiohttp_graphql',
     'aiodataloader',
     'trafaret_config',
-    'graphene==2.1.7',
+    'graphene==3.4.3',
     'graphql-core==2.2.1',
     'graphql-ws',
     'psycopg2-binary',
