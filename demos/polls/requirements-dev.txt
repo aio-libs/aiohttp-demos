@@ -1,4 +1,4 @@
-aiohttp==3.11.18
+aiohttp==3.12.15
 aiohttp-jinja2==1.6
 asyncpg==0.30.0
 trafaret_config==2.0.2
