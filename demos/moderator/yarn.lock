@@ -1983,10 +1983,10 @@
     lru-cache "^10.0.1"
     socks-proxy-agent "^8.0.3"
 
-"@npmcli/arborist@^9.1.3":
-  version "9.1.3"
-  resolved "https://registry.yarnpkg.com/@npmcli/arborist/-/arborist-9.1.3.tgz#a8dac0c357af78b9c834210c9017f41289413c19"
-  integrity sha512-PvwtZD1dipP5VByHyWX28tZfan1AkfBLenJTgr0rDdEbdovZc06Z5PHdGb5SEeN7EERl68wFH8lq6WvuUHmgrw==
+"@npmcli/arborist@^9.1.4":
+  version "9.1.4"
+  resolved "https://registry.yarnpkg.com/@npmcli/arborist/-/arborist-9.1.4.tgz#1ce99c75fa6be6e0800b3e1a96f7d4a3d5858c8c"
+  integrity sha512-2Co31oEFlzT9hYjGahGL4PqDXXpA18tX9yu55j5on+m2uDiyBoljQjHNnnNVCji4pFUjawlHi23tQ4j2A5gHow==
   dependencies:
     "@isaacs/string-locale-compare" "^1.1.0"
     "@npmcli/fs" "^4.0.0"
@@ -2023,10 +2023,10 @@
     treeverse "^3.0.0"
     walk-up-path "^4.0.0"
 
-"@npmcli/config@^10.3.1":
-  version "10.3.1"
-  resolved "https://registry.yarnpkg.com/@npmcli/config/-/config-10.3.1.tgz#564f65ae7be9b441c9f707a0c5ffc1e9b833e10f"
-  integrity sha512-XaOH1ePFmPnOTAk+rqEFg50D/e/mYpstuVnc+JkYoyAhaO85gd0ZJ+0i9f4o7kLRKJ6M2PWaj7RYUCGwkzJMTg==
+"@npmcli/config@^10.4.0":
+  version "10.4.0"
+  resolved "https://registry.yarnpkg.com/@npmcli/config/-/config-10.4.0.tgz#e3e3890c62d86f7098093ae5322db32660568348"
+  integrity sha512-0l6f/q/qfB726SWOGIEooh7u6aB1SOgRxGLu7DeJ6Z9Vvq1gG1s3x+Mq+qv9wt0Q0t53mVHIEBokfJZpeaWDyA==
   dependencies:
     "@npmcli/map-workspaces" "^4.0.1"
     "@npmcli/package-json" "^6.0.1"
@@ -9471,12 +9471,12 @@ libnpmaccess@^10.0.1:
     npm-package-arg "^12.0.0"
     npm-registry-fetch "^18.0.1"
 
-libnpmdiff@^8.0.6:
-  version "8.0.6"
-  resolved "https://registry.yarnpkg.com/libnpmdiff/-/libnpmdiff-8.0.6.tgz#50b22a2b76c0306b40fc9dfbcd3caf8bef40f157"
-  integrity sha512-bBIHtOYaZzjKNx7BFQBw3+ejXwIEMkVg/Hyiw4PPgAhObtND17n6+p+kQcN2AMqNC0wWvcARJnFlMVeqm+dl0w==
+libnpmdiff@^8.0.7:
+  version "8.0.7"
+  resolved "https://registry.yarnpkg.com/libnpmdiff/-/libnpmdiff-8.0.7.tgz#19af0afe39ccfa1ed759ac62056f87b1b2e866d1"
+  integrity sha512-TAkva+7Egoh1EGzwvhKTUMyWw3sdlTnBiIj53b3XaOfOe9m86EWbIfn8AAEwvyPxjHeB++aB33waNiZNAIpiHg==
   dependencies:
-    "@npmcli/arborist" "^9.1.3"
+    "@npmcli/arborist" "^9.1.4"
     "@npmcli/installed-package-contents" "^3.0.0"
     binary-extensions "^3.0.0"
     diff "^7.0.0"
@@ -9485,12 +9485,12 @@ libnpmdiff@^8.0.6:
     pacote "^21.0.0"
     tar "^6.2.1"
 
-libnpmexec@^10.1.5:
-  version "10.1.5"
-  resolved "https://registry.yarnpkg.com/libnpmexec/-/libnpmexec-10.1.5.tgz#f24cad725592c004eb7767f29fb5a61f3b7faef6"
-  integrity sha512-0+h3CPKWBzYW1ofv/ozGxZ+ZoCfIV8Bs/ejtlftqK1+T3kepsz1lEMG9I0AAnNyvUKJ2EvHXCuP3iSyHEsmVbQ==
+libnpmexec@^10.1.6:
+  version "10.1.6"
+  resolved "https://registry.yarnpkg.com/libnpmexec/-/libnpmexec-10.1.6.tgz#3e59c612872d0f3eb98980f7a2c5b9589f5547ff"
+  integrity sha512-pqdMB0G8YfvKRS3Wu7NorBnpbIRq/qjwWKs2M0z11ltf/XOLYalHYK93N6DIxUsmQLrK1sue52fybF/jpJ0njg==
   dependencies:
-    "@npmcli/arborist" "^9.1.3"
+    "@npmcli/arborist" "^9.1.4"
     "@npmcli/package-json" "^6.1.1"
     "@npmcli/run-script" "^9.0.1"
     ci-info "^4.0.0"
@@ -9502,12 +9502,12 @@ libnpmexec@^10.1.5:
     semver "^7.3.7"
     walk-up-path "^4.0.0"
 
-libnpmfund@^7.0.6:
-  version "7.0.6"
-  resolved "https://registry.yarnpkg.com/libnpmfund/-/libnpmfund-7.0.6.tgz#456ef320a104a77a571e40e1a047f47d87d35faf"
-  integrity sha512-ruwfzYDBVHvsUj1WUTrWf2kB4Nte4k3VCusKBlh9XuGg9EeAwJDkhMPs+QY8QuFmxf6yeCaiFiDyoCgnpLh5vw==
+libnpmfund@^7.0.7:
+  version "7.0.7"
+  resolved "https://registry.yarnpkg.com/libnpmfund/-/libnpmfund-7.0.7.tgz#762876cf77e8e62654902b45e48c052973db543b"
+  integrity sha512-TCbDH/YHKnQW4bCGjEi9Lsnh4NuKx1d33S2gzwq/WIhxzlzQUlHigtJy0TJGXmzI+krfTVFyIQy7x1h+j/oS+A==
   dependencies:
-    "@npmcli/arborist" "^9.1.3"
+    "@npmcli/arborist" "^9.1.4"
 
 libnpmorg@^8.0.0:
   version "8.0.0"
@@ -9517,12 +9517,12 @@ libnpmorg@^8.0.0:
     aproba "^2.0.0"
     npm-registry-fetch "^18.0.1"
 
-libnpmpack@^9.0.6:
-  version "9.0.6"
-  resolved "https://registry.yarnpkg.com/libnpmpack/-/libnpmpack-9.0.6.tgz#e6b10f62fc99b1e012e98457a9e98c1430da7fac"
-  integrity sha512-TGIaG8cahSmmiXo/+SjSHb23G/4b5xDan7kmq9m0rf+dSH2U4LoKjfKhLRiv8TW0lOuF0sVQmwDlP1Zt9SAuKg==
+libnpmpack@^9.0.7:
+  version "9.0.7"
+  resolved "https://registry.yarnpkg.com/libnpmpack/-/libnpmpack-9.0.7.tgz#e0c0bfb51b2601a2bf18f7d96e3c822ded93b44d"
+  integrity sha512-v2zfv9yZwoYxiFxr4Vwxv5VhPZEW2CmnG7Gj+2LcgtpjgLwXRPXHsic7YpezguJ/oNhI2mb0T+HtxHSJGVNW6w==
   dependencies:
-    "@npmcli/arborist" "^9.1.3"
+    "@npmcli/arborist" "^9.1.4"
     "@npmcli/run-script" "^9.0.1"
     npm-package-arg "^12.0.0"
     pacote "^21.0.0"
@@ -10647,14 +10647,14 @@ npm-user-validate@^3.0.0:
   resolved "https://registry.yarnpkg.com/npm-user-validate/-/npm-user-validate-3.0.0.tgz#9b1410796bf1f1d78297a8096328c55d3083f233"
   integrity sha512-9xi0RdSmJ4mPYTC393VJPz1Sp8LyCx9cUnm/L9Qcb3cFO8gjT4mN20P9FAsea8qDHdQ7LtcN8VLh2UT47SdKCw==
 
-npm@^11.5.2:
-  version "11.5.2"
-  resolved "https://registry.yarnpkg.com/npm/-/npm-11.5.2.tgz#768ddbadb4ba9fc0bc88e129b93e6ab708cac986"
-  integrity sha512-qsEkHPw/Qdw4eA1kKVxsa5F6QeJCiLM1GaexGt/FpUpfiBxkLXVXIVtscOAeVWVe17pmYwD9Aji8dfsXR4r68w==
+npm@^11.6.0:
+  version "11.6.0"
+  resolved "https://registry.yarnpkg.com/npm/-/npm-11.6.0.tgz#b03ebf67129a71489e9937a2e0489f931574590b"
+  integrity sha512-d/P7DbvYgYNde9Ehfeq99+13/E7E82PfZPw8uYZASr9sQ3ZhBBCA9cXSJRA1COfJ6jDLJ0K36UJnXQWhCvLXuQ==
   dependencies:
     "@isaacs/string-locale-compare" "^1.1.0"
-    "@npmcli/arborist" "^9.1.3"
-    "@npmcli/config" "^10.3.1"
+    "@npmcli/arborist" "^9.1.4"
+    "@npmcli/config" "^10.4.0"
     "@npmcli/fs" "^4.0.0"
     "@npmcli/map-workspaces" "^4.0.2"
     "@npmcli/package-json" "^6.2.0"
@@ -10678,11 +10678,11 @@ npm@^11.5.2:
     is-cidr "^5.1.1"
     json-parse-even-better-errors "^4.0.0"
     libnpmaccess "^10.0.1"
-    libnpmdiff "^8.0.6"
-    libnpmexec "^10.1.5"
-    libnpmfund "^7.0.6"
+    libnpmdiff "^8.0.7"
+    libnpmexec "^10.1.6"
+    libnpmfund "^7.0.7"
     libnpmorg "^8.0.0"
-    libnpmpack "^9.0.6"
+    libnpmpack "^9.0.7"
     libnpmpublish "^11.1.0"
     libnpmsearch "^9.0.0"
     libnpmteam "^8.0.1"
