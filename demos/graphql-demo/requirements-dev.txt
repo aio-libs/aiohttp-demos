@@ -13,5 +13,5 @@ redis==6.4.0
 mypy==1.17.1
 flake8==7.3.0
 pytest==8.4.2
-pytest-cov==6.3.0
+pytest-cov==7.0.0
 sqlalchemy==2.0.43
