@@ -1,5 +1,5 @@
 -i https://pypi.org/simple/
-aiohttp==3.12.15
+aiohttp==3.13.0
 async-timeout==5.0.1
 atomicwrites==1.4.1
 attrs==25.4.0
