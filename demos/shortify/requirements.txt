@@ -1,4 +1,4 @@
-aiohttp==3.12.15
+aiohttp==3.13.0
 aiohttp-jinja2==1.6
 pyyaml==6.0.3
 redis==6.4.0

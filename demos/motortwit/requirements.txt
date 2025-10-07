@@ -1,4 +1,4 @@
-aiohttp==3.12.15
+aiohttp==3.13.0
 aiohttp-jinja2==1.6
 aiohttp-security==0.5.0
 bcrypt==5.0.0
