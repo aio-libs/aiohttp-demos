@@ -45,7 +45,7 @@ jobs:
     - name: Rebuild model
       run: PYTHONPATH='demos/moderator' python -m moderator.build_model train.csv
     - name: Commit and push if needed
-      uses: stefanzweifel/git-auto-commit-action@v6
+      uses: stefanzweifel/git-auto-commit-action@v7
       with:
         commit_message: Rebuild moderator model
         file_pattern: 'demos/moderator/model/pipeline.dat'
