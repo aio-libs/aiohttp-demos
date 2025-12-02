@@ -15,4 +15,4 @@ psycopg2==2.9.11
 pygments==2.19.2
 sphinx==8.2.3
 sphinxcontrib-asyncio==0.3.0
-sphinxcontrib-spelling==8.0.1; platform_system!="Windows"  # We only use it in CI
+sphinxcontrib-spelling==8.0.2; platform_system!="Windows"  # We only use it in CI
