@@ -13,6 +13,6 @@ psycopg2==2.9.11
 
 # docs
 pygments==2.19.2
-sphinx==9.0.1
+sphinx==9.0.4
 sphinxcontrib-asyncio==0.3.0
 sphinxcontrib-spelling==8.0.2; platform_system!="Windows"  # We only use it in CI
