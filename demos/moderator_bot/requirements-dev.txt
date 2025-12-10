@@ -15,7 +15,7 @@ pluggy==1.6.0
 pytest==8.4.2
 pytest-aiohttp==1.1.0
 pyyaml==6.0.3
-scikit-learn==1.7.2
+scikit-learn==1.8.0
 scipy==1.16.3
 six==1.17.0
 slack_sdk==3.39.0
