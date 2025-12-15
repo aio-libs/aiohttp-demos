@@ -7,7 +7,7 @@ certifi==2025.11.12
 chardet==5.2.0
 idna==3.11
 importlib-metadata==0.23 ; python_version < '3.8'
-joblib==1.5.2
+joblib==1.5.3
 more-itertools==10.8.0
 multidict==6.7.0
 numpy==2.3.5
