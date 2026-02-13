@@ -9,23 +9,22 @@ from aiohttp_security import setup as setup_security
 from aiohttp_session import setup as setup_session
 from aiohttp_session.redis_storage import RedisStorage
 from redis import asyncio as aioredis
+
 from aiohttpdemo_blog.db_auth import DBAuthorizationPolicy
 from aiohttpdemo_blog.db import init_db
 from aiohttpdemo_blog.routes import setup_routes
 from aiohttpdemo_blog.settings import load_config, PACKAGE_NAME
+from aiohttpdemo_blog.typedefs import config_key
 
 
 log = logging.getLogger(__name__)
 
 
-async def setup_redis(app):
+async def setup_redis(app: web.Application):
+    redis_host = app[config_key]["redis"]["REDIS_HOST"]
+    redis_port = app[config_key]["redis"]["REDIS_PORT"]
 
-    redis_host = app["config"]["redis"]["REDIS_HOST"]
-    redis_port = app["config"]["redis"]["REDIS_PORT"]
-
-    redis = await aioredis.from_url(f"redis://{redis_host}:{redis_port}")
-    app["redis"] = redis
-    return redis
+    return await aioredis.from_url(f"redis://{redis_host}:{redis_port}")
 
 
 async def current_user_ctx_processor(request):
@@ -38,13 +37,14 @@ async def init_app(config):
 
     app = web.Application()
 
-    app['config'] = config
+    app[config_key] = config
 
     setup_routes(app)
 
-    db_pool = await init_db(app)
+    app.cleanup_ctx.append(init_db)
 
     redis = await setup_redis(app)
+    app.on_shutdown.append(lambda _: redis.aclose())
     setup_session(app, RedisStorage(redis))
 
     # needs to be after session setup because of `current_user_ctx_processor`
@@ -57,10 +57,10 @@ async def init_app(config):
     setup_security(
         app,
         SessionIdentityPolicy(),
-        DBAuthorizationPolicy(db_pool)
+        DBAuthorizationPolicy(app)
     )
 
-    log.debug(app['config'])
+    log.debug(app[config_key])
 
     return app
 

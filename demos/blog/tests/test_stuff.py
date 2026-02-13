@@ -3,6 +3,7 @@ from aiohttpdemo_blog.security import (
     generate_password_hash,
     check_password_hash
 )
+from aiohttpdemo_blog.typedefs import db_key
 
 
 def test_security():
@@ -12,8 +13,8 @@ def test_security():
 
 
 async def test_index_view(tables_and_data, client):
-    resp = await client.get('/')
-    assert resp.status == 200
+    async with client.get("/") as resp:
+        assert resp.status == 200
 
 
 async def test_login_form(tables_and_data, client):
@@ -25,12 +26,11 @@ async def test_login_form(tables_and_data, client):
         'username': 'Adam',
         'password': 'adam'
     }
-
-    async with client.server.app['db_pool'].acquire() as conn:
-        error = await validate_login_form(conn, invalid_form)
+    async with client.server.app[db_key]() as sess:
+        error = await validate_login_form(sess, invalid_form)
         assert error
 
-        no_error = await validate_login_form(conn, valid_form)
+        no_error = await validate_login_form(sess, valid_form)
         assert not no_error
 
 
@@ -44,10 +44,10 @@ async def test_login_view(tables_and_data, client):
         'password': 'adam'
     }
 
-    resp = await client.post('/login', data=invalid_form)
-    assert resp.status == 200
-    assert 'Invalid username' in await resp.text()
+    async with client.post("/login", data=invalid_form) as resp:
+        assert resp.status == 200
+        assert "Invalid username" in await resp.text()
 
-    resp = await client.post('/login', data=valid_form)
-    assert resp.status == 200
-    assert 'Hi, Adam!' in await resp.text()
+    async with await client.post("/login", data=valid_form) as resp:
+        assert resp.status == 200
+        assert "Hi, Adam!" in await resp.text()

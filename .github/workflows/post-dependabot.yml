@@ -1,0 +1,55 @@
+name: Dependabot post-update (rebuild moderator model)
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+    branches:
+      - 'master'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions: {}
+jobs:
+  post-update:
+    permissions:
+      pull-requests: read # for gh pr checkout
+      contents: write # to push code in repo (stefanzweifel/git-auto-commit-action)
+
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'aio-libs/aiohttp-demos' && contains(github.event.pull_request.title, 'scikit-learn')
+    runs-on: ubuntu-latest
+    steps:
+    - name: Dependabot metadata  # Extra security checks
+      id: dependabot-metadata
+      uses: dependabot/fetch-metadata@v2
+    - name: Generate token
+      id: generate_token
+      uses: tibdex/github-app-token@v2
+      with:
+        app_id: ${{ secrets.BOT_APP_ID }}
+        private_key: ${{ secrets.BOT_PRIVATE_KEY }}
+    - name: Checkout
+      uses: actions/checkout@v6
+      with:
+        token: ${{ steps.generate_token.outputs.token }}
+    - name: Login
+      run: |
+        echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+    - name: Checkout
+      run: |
+        gh pr checkout ${{ github.event.pull_request.number }}
+    - name: Setup Python
+      uses: actions/setup-python@v6
+      with:
+        cache: 'pip'
+        cache-dependency-path: '**/requirements*.txt'
+    - name: Download train.csv
+      # Original file can be found at: https://www.kaggle.com/code/piumallick/toxic-comments-sentiment-analysis/input?select=train.csv.zip
+      run: curl "$MODERATOR_TRAINING_URL" > train.csv
+    - name: Rebuild model
+      run: PYTHONPATH='demos/moderator' python -m moderator.build_model train.csv
+    - name: Commit and push if needed
+      uses: stefanzweifel/git-auto-commit-action@v7
+      with:
+        commit_message: Rebuild moderator model
+        file_pattern: 'demos/moderator/model/pipeline.dat'

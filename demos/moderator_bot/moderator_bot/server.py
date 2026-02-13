@@ -4,7 +4,7 @@ from functools import partial
 from pathlib import Path
 
 from aiohttp import web
-from aioslacker import Slacker
+from slack_sdk.web.async_client import AsyncWebClient
 
 from .giphy import GiphyClient
 from .handlers import MainHandler
@@ -38,7 +38,7 @@ async def init_application(config):
 
     executor = ProcessPoolExecutor(MAX_WORKERS)
 
-    slack_client = Slacker(SLACK_BOT_TOKEN)
+    slack_client = AsyncWebClient(SLACK_BOT_TOKEN)
     giphy_client = GiphyClient(GIPHY_API_KEY, config["request_timeout"])
 
     handler = MainHandler(executor, slack_client, giphy_client)
@@ -55,7 +55,6 @@ async def init_application(config):
 
     app.on_cleanup.append(setup_cleanup_hooks([
         partial(executor.shutdown, wait=True),
-        slack_client.close,
         giphy_client.close,
     ]))
 

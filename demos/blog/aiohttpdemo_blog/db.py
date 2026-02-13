@@ -1,87 +1,87 @@
-from datetime import datetime as dt
+from datetime import datetime, UTC
+from functools import partial
 
-import asyncpgsa
-from sqlalchemy import (
-    MetaData, Table, Column, ForeignKey,
-    Integer, String, DateTime
+from sqlalchemy import DateTime, ForeignKey, String
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+from sqlalchemy.orm import (
+    DeclarativeBase,
+    Mapped,
+    mapped_column,
+    relationship,
+    selectinload,
 )
 from sqlalchemy.sql import select
 
-metadata = MetaData()
+from aiohttpdemo_blog.typedefs import config_key, db_key
 
 
-users = Table(
-    'users', metadata,
-
-    Column('id', Integer, primary_key=True),
-    Column('username', String(64), nullable=False, unique=True),
-    Column('email', String(120)),
-    Column('password_hash', String(128), nullable=False)
-)
+class Base(DeclarativeBase):
+    pass
 
 
-posts = Table(
-    'posts', metadata,
+class Users(Base):
+    __tablename__ = "users"
 
-    Column('id', Integer, primary_key=True),
-    Column('body', String(140)),
-    Column('timestamp', DateTime, index=True, default=dt.utcnow),
+    id: Mapped[int] = mapped_column(primary_key=True)
+    username: Mapped[str] = mapped_column(String(64), nullable=False, unique=True)
+    email: Mapped[str] = mapped_column(String(120))
+    password_hash: Mapped[str] = mapped_column(String(128), nullable=False)
 
-    Column('user_id',
-           Integer,
-           ForeignKey('users.id'))
-)
+    posts: Mapped[list["Posts"]] = relationship(
+        back_populates="user", lazy="raise_on_sql"
+    )
+
+
+class Posts(Base):
+    __tablename__ = "posts"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    body: Mapped[str] = mapped_column(String(140))
+    timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True,
+                                                default=partial(datetime.now, UTC))
+
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    user: Mapped[Users] = relationship(back_populates="posts", lazy="raise_on_sql")
 
 
 async def init_db(app):
-    dsn = construct_db_url(app['config']['database'])
-    pool = await asyncpgsa.create_pool(dsn=dsn)
-    app['db_pool'] = pool
-    return pool
+    dsn = construct_db_url(app[config_key]["database"])
+    engine = create_async_engine(dsn)
+    app[db_key] = async_sessionmaker(engine)
+
+    yield
+
+    await engine.dispose()
 
 
 def construct_db_url(config):
-    DSN = "postgresql://{user}:{password}@{host}:{port}/{database}"
+    DSN = "postgresql+asyncpg://{user}:{password}@{host}:{port}/{database}"
     return DSN.format(
-        user=config['DB_USER'],
-        password=config['DB_PASS'],
-        database=config['DB_NAME'],
-        host=config['DB_HOST'],
-        port=config['DB_PORT'],
+        user=config["DB_USER"],
+        password=config["DB_PASS"],
+        database=config["DB_NAME"],
+        host=config["DB_HOST"],
+        port=config["DB_PORT"],
     )
 
 
-async def get_user_by_name(conn, username):
-    result = await conn.fetchrow(
-        users
-        .select()
-        .where(users.c.username == username)
-    )
+async def get_user_by_name(sess, username):
+    result = await sess.scalar(select(Users).where(Users.username == username))
     return result
 
 
-async def get_users(conn):
-    records = await conn.fetch(
-        users.select().order_by(users.c.id)
+async def get_users(sess):
+    records = await sess.scalars(select(Users).order_by(Users.id))
+    return records.all()
+
+
+async def get_posts(sess):
+    records = await sess.scalars(select(Posts).order_by(Posts.id))
+    return records.all()
+
+
+async def get_posts_with_joined_users(sess):
+    records = await sess.scalars(
+        select(Posts).options(selectinload(Posts.user)).order_by(Posts.timestamp)
     )
-    return records
-
-
-async def get_posts(conn):
-    records = await conn.fetch(
-        posts.select().order_by(posts.c.id)
-    )
-    return records
-
-
-async def get_posts_with_joined_users(conn):
-    j = posts.join(users, posts.c.user_id == users.c.id)
-    stmt = select(
-        [posts, users.c.username]).select_from(j).order_by(posts.c.timestamp)
-    records = await conn.fetch(stmt)
-    return records
-
-
-async def create_post(conn, post_body, user_id):
-    stmt = posts.insert().values(body=post_body, user_id=user_id)
-    await conn.execute(stmt)
+    return records.all()
