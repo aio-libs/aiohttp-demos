@@ -1,7 +1,7 @@
 name: Dependabot post-update (rebuild moderator model)
 on:
   pull_request_target:
-    action: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened]
     branches:
       - 'master'
 
@@ -16,9 +16,12 @@ jobs:
       pull-requests: read # for gh pr checkout
       contents: write # to push code in repo (stefanzweifel/git-auto-commit-action)
 
-    if: github.actor == 'dependabot[bot]' && contains(github.event.pull_request.title, 'scikit-learn')
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'aio-libs/aiohttp-demos' && contains(github.event.pull_request.title, 'scikit-learn')
     runs-on: ubuntu-latest
     steps:
+    - name: Dependabot metadata  # Extra security checks
+      id: dependabot-metadata
+      uses: dependabot/fetch-metadata@v2
     - name: Generate token
       id: generate_token
       uses: tibdex/github-app-token@v2
@@ -37,8 +40,9 @@ jobs:
         gh pr checkout ${{ github.event.pull_request.number }}
     - name: Setup Python
       uses: actions/setup-python@v6
-      cache: 'pip'
-      cache-dependency-path: '**/requirements*.txt'
+      with:
+        cache: 'pip'
+        cache-dependency-path: '**/requirements*.txt'
     - name: Download train.csv
       # Original file can be found at: https://www.kaggle.com/code/piumallick/toxic-comments-sentiment-analysis/input?select=train.csv.zip
       run: curl "$MODERATOR_TRAINING_URL" > train.csv
