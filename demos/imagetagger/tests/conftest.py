@@ -4,11 +4,6 @@ from imagetagger.utils import config_from_dict
 from imagetagger.app import init_app
 
 
-@pytest.fixture
-def loop(event_loop):
-    return event_loop
-
-
 @pytest.fixture(scope='session')
 def conf():
     d = {
@@ -20,7 +15,7 @@ def conf():
 
 
 @pytest.fixture
-def api(loop, aiohttp_client, conf):
-    app = loop.run_until_complete(init_app(conf))
-    yield loop.run_until_complete(aiohttp_client(app))
-    loop.run_until_complete(app.shutdown())
+async def api(aiohttp_client, conf):
+    app = await init_app(conf)
+    yield await aiohttp_client(app)
+    await app.shutdown()
