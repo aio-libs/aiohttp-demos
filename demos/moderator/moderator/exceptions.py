@@ -11,7 +11,7 @@ class AdminRESTError(web.HTTPError):
         if status_code is not None:
             self.status_code = status_code
 
-        super().__init__(reason=message)
+        super().__init__(reason=message)  # noqa: B042
         if not message:
             message = self.error
 
