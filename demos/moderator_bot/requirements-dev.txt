@@ -2,7 +2,7 @@
 aiohttp==3.13.3
 async-timeout==5.0.1
 atomicwrites==1.4.1
-attrs==25.4.0
+attrs==26.1.0
 certifi==2026.1.4
 chardet==7.4.0.post1
 idna==3.11
