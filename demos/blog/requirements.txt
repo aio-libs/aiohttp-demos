@@ -5,7 +5,7 @@ asyncpg==0.31.0
 bcrypt==5.0.0
 pytoml==0.1.21
 redis==7.4.0
-SQLalchemy==2.0.48
+SQLalchemy==2.0.49
 
 # testing
 pytest==9.0.2
