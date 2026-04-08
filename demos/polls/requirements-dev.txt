@@ -5,6 +5,6 @@ trafaret_config==2.0.2
 SQLalchemy==2.0.49
 
 # For testing
-pytest==9.0.2
+pytest==9.0.3
 pytest-aiohttp==1.1.0
 flake8==7.3.0
