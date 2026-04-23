@@ -3,7 +3,7 @@ aiohttp==3.13.5
 async-timeout==5.0.1
 atomicwrites==1.4.1
 attrs==26.1.0
-certifi==2026.1.4
+certifi==2026.4.22
 chardet==7.4.3
 idna==3.12
 importlib-metadata==0.23 ; python_version < '3.8'
