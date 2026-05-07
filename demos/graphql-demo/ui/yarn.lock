@@ -2128,10 +2128,10 @@ graphql@^0.10.0, graphql@^0.10.3:
   dependencies:
     iterall "^1.1.0"
 
-graphql@^16.13.1:
-  version "16.13.1"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.13.1.tgz#38ae5c76fbc4a009e0004dca6c76c370a1da7b54"
-  integrity sha512-gGgrVCoDKlIZ8fIqXBBb0pPKqDgki0Z/FSKNiQzSGj2uEYHr1tq5wmBegGwJx6QB5S5cM0khSBpi/JFHMCvsmQ==
+graphql@^16.14.0:
+  version "16.14.0"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.14.0.tgz#f1128a74b16a34d1245c8436bb07b488d87b83e1"
+  integrity sha512-BBvQ/406p+4CZbTpCbVPSxfzrZrbnuWSP1ELYgyS6B+hNeKzgrdB4JczCa5VZUBQrDa9hUngm0KnexY6pJRN5Q==
 
 has-ansi@^2.0.0:
   version "2.0.0"
