@@ -10,6 +10,15 @@ from tensorflow.keras.preprocessing.image import img_to_array
 from PIL import Image
 
 
+# Cap decoded image area at 25 megapixels (e.g. 5000x5000). Anything
+# larger triggers Pillow's DecompressionBombError, which the views
+# layer translates to a 413 response. Pillow's own default warning
+# threshold is much higher (~89 MP); set explicitly so the behavior
+# does not depend on the Pillow version.
+Image.MAX_IMAGE_PIXELS = 25_000_000
+
+_ALLOWED_FORMATS = frozenset({"JPEG", "PNG"})
+
 _model = None
 
 
@@ -49,6 +58,12 @@ def predict(raw_data: bytes, model: Optional[Any] = None) -> bytes:
     data: Dict[str, Any] = {}
     with io.BytesIO(raw_data) as b_io:
         with Image.open(b_io) as f:
+            if f.format not in _ALLOWED_FORMATS:
+                # mirrors UnidentifiedImageError shape so views.py can
+                # convert it to a 400 without a new exception type.
+                from PIL import UnidentifiedImageError
+                raise UnidentifiedImageError(
+                    f"unsupported image format: {f.format!r}")
             image = prepare_image(f, target=(224, 224))
 
     preds = model.predict(image)
