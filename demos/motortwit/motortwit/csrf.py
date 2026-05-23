@@ -1,3 +1,4 @@
+import hmac
 import re
 import secrets
 
@@ -27,7 +28,7 @@ def _tokens_match(cookie_value, submitted_value):
         return False
     if not _TOKEN_RE.match(submitted_value):
         return False
-    return secrets.compare_digest(cookie_value, submitted_value)
+    return hmac.compare_digest(cookie_value, submitted_value)
 
 
 async def csrf_ctx_processor(request):
