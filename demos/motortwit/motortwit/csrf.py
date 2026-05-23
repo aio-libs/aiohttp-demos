@@ -26,9 +26,14 @@ async def csrf_middleware(request, handler):
         if submitted is None:
             form = await request.post()
             submitted = form.get(CSRF_FIELD_NAME)
+        # The double-submit pattern intentionally compares two
+        # user-controlled values; the security comes from the
+        # same-origin policy preventing the attacker from ever
+        # reading the victim's cookie.
         if (not cookie_token
                 or not submitted
-                or not secrets.compare_digest(cookie_token, str(submitted))):
+                or not secrets.compare_digest(  # nosec
+                    cookie_token, str(submitted))):
             raise web.HTTPForbidden(reason="CSRF token missing or invalid")
 
     response = await handler(request)
