@@ -7,7 +7,10 @@
   {% if user and user.username  %}
     <a href="{{ url('timeline') }}">my timeline</a> |
     <a href="{{ url('public_timeline') }}">public timeline</a> |
-    <a href="{{ url('logout') }}">logout [{{ user.username }}]</a>
+    <form action="{{ url('logout') }}" method=post style="display: inline">
+      <input type=hidden name="_csrf" value="{{ csrf_token }}">
+      <button type=submit class="link-button">logout [{{ user.username }}]</button>
+    </form>
   {% else %}
     <a href="{{ url('public_timeline') }}">public timeline</a> |
     <a href="{{ url('register') }}">register</a> |

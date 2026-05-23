@@ -8,6 +8,7 @@ from aiohttp import web
 from aiohttp_security import setup as setup_security
 from aiohttp_security import CookiesIdentityPolicy
 
+from motortwit.csrf import csrf_ctx_processor, csrf_middleware
 from motortwit.routes import setup_routes
 from motortwit.security import AuthorizationPolicy
 from motortwit.utils import (format_datetime, init_mongo, load_config,
@@ -31,7 +32,10 @@ async def setup_mongo(app, conf, loop):
 
 def setup_jinja(app):
     jinja_env = aiohttp_jinja2.setup(
-        app, loader=jinja2.FileSystemLoader(str(TEMPLATES_ROOT)))
+        app,
+        loader=jinja2.FileSystemLoader(str(TEMPLATES_ROOT)),
+        context_processors=[csrf_ctx_processor],
+    )
 
     jinja_env.filters['datetimeformat'] = format_datetime
     jinja_env.filters['robo_avatar_url'] = robo_avatar_url
@@ -40,7 +44,7 @@ def setup_jinja(app):
 async def init(loop):
     conf = load_config(PROJ_ROOT / 'config' / 'config.yml')
 
-    app = web.Application(loop=loop)
+    app = web.Application(loop=loop, middlewares=[csrf_middleware])
     mongo = await setup_mongo(app, conf, loop)
 
     setup_jinja(app)

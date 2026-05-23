@@ -17,18 +17,23 @@
           This is you!
         {% elif followed %}
           You are currently following this user.
-          <a class=unfollow href="{{ url('unfollow_user', username=profile_user.username)
-                  }}">Unfollow user</a>.
+          <form action="{{ url('unfollow_user', username=profile_user.username) }}" method=post style="display: inline">
+            <input type=hidden name="_csrf" value="{{ csrf_token }}">
+            <button type=submit class="link-button unfollow">Unfollow user</button>
+          </form>.
         {% else %}
           You are not yet following this user.
-          <a class=follow href="{{ url('follow_user', username=profile_user.username)
-                  }}">Follow user</a>.
+          <form action="{{ url('follow_user', username=profile_user.username) }}" method=post style="display: inline">
+            <input type=hidden name="_csrf" value="{{ csrf_token }}">
+            <button type=submit class="link-button follow">Follow user</button>
+          </form>.
         {% endif %}
       </div>
     {% elif endpoint == 'timeline' %}
       <div class=twitbox>
         <h3>What's on your mind {{ user.username }}?</h3>
         <form action="{{ url('add_message') }}" method=post>
+          <input type=hidden name="_csrf" value="{{ csrf_token }}">
           <p><input type=text name=text size=60><!--
           --><input type=submit value="Share">
         </form>
