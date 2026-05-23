@@ -1,3 +1,4 @@
+import re
 import secrets
 
 from aiohttp import web
@@ -9,6 +10,24 @@ CSRF_HEADER_NAME = "X-CSRF-Token"
 
 _REQUEST_KEY = "_csrf_token"
 _SAFE_METHODS = frozenset({"GET", "HEAD", "OPTIONS"})
+
+# secrets.token_urlsafe(32) emits a URL-safe base64 string (43 chars,
+# RFC 4648 alphabet without padding). Require both halves of the
+# double-submit comparison to fit that shape so anything else is
+# rejected before reaching the constant-time compare.
+_TOKEN_RE = re.compile(r"\A[A-Za-z0-9_-]{32,128}\Z")
+
+
+def _tokens_match(cookie_value, submitted_value):
+    """Return True only when both inputs look like real CSRF tokens
+    and are equal under a constant-time comparison."""
+    if not isinstance(cookie_value, str) or not isinstance(submitted_value, str):
+        return False
+    if not _TOKEN_RE.match(cookie_value):
+        return False
+    if not _TOKEN_RE.match(submitted_value):
+        return False
+    return secrets.compare_digest(cookie_value, submitted_value)
 
 
 async def csrf_ctx_processor(request):
@@ -26,14 +45,7 @@ async def csrf_middleware(request, handler):
         if submitted is None:
             form = await request.post()
             submitted = form.get(CSRF_FIELD_NAME)
-        # The double-submit pattern intentionally compares two
-        # user-controlled values; the security comes from the
-        # same-origin policy preventing the attacker from ever
-        # reading the victim's cookie.
-        if (not cookie_token
-                or not submitted
-                or not secrets.compare_digest(  # nosec
-                    cookie_token, str(submitted))):
+        if not _tokens_match(cookie_token, submitted):
             raise web.HTTPForbidden(reason="CSRF token missing or invalid")
 
     response = await handler(request)
