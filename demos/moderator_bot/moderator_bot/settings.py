@@ -9,4 +9,6 @@ MAX_WORKERS = os.cpu_count()
 
 SLACK_BOT_TOKEN = required_env("SLACK_BOT_TOKEN")
 
+SLACK_SIGNING_SECRET = required_env("SLACK_SIGNING_SECRET")
+
 GIPHY_API_KEY = required_env("GIPHY_API_KEY")
