@@ -97,7 +97,9 @@ class SiteHandler:
             error = 'Invalid password'
         else:
             response = redirect(request, 'timeline')
-            await remember(request, response, str(user['_id']))
+            await remember(
+                request, response, str(user['_id']),
+                httponly=True, samesite='Lax')
             return response
 
         return {'error': error, 'form': form}
