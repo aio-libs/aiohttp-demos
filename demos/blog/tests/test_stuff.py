@@ -1,9 +1,22 @@
+import re
+
 from aiohttpdemo_blog.forms import validate_login_form
 from aiohttpdemo_blog.security import (
     generate_password_hash,
     check_password_hash
 )
 from aiohttpdemo_blog.typedefs import db_key
+
+
+_CSRF_INPUT_RE = re.compile(r'name="_csrf"\s+value="([^"]+)"')
+
+
+async def _csrf_token(client, path):
+    resp = await client.get(path)
+    body = await resp.text()
+    match = _CSRF_INPUT_RE.search(body)
+    assert match, f"no CSRF input found on {path}"
+    return match.group(1)
 
 
 def test_security():
@@ -35,11 +48,14 @@ async def test_login_form(tables_and_data, client):
 
 
 async def test_login_view(tables_and_data, client):
+    token = await _csrf_token(client, "/login")
     invalid_form = {
+        '_csrf': token,
         'username': 'Joe',
         'password': '123'
     }
     valid_form = {
+        '_csrf': token,
         'username': 'Adam',
         'password': 'adam'
     }
@@ -51,3 +67,9 @@ async def test_login_view(tables_and_data, client):
     async with await client.post("/login", data=valid_form) as resp:
         assert resp.status == 200
         assert "Hi, Adam!" in await resp.text()
+
+
+async def test_login_post_without_csrf_rejected(client):
+    resp = await client.post(
+        "/login", data={"username": "Adam", "password": "adam"})
+    assert resp.status == 403

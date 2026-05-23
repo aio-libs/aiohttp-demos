@@ -14,7 +14,10 @@
             {% if current_user.is_anonymous %}
                 <a href="{{ url('login') }}">Login</a>
             {% else %}
-                <a href="{{ url('logout') }}">Logout</a>
+                <form action="{{ url('logout') }}" method="post" style="display: inline">
+                    <input type="hidden" name="_csrf" value="{{ csrf_token }}">
+                    <button type="submit">Logout</button>
+                </form>
                 <a href="{{ url('create-post') }}">Write</a>
             {% endif %}
         </div>

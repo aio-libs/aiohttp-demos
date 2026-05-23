@@ -5,6 +5,7 @@
     <h1>Write something</h1>
 
     <form action="/create" method="post">
+        <input type="hidden" name="_csrf" value="{{ csrf_token }}">
         <p>
             <input id="body" name="body" type="text" value="" size=40 autofocus/>
         </p>

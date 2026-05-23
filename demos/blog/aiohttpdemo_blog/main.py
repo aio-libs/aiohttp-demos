@@ -10,6 +10,7 @@ from aiohttp_session import setup as setup_session
 from aiohttp_session.redis_storage import RedisStorage
 from redis import asyncio as aioredis
 
+from aiohttpdemo_blog.csrf import csrf_ctx_processor, csrf_middleware
 from aiohttpdemo_blog.db_auth import DBAuthorizationPolicy
 from aiohttpdemo_blog.db import init_db
 from aiohttpdemo_blog.routes import setup_routes
@@ -46,12 +47,14 @@ async def init_app(config):
     redis = await setup_redis(app)
     app.on_shutdown.append(lambda _: redis.aclose())
     setup_session(app, RedisStorage(redis))
+    # csrf_middleware uses get_session, so it must come after setup_session
+    app.middlewares.append(csrf_middleware)
 
-    # needs to be after session setup because of `current_user_ctx_processor`
+    # needs to be after session setup because of the ctx processors
     aiohttp_jinja2.setup(
         app,
         loader=jinja2.PackageLoader(PACKAGE_NAME),
-        context_processors=[current_user_ctx_processor],
+        context_processors=[current_user_ctx_processor, csrf_ctx_processor],
     )
 
     setup_security(
