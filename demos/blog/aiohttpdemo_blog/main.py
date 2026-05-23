@@ -45,12 +45,19 @@ async def init_app(config):
 
     redis = await setup_redis(app)
     app.on_shutdown.append(lambda _: redis.aclose())
-    setup_session(app, RedisStorage(redis))
+    # samesite='Lax' blocks the session cookie from cross-site top-level
+    # POSTs and from cross-site sub-requests; httponly is the storage
+    # default but pinned here so the value is visible at the call site.
+    setup_session(
+        app,
+        RedisStorage(redis, httponly=True, samesite='Lax'),
+    )
 
     # needs to be after session setup because of `current_user_ctx_processor`
     aiohttp_jinja2.setup(
         app,
         loader=jinja2.PackageLoader(PACKAGE_NAME),
+        autoescape=jinja2.select_autoescape(['html', 'xml']),
         context_processors=[current_user_ctx_processor],
     )
 
