@@ -2,18 +2,23 @@
 <meta charset="utf-8" />
 <html>
   <head>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js">
-    </script>
     <script language="javascript" type="text/javascript">
-     $(function() {
+     document.addEventListener('DOMContentLoaded', function() {
        var conn = null;
        var name = "UNKNOWN";
+       var status = document.getElementById('status');
+       var connectButton = document.getElementById('connect');
+       var sendButton = document.getElementById('send');
+       var nameLabel = document.getElementById('name');
+       var textInput = document.getElementById('text');
+       var logControl = document.getElementById('log');
+
        function log(msg) {
-         var control = $('#log');
          var date = new Date();
          var date_prompt = '(' + date.toISOString().split('T')[1].slice(0,8) + ') ';
-         control.html(control.html() + date_prompt + msg + '<br/>');
-         control.scrollTop(control.scrollTop() + 1000);
+         logControl.appendChild(document.createTextNode(date_prompt + msg));
+         logControl.appendChild(document.createElement('br'));
+         logControl.scrollTop = logControl.scrollHeight;
        }
        function connect() {
          disconnect();
@@ -62,17 +67,17 @@
        }
        function update_ui() {
          if (conn == null) {
-           $('#status').text('disconnected');
-           $('#connect').html('Connect');
-           $('#send').prop("disabled", true);
+           status.textContent = 'disconnected';
+           connectButton.textContent = 'Connect';
+           sendButton.disabled = true;
          } else {
-           $('#status').text('connected (' + conn.protocol + ')');
-           $('#connect').html('Disconnect');
-           $('#send').prop("disabled", false);
+           status.textContent = 'connected (' + conn.protocol + ')';
+           connectButton.textContent = 'Disconnect';
+           sendButton.disabled = false;
          }
-         $('#name').text(name);
+         nameLabel.textContent = name;
        }
-       $('#connect').on('click', function() {
+       connectButton.addEventListener('click', function() {
          if (conn == null) {
            connect();
          } else {
@@ -81,17 +86,18 @@
          update_ui();
          return false;
        });
-       $('#send').on('click', function() {
-         var text = $('#text').val();
+       sendButton.addEventListener('click', function() {
+         var text = textInput.value;
          // log('Sending: ' + text);
          log(text);
          conn.send(text);
-         $('#text').val('').focus();
+         textInput.value = '';
+         textInput.focus();
          return false;
        });
-       $('#text').on('keyup', function(e) {
+       textInput.addEventListener('keyup', function(e) {
          if (e.keyCode === 13) {
-           $('#send').click();
+           sendButton.click();
            return false;
          }
        });

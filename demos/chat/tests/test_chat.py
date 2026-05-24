@@ -14,3 +14,15 @@ async def test_msg_sending(client):
 
     assert set(received_dict) == {'action', 'name', 'text'}
     assert received_dict['text'] == text_to_send
+
+
+async def test_chat_page_does_not_use_jquery_or_html_insertion(client):
+    resp = await client.get('/')
+    assert resp.status == 200
+
+    page = await resp.text()
+
+    assert 'jquery' not in page
+    assert 'ajax.googleapis.com' not in page
+    assert '.html(' not in page
+    assert 'createTextNode' in page
