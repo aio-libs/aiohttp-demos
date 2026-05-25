@@ -8,8 +8,7 @@ from imagetagger.app import init_app
 def conf():
     d = {
         'app': {'host': 'localhost', 'port': 9100},
-        'workers': {'max_workers': 1,
-                    'model_path': 'tests/data/mobilenet.h5'},
+        'workers': {'model_path': 'tests/data/mobilenet.h5'},
     }
     return config_from_dict(d)
 

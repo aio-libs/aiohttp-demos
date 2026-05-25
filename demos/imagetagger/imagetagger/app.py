@@ -7,8 +7,9 @@ import jinja2
 from aiohttp import web
 
 from .routes import init_routes
-from .utils import Config, get_config, init_workers
+from .utils import PATH, Config, get_config
 from .views import SiteHandler
+from .worker import clean, warm
 
 
 path = Path(__file__).parent
@@ -23,9 +24,14 @@ def init_jinja2(app: web.Application) -> None:
 
 async def init_app(conf: Config) -> web.Application:
     app = web.Application()
-    executor = await init_workers(app, conf.workers)
+    await asyncio.to_thread(warm, str(PATH / conf.workers.model_path))
+
+    async def _close_model(app: web.Application) -> None:
+        clean()
+    app.on_cleanup.append(_close_model)
+
     init_jinja2(app)
-    handler = SiteHandler(conf, executor)
+    handler = SiteHandler(conf)
     init_routes(app, handler)
     return app
 

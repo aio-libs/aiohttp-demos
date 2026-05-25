@@ -1,5 +1,4 @@
 import asyncio
-from concurrent.futures import ProcessPoolExecutor
 from typing import Dict
 
 import aiohttp_jinja2
@@ -7,15 +6,13 @@ from aiohttp import web
 from PIL import Image, UnidentifiedImageError
 
 from .constants import ALLOWED_CONTENT_TYPES, MAX_UPLOAD_BYTES
-from .utils import Config, executor_key
+from .utils import Config
 from .worker import predict
 
 
 class SiteHandler:
-    def __init__(self, conf: Config, executor: ProcessPoolExecutor) -> None:
+    def __init__(self, conf: Config) -> None:
         self._conf = conf
-        self._executor = executor
-        self._loop = asyncio.get_event_loop()
 
     @aiohttp_jinja2.template('index.html')
     async def index(self, request: web.Request) -> Dict[str, str]:
@@ -28,11 +25,10 @@ class SiteHandler:
             raise web.HTTPBadRequest(reason="invalid form data")
 
         file_field = form.get('file')
-        if file_field is None or not hasattr(file_field, 'file'):
+        if not isinstance(file_field, web.FileField):
             raise web.HTTPBadRequest(reason="file field required")
 
-        content_type = getattr(file_field, 'content_type', '') or ''
-        if content_type and content_type not in ALLOWED_CONTENT_TYPES:
+        if file_field.content_type not in ALLOWED_CONTENT_TYPES:
             raise web.HTTPUnsupportedMediaType(
                 reason="only image/jpeg and image/png uploads accepted")
 
@@ -44,10 +40,8 @@ class SiteHandler:
             raise web.HTTPRequestEntityTooLarge(
                 max_size=MAX_UPLOAD_BYTES, actual_size=len(raw_data))
 
-        executor = request.app[executor_key]
         try:
-            body = await self._loop.run_in_executor(
-                executor, predict, raw_data)
+            body = await asyncio.to_thread(predict, raw_data)
         except UnidentifiedImageError:
             raise web.HTTPBadRequest(reason="unsupported image format")
         except Image.DecompressionBombError:
