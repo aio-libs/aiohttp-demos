@@ -1,3 +1,5 @@
+import io
+
 from aiohttp import FormData
 
 from imagetagger.constants import MAX_UPLOAD_BYTES
@@ -21,7 +23,9 @@ async def test_predict_rejects_missing_file_field(api):
 
 
 async def test_predict_rejects_oversized_upload(api):
-    payload = b'\xff' * (MAX_UPLOAD_BYTES + 1)
+    # Wrap in BytesIO to avoid aiohttp's ResourceWarning on large
+    # raw-bytes payloads (warnings are errors under the test config).
+    payload = io.BytesIO(b'\xff' * (MAX_UPLOAD_BYTES + 1))
     data = FormData()
     data.add_field(
         'file', payload, filename='big.jpg', content_type='image/jpeg')
