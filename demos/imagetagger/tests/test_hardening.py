@@ -1,14 +1,40 @@
-from imagetagger.constants import ALLOWED_CONTENT_TYPES, MAX_UPLOAD_BYTES
+from aiohttp import FormData
+
+from imagetagger.constants import MAX_UPLOAD_BYTES
 
 
-def test_upload_size_limit_is_reasonable():
-    # Big enough for normal phone-camera JPEGs, small enough that a
-    # process can decode it without running out of memory.
-    assert 1 * 1024 * 1024 <= MAX_UPLOAD_BYTES <= 50 * 1024 * 1024
+async def test_predict_rejects_disallowed_content_type(api):
+    data = FormData()
+    data.add_field(
+        'file', b'GIF89a\x00', filename='x.gif', content_type='image/gif')
+
+    resp = await api.post('/predict', data=data)
+    assert resp.status == 415, resp
 
 
-def test_allowed_content_types_match_frontend_input_accept():
-    # Frontend <input accept="image/jpeg, image/png"> - the server-side
-    # allowlist must match or stricter, otherwise the UX silently
-    # diverges from what the server accepts.
-    assert ALLOWED_CONTENT_TYPES == frozenset({"image/jpeg", "image/png"})
+async def test_predict_rejects_missing_file_field(api):
+    data = FormData()
+    data.add_field('other', 'value')
+
+    resp = await api.post('/predict', data=data)
+    assert resp.status == 400, resp
+
+
+async def test_predict_rejects_oversized_upload(api):
+    payload = b'\xff' * (MAX_UPLOAD_BYTES + 1)
+    data = FormData()
+    data.add_field(
+        'file', payload, filename='big.jpg', content_type='image/jpeg')
+
+    resp = await api.post('/predict', data=data)
+    assert resp.status == 413, resp
+
+
+async def test_predict_rejects_non_image_bytes(api):
+    data = FormData()
+    data.add_field(
+        'file', b'not really a jpeg', filename='x.jpg',
+        content_type='image/jpeg')
+
+    resp = await api.post('/predict', data=data)
+    assert resp.status == 400, resp
