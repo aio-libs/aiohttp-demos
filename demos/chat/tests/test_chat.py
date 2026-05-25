@@ -41,9 +41,6 @@ async def test_ws_rejects_cross_origin(client):
 
 async def test_ws_accepts_same_origin(client):
     origin = f'http://{client.host}:{client.port}'
-    ws = await client.ws_connect('/', headers={'Origin': origin})
-    try:
+    async with await client.ws_connect('/', headers={'Origin': origin}) as ws:
         msg = await ws.receive()
         assert msg.json()['action'] == 'connect'
-    finally:
-        await ws.close()
