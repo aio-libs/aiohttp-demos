@@ -1,3 +1,7 @@
+import aiohttp
+import pytest
+
+
 async def test_msg_sending(client):
     ws1 = await client.ws_connect('/')
     ws2 = await client.ws_connect('/')
@@ -26,3 +30,17 @@ async def test_chat_page_does_not_use_jquery_or_html_insertion(client):
     assert 'ajax.googleapis.com' not in page
     assert '.html(' not in page
     assert 'createTextNode' in page
+
+
+async def test_ws_rejects_cross_origin(client):
+    with pytest.raises(aiohttp.WSServerHandshakeError) as exc_info:
+        await client.ws_connect(
+            '/', headers={'Origin': 'http://evil.example'})
+    assert exc_info.value.status == 403
+
+
+async def test_ws_accepts_same_origin(client):
+    origin = f'http://{client.host}:{client.port}'
+    async with await client.ws_connect('/', headers={'Origin': origin}) as ws:
+        msg = await ws.receive()
+        assert msg.json()['action'] == 'connect'

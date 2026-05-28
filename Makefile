@@ -11,7 +11,7 @@ test:
 	@pytest demos/graphql-demo
 	@pytest demos/imagetagger
 	@pytest demos/moderator
-	@SLACK_BOT_TOKEN=xxx GIPHY_API_KEY=xxx pytest demos/moderator_bot/tests
+	@SLACK_BOT_TOKEN=xxx SLACK_SIGNING_SECRET=xxx GIPHY_API_KEY=xxx pytest demos/moderator_bot/tests
 	@pytest demos/motortwit
 	@pytest demos/polls
 	@pytest demos/shortify
