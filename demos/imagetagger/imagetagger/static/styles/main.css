@@ -68,30 +68,6 @@ main {
     width: 100%;
 }
 
-/* github link */
-
-.fork-me-on-github {
-    position: absolute;
-    top: 40px;
-    right: -55px;
-    width: 200px;
-    padding: 6px 0;
-    color: #fff;
-    font-size: 13px;
-    font-weight: bold;
-    text-align: center;
-    text-decoration: none;
-    background: #121621;
-    border-top: 1px dashed rgba(255, 255, 255, 0.4);
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.4);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-    transform: rotate(45deg);
-}
-
-.fork-me-on-github:hover {
-    background: #1c2030;
-}
-
 /* common */
 .btn {
     display: inline-block;
