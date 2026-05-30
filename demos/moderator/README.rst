@@ -27,6 +27,32 @@ Open browser::
     http://127.0.0.1:9001
 
 
+Trust boundary for the pickled model
+====================================
+
+The demo loads its trained scikit-learn pipeline by calling
+``pickle.load`` on ``model/pipeline.dat`` at worker startup
+(see ``moderator/worker.py::warm``). ``pickle.load`` will execute
+arbitrary Python code embedded in the pickle stream, so the file at
+``model_path`` must be treated as trusted application data: anyone
+who can replace or modify it can run code inside the worker process
+at startup.
+
+In practice that means:
+
+* Do not extend this demo to accept model uploads from HTTP clients
+  and feed them to ``pickle.load``.
+* If you are packaging this for a real deployment, pin
+  ``model/pipeline.dat`` to a known-good build artifact (e.g. ship
+  it inside the container image, or verify a checksum/signature
+  before loading) and make sure the filesystem path is not writable
+  by untrusted processes.
+* If you want to support user-supplied or downloaded models, switch
+  to a safer serialization format (e.g. ``joblib`` with integrity
+  checking, ``skops``, or a model registry that signs artifacts)
+  rather than raw ``pickle``.
+
+
 Requirements
 ============
 * aiohttp_

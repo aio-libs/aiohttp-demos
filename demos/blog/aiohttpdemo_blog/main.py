@@ -46,7 +46,13 @@ async def init_app(config):
 
     redis = await setup_redis(app)
     app.on_shutdown.append(lambda _: redis.aclose())
-    setup_session(app, RedisStorage(redis))
+    # samesite='Strict' keeps the session cookie off every cross-site
+    # request; httponly is the storage default but pinned here so the
+    # value is visible at the call site.
+    setup_session(
+        app,
+        RedisStorage(redis, httponly=True, samesite='Strict'),
+    )
     # csrf_middleware uses get_session, so it must come after setup_session
     app.middlewares.append(csrf_middleware)
 
