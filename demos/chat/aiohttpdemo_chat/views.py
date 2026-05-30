@@ -1,4 +1,5 @@
 import logging
+from urllib.parse import urlsplit
 
 import aiohttp
 import aiohttp_jinja2
@@ -20,6 +21,14 @@ async def index(request):
     ws_ready = ws_current.can_prepare(request)
     if not ws_ready.ok:
         return aiohttp_jinja2.render_template('index.html', request, {})
+
+    # Reject cross-site WebSocket hijacking: if the browser sent an Origin
+    # header, it must match the request host. Non-browser clients (which
+    # typically do not send Origin) are allowed through unchanged.
+    origin = request.headers.get('Origin')
+    if origin is not None and urlsplit(origin).netloc != request.host:
+        raise web.HTTPForbidden(
+            reason='Cross-origin WebSocket connection rejected')
 
     await ws_current.prepare(request)
 

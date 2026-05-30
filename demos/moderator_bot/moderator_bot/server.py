@@ -9,7 +9,13 @@ from slack_sdk.web.async_client import AsyncWebClient
 from .giphy import GiphyClient
 from .handlers import MainHandler
 from .router import setup_main_handler
-from .settings import GIPHY_API_KEY, MAX_WORKERS, PROJECT_ROOT, SLACK_BOT_TOKEN
+from .settings import (
+    GIPHY_API_KEY,
+    MAX_WORKERS,
+    PROJECT_ROOT,
+    SLACK_BOT_TOKEN,
+    SLACK_SIGNING_SECRET,
+)
 from .utils import load_config
 from .worker import warm
 
@@ -41,7 +47,8 @@ async def init_application(config):
     slack_client = AsyncWebClient(SLACK_BOT_TOKEN)
     giphy_client = GiphyClient(GIPHY_API_KEY, config["request_timeout"])
 
-    handler = MainHandler(executor, slack_client, giphy_client)
+    handler = MainHandler(
+        executor, slack_client, giphy_client, SLACK_SIGNING_SECRET)
 
     model_path = Path(config["model_path"])
 
