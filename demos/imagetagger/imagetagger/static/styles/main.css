@@ -68,14 +68,6 @@ main {
     width: 100%;
 }
 
-/* github link */
-
-.fork-me-on-github {
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
 /* common */
 .btn {
     display: inline-block;
