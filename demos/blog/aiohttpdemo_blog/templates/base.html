@@ -5,6 +5,9 @@
       {% else %}
       <title>Welcome to Microblog</title>
       {% endif %}
+      <style>
+        .inline-form { display: inline; }
+      </style>
     </head>
     <body>
 
@@ -14,7 +17,7 @@
             {% if current_user.is_anonymous %}
                 <a href="{{ url('login') }}">Login</a>
             {% else %}
-                <form action="{{ url('logout') }}" method="post" style="display: inline">
+                <form action="{{ url('logout') }}" method="post" class="inline-form">
                     <input type="hidden" name="_csrf" value="{{ csrf_token }}">
                     <button type="submit">Logout</button>
                 </form>
