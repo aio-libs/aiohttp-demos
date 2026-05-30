@@ -1,18 +1,21 @@
 import asyncio
 from typing import Dict
+from concurrent.futures import ProcessPoolExecutor
 
 import aiohttp_jinja2
 from aiohttp import web
 from PIL import Image, UnidentifiedImageError
 
 from .constants import ALLOWED_CONTENT_TYPES, MAX_UPLOAD_BYTES
-from .utils import Config
+from .utils import Config, executor_key
 from .worker import predict
 
 
 class SiteHandler:
-    def __init__(self, conf: Config) -> None:
+    def __init__(self, conf: Config, executor: ProcessPoolExecutor) -> None:
         self._conf = conf
+        self._executor = executor
+        self._loop = asyncio.get_event_loop()
 
     @aiohttp_jinja2.template('index.html')
     async def index(self, request: web.Request) -> Dict[str, str]:
@@ -40,8 +43,10 @@ class SiteHandler:
             raise web.HTTPRequestEntityTooLarge(
                 max_size=MAX_UPLOAD_BYTES, actual_size=len(raw_data))
 
+        executor = request.app[executor_key]
         try:
-            body = await asyncio.to_thread(predict, raw_data)
+            body = await self._loop.run_in_executor(
+                executor, predict, raw_data)
         except UnidentifiedImageError:
             raise web.HTTPBadRequest(reason="unsupported image format")
         except Image.DecompressionBombError:

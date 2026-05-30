@@ -1,5 +1,6 @@
 import io
 import json
+import signal
 import numpy as np
 from typing import Tuple, Dict, Any, Optional
 
@@ -22,12 +23,16 @@ _model = None
 
 
 def warm(model_path: str) -> None:
+    # should be executed only in child processes
+    signal.signal(signal.SIGINT, signal.SIG_IGN)
     global _model
     if _model is None:
         _model = load_model(model_path)
 
 
 def clean() -> None:
+    # should be executed only in child processes
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
     global _model
     _model = None
 

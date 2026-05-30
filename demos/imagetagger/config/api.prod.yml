@@ -3,4 +3,5 @@ app:
   port: 8080
 
 workers:
+    max_workers: 1
     model_path: "tests/data/mobilenet.h5"
