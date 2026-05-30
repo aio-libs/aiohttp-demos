@@ -17,13 +17,13 @@
           This is you!
         {% elif followed %}
           You are currently following this user.
-          <form action="{{ url('unfollow_user', username=profile_user.username) }}" method=post style="display: inline">
+          <form action="{{ url('unfollow_user', username=profile_user.username) }}" method=post class="inline-form">
             <input type=hidden name="_csrf" value="{{ csrf_token }}">
             <button type=submit class="link-button unfollow">Unfollow user</button>
           </form>.
         {% else %}
           You are not yet following this user.
-          <form action="{{ url('follow_user', username=profile_user.username) }}" method=post style="display: inline">
+          <form action="{{ url('follow_user', username=profile_user.username) }}" method=post class="inline-form">
             <input type=hidden name="_csrf" value="{{ csrf_token }}">
             <button type=submit class="link-button follow">Follow user</button>
           </form>.

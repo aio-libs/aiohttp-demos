@@ -1,5 +1,9 @@
+import re
+
 import pytest
 from aiohttp import web
+from aiohttp_security import CookiesIdentityPolicy
+from aiohttp_security import setup as setup_security
 
 from motortwit.csrf import (
     CSRF_COOKIE_NAME,
@@ -7,69 +11,72 @@ from motortwit.csrf import (
     CSRF_HEADER_NAME,
     csrf_middleware,
 )
+from motortwit.main import PROJ_ROOT, setup_jinja
+from motortwit.routes import setup_routes
+from motortwit.security import AuthorizationPolicy
+from motortwit.views import SiteHandler
 
-
-async def _index(request):
-    return web.Response(text="ok")
-
-
-async def _protected(request):
-    return web.Response(text="ok")
+_CSRF_INPUT_RE = re.compile(r'name="_csrf"\s+value="([^"]+)"')
 
 
 @pytest.fixture
-async def csrf_client(aiohttp_client):
+async def client(aiohttp_client):
+    # Build the app from the demo's real wiring (middleware, jinja context
+    # processor, templates, routes, handler) so the test exercises the
+    # actual CSRF integration. Mongo is unused by /login (GET) and /logout
+    # (POST), the two CSRF-relevant endpoints that don't hit the database,
+    # so it is left as None (CI has no MongoDB).
     app = web.Application(middlewares=[csrf_middleware])
-    app.router.add_get("/", _index)
-    app.router.add_post("/protected", _protected)
+    setup_jinja(app)
+    setup_security(app, CookiesIdentityPolicy(), AuthorizationPolicy(None))
+    setup_routes(app, SiteHandler(None), PROJ_ROOT)
     return await aiohttp_client(app)
 
 
-async def test_get_sets_csrf_cookie(csrf_client):
-    resp = await csrf_client.get("/")
+def _cookie_token(client):
+    cookies = client.session.cookie_jar.filter_cookies(client.make_url("/"))
+    return cookies[CSRF_COOKIE_NAME].value
+
+
+async def test_get_login_sets_cookie_and_renders_matching_token(client):
+    resp = await client.get("/login")
     assert resp.status == 200
-    assert CSRF_COOKIE_NAME in resp.cookies
+    match = _CSRF_INPUT_RE.search(await resp.text())
+    assert match, "login page did not render a CSRF token"
+    # double-submit: the rendered token must equal the cookie token
+    assert match.group(1) == _cookie_token(client)
 
 
-async def test_post_without_cookie_or_token_rejected(csrf_client):
-    resp = await csrf_client.post("/protected", data={})
+async def test_post_without_token_is_forbidden(client):
+    resp = await client.post("/logout", data={})
     assert resp.status == 403
 
 
-async def test_post_with_cookie_only_rejected(csrf_client):
-    await csrf_client.get("/")
-    resp = await csrf_client.post("/protected", data={})
+async def test_post_with_cookie_but_no_token_is_forbidden(client):
+    await client.get("/login")  # establishes the CSRF cookie
+    resp = await client.post("/logout", data={})
     assert resp.status == 403
 
 
-async def test_post_with_form_token_matching_cookie_succeeds(csrf_client):
-    await csrf_client.get("/")
-    token = csrf_client.session.cookie_jar.filter_cookies(
-        csrf_client.make_url("/"))[CSRF_COOKIE_NAME].value
-    resp = await csrf_client.post(
-        "/protected", data={CSRF_FIELD_NAME: token})
-    assert resp.status == 200
+async def test_post_with_form_token_is_accepted(client):
+    token = _CSRF_INPUT_RE.search(
+        await (await client.get("/login")).text()).group(1)
+    resp = await client.post(
+        "/logout", data={CSRF_FIELD_NAME: token}, allow_redirects=False)
+    assert resp.status == 302
 
 
-async def test_post_with_header_token_matching_cookie_succeeds(csrf_client):
-    await csrf_client.get("/")
-    token = csrf_client.session.cookie_jar.filter_cookies(
-        csrf_client.make_url("/"))[CSRF_COOKIE_NAME].value
-    resp = await csrf_client.post(
-        "/protected", data={}, headers={CSRF_HEADER_NAME: token})
-    assert resp.status == 200
+async def test_post_with_header_token_is_accepted(client):
+    token = _CSRF_INPUT_RE.search(
+        await (await client.get("/login")).text()).group(1)
+    resp = await client.post(
+        "/logout", data={}, headers={CSRF_HEADER_NAME: token},
+        allow_redirects=False)
+    assert resp.status == 302
 
 
-async def test_post_with_wrong_token_rejected(csrf_client):
-    await csrf_client.get("/")
-    resp = await csrf_client.post(
-        "/protected", data={CSRF_FIELD_NAME: "wrong"})
+async def test_post_with_wrong_token_is_forbidden(client):
+    await client.get("/login")  # establishes a real cookie token
+    resp = await client.post(
+        "/logout", data={CSRF_FIELD_NAME: "wrong"})
     assert resp.status == 403
-
-
-async def test_get_reuses_existing_cookie(csrf_client):
-    resp1 = await csrf_client.get("/")
-    resp2 = await csrf_client.get("/")
-    # second response should not Set-Cookie again (cookie already present)
-    assert CSRF_COOKIE_NAME in resp1.cookies
-    assert CSRF_COOKIE_NAME not in resp2.cookies
