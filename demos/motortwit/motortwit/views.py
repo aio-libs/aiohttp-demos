@@ -99,7 +99,7 @@ class SiteHandler:
             response = redirect(request, 'timeline')
             await remember(
                 request, response, str(user['_id']),
-                httponly=True, samesite='Lax')
+                httponly=True, samesite='Strict')
             return response
 
         return {'error': error, 'form': form}

@@ -31,10 +31,7 @@ async def setup_mongo(app, conf, loop):
 
 def setup_jinja(app):
     jinja_env = aiohttp_jinja2.setup(
-        app,
-        loader=jinja2.FileSystemLoader(str(TEMPLATES_ROOT)),
-        autoescape=jinja2.select_autoescape(['html', 'xml']),
-    )
+        app, loader=jinja2.FileSystemLoader(str(TEMPLATES_ROOT)))
 
     jinja_env.filters['datetimeformat'] = format_datetime
     jinja_env.filters['robo_avatar_url'] = robo_avatar_url

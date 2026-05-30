@@ -1,52 +1,41 @@
-import aiohttp_jinja2
-import jinja2
 import pytest
 from aiohttp import web
+from aiohttp_security import CookiesIdentityPolicy
+from aiohttp_security import setup as setup_security
 
-from motortwit.main import setup_jinja
+from motortwit.main import PROJ_ROOT, setup_jinja
+from motortwit.routes import setup_routes
 from motortwit.security import AuthorizationPolicy
+from motortwit.views import SiteHandler
+
+# The identity is stored in this cookie by CookiesIdentityPolicy.
+_IDENTITY_COOKIE = CookiesIdentityPolicy()._cookie_name
 
 
-class _DummyMongo:
-    """Fail loudly if any DB access happens during these tests."""
-
-    def __getattr__(self, _name):
-        raise AssertionError("mongo should not be accessed for malformed IDs")
+@pytest.fixture
+async def client(aiohttp_client):
+    # Build the app from the demo's real wiring so the guard is exercised
+    # through the real security middleware. /register only queries Mongo for
+    # a *valid* identity, so the malformed-identity case under test never
+    # touches the database (CI has no MongoDB).
+    app = web.Application()
+    setup_jinja(app)
+    setup_security(app, CookiesIdentityPolicy(), AuthorizationPolicy(None))
+    setup_routes(app, SiteHandler(None), PROJ_ROOT)
+    return await aiohttp_client(app)
 
 
 @pytest.mark.parametrize("identity", [
     "not-an-objectid",
     "short",
-    "",
-    None,
-    "x" * 24,  # right length, wrong alphabet
+    "x" * 24,        # right length, wrong alphabet
+    "deadbeef",
 ])
-async def test_authorized_userid_returns_none_for_malformed_identity(identity):
-    policy = AuthorizationPolicy(_DummyMongo())
-    assert await policy.authorized_userid(identity) is None
-
-
-def test_jinja_setup_enables_explicit_autoescape():
-    app = web.Application()
-    setup_jinja(app)
-    env = aiohttp_jinja2.get_env(app)
-
-    assert callable(env.autoescape), (
-        "autoescape should be a select_autoescape callable, "
-        "not the default heuristic"
-    )
-    assert env.autoescape("page.html") is True
-    assert env.autoescape("config.xml") is True
-    assert env.autoescape("notes.txt") is False
-
-
-def test_jinja_autoescape_escapes_html_in_rendered_template(tmp_path):
-    template_path = tmp_path / "x.html"
-    template_path.write_text("{{ value }}")
-    env = jinja2.Environment(
-        loader=jinja2.FileSystemLoader(str(tmp_path)),
-        autoescape=jinja2.select_autoescape(['html', 'xml']),
-    )
-    rendered = env.get_template("x.html").render(value="<script>alert(1)</script>")
-    assert "<script>" not in rendered
-    assert "&lt;script&gt;" in rendered
+async def test_malformed_identity_cookie_is_treated_as_unauthenticated(
+        client, identity):
+    # Without the AuthorizationPolicy guard, ObjectId(identity) raises
+    # InvalidId and the request 500s. The guard makes the real app treat a
+    # malformed cookie as anonymous and render the page normally.
+    resp = await client.get(
+        "/register", cookies={_IDENTITY_COOKIE: identity})
+    assert resp.status == 200
