@@ -1,4 +1,5 @@
 import logging
+import pathlib
 
 import aiohttp_jinja2
 import jinja2
@@ -10,6 +11,7 @@ from aiohttp_session import setup as setup_session
 from aiohttp_session.redis_storage import RedisStorage
 from redis import asyncio as aioredis
 
+from aiohttpdemo_blog.csrf import csrf_ctx_processor, csrf_middleware
 from aiohttpdemo_blog.db_auth import DBAuthorizationPolicy
 from aiohttpdemo_blog.db import init_db
 from aiohttpdemo_blog.routes import setup_routes
@@ -18,6 +20,8 @@ from aiohttpdemo_blog.typedefs import config_key
 
 
 log = logging.getLogger(__name__)
+
+STATIC_DIR = pathlib.Path(__file__).parent / 'static'
 
 
 async def setup_redis(app: web.Application):
@@ -40,6 +44,7 @@ async def init_app(config):
     app[config_key] = config
 
     setup_routes(app)
+    app.router.add_static('/static/', STATIC_DIR, name='static')
 
     app.cleanup_ctx.append(init_db)
 
@@ -52,12 +57,14 @@ async def init_app(config):
         app,
         RedisStorage(redis, httponly=True, samesite='Strict'),
     )
+    # csrf_middleware uses get_session, so it must come after setup_session
+    app.middlewares.append(csrf_middleware)
 
-    # needs to be after session setup because of `current_user_ctx_processor`
+    # needs to be after session setup because of the ctx processors
     aiohttp_jinja2.setup(
         app,
         loader=jinja2.PackageLoader(PACKAGE_NAME),
-        context_processors=[current_user_ctx_processor],
+        context_processors=[current_user_ctx_processor, csrf_ctx_processor],
     )
 
     setup_security(
