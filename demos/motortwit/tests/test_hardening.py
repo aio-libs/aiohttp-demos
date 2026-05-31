@@ -1,9 +1,11 @@
+import asyncio
+
 import pytest
 from aiohttp import web
 from aiohttp_security import CookiesIdentityPolicy
 from aiohttp_security import setup as setup_security
 
-from motortwit.main import PROJ_ROOT, setup_jinja
+from motortwit.main import PROJ_ROOT, init, setup_jinja
 from motortwit.routes import setup_routes
 from motortwit.security import AuthorizationPolicy, generate_password_hash
 from motortwit.views import SiteHandler
@@ -14,14 +16,11 @@ _IDENTITY_COOKIE = CookiesIdentityPolicy()._cookie_name
 
 @pytest.fixture
 async def client(aiohttp_client):
-    # Build the app from the demo's real wiring so the guard is exercised
-    # through the real security middleware. /register only queries Mongo for
-    # a *valid* identity, so the malformed-identity case under test never
-    # touches the database (CI has no MongoDB).
-    app = web.Application()
-    setup_jinja(app)
-    setup_security(app, CookiesIdentityPolicy(), AuthorizationPolicy(None))
-    setup_routes(app, SiteHandler(None), PROJ_ROOT)
+    # Boot the real app via main.init(). The malformed-identity case under
+    # test never reaches a Mongo query (the AuthorizationPolicy guard
+    # short-circuits), so the lazily created Mongo client is never contacted
+    # (CI has no MongoDB).
+    app, _, _ = await init(asyncio.get_running_loop())
     return await aiohttp_client(app)
 
 
