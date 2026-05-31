@@ -34,6 +34,21 @@ Example of response::
     "success": true}
 
 
+Production deployment
+=====================
+
+``config/api.prod.yml`` binds the service to ``0.0.0.0:8080`` so it is
+reachable from any network interface. The bundled handler does not
+implement authentication, rate limiting, or per-IP quotas. If you
+deploy this demo as-is in production, anyone who can reach the host
+can call ``/predict`` and consume model inference resources.
+
+For real deployments, put the service behind a reverse proxy that
+adds authentication and rate limiting, or change ``api.prod.yml`` to
+bind to a private interface and front it with an authenticated
+gateway.
+
+
 Requirements
 ============
 * Python3.6
