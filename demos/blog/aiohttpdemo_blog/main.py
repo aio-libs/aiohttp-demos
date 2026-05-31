@@ -1,4 +1,5 @@
 import logging
+import pathlib
 
 import aiohttp_jinja2
 import jinja2
@@ -19,6 +20,8 @@ from aiohttpdemo_blog.typedefs import config_key
 
 
 log = logging.getLogger(__name__)
+
+STATIC_DIR = pathlib.Path(__file__).parent / 'static'
 
 
 async def setup_redis(app: web.Application):
@@ -41,6 +44,7 @@ async def init_app(config):
     app[config_key] = config
 
     setup_routes(app)
+    app.router.add_static('/static/', STATIC_DIR, name='static')
 
     app.cleanup_ctx.append(init_db)
 
