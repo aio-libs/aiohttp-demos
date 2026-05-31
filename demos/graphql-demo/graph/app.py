@@ -1,8 +1,6 @@
-from functools import partial
-
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from aiohttp import web
-import aioredis
+import redis.asyncio as redis
 import aiohttp_jinja2
 import jinja2
 
@@ -46,21 +44,18 @@ async def redis_ctx(app: web.Application) -> None:
     """This is signal for success creating connection with redis."""
     config = app["config"]["redis"]
 
-    sub = await aioredis.create_redis(f'redis://{config["host"]}:{config["port"]}')
-    pub = await aioredis.create_redis(f'redis://{config["host"]}:{config["port"]}')
-
-    create_redis = partial(
-        aioredis.create_redis, f'redis://{config["host"]}:{config["port"]}'
+    # A single client handles both publish and subscribe — pubsub()
+    # internally checks out a dedicated connection from the pool, so
+    # the same client object can still issue normal commands.
+    client = redis.from_url(
+        f'redis://{config["host"]}:{config["port"]}',
+        decode_responses=True,
     )
-
-    app["redis_sub"] = sub
-    app["redis_pub"] = pub
-    app["create_redis"] = create_redis
+    app["redis_pub"] = client
 
     yield
 
-    app["redis_sub"].close()
-    app["redis_pub"].close()
+    await client.aclose()
 
 
 async def init_graph_loaders(app: web.Application) -> None:

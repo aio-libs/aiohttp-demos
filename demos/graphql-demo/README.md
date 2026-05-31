@@ -40,5 +40,5 @@ make mypy # running the types checking by mypy
 ### Requirements
 - aiohttp
 - aiopg
-- aioredis
+- redis (asyncio)
 - graphene
