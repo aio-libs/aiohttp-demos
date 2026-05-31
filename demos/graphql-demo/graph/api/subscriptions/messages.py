@@ -1,4 +1,5 @@
 import asyncio
+import json
 import random
 
 import graphene
@@ -52,18 +53,18 @@ class MessageSubscription(graphene.ObjectType):
     ) -> MessageAdded:
         app = info.context["request"].app
 
-        redis = await app["create_redis"]()
-
-        res = await redis.subscribe(f"chat:{room_id}")
-        ch = res[0]
-
-        while await ch.wait_message():
-            data = await ch.get_json()
-            yield MessageAdded(
-                body=data["body"],
-                id=data["id"],
-                owner=User(id=data["user_id"], username=data["username"]),
-            )
+        async with app["redis_pub"].pubsub() as ps:
+            await ps.subscribe(f"chat:{room_id}")
+            async for message in ps.listen():
+                if message["type"] != "message":
+                    continue
+                data = json.loads(message["data"])
+                yield MessageAdded(
+                    body=data["body"],
+                    id=data["id"],
+                    owner=User(
+                        id=data["user_id"], username=data["username"]),
+                )
 
     async def resolve_typing_start(
         self,
@@ -72,11 +73,11 @@ class MessageSubscription(graphene.ObjectType):
     ) -> MessageAdded:
         app = info.context["request"].app
 
-        redis = await app["create_redis"]()
-
-        res = await redis.subscribe(f"chat:typing:{room_id}")
-        ch = res[0]
-
-        while await ch.wait_message():
-            data = await ch.get_json()
-            yield StartTyping(user=User(username=data["username"], id=data["id"]))
+        async with app["redis_pub"].pubsub() as ps:
+            await ps.subscribe(f"chat:typing:{room_id}")
+            async for message in ps.listen():
+                if message["type"] != "message":
+                    continue
+                data = json.loads(message["data"])
+                yield StartTyping(
+                    user=User(username=data["username"], id=data["id"]))

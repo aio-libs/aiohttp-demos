@@ -143,7 +143,7 @@ async def requests(db_engine, db_sm):
 
     class RedisMock:
         @staticmethod
-        async def publish_json(*_):
+        async def publish(*_):
             return Mock()
 
     request = Mock()
