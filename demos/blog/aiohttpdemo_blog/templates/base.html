@@ -5,6 +5,7 @@
       {% else %}
       <title>Welcome to Microblog</title>
       {% endif %}
+      <link rel="stylesheet" href="{{ url('static', filename='style.css') }}">
     </head>
     <body>
 
@@ -14,7 +15,10 @@
             {% if current_user.is_anonymous %}
                 <a href="{{ url('login') }}">Login</a>
             {% else %}
-                <a href="{{ url('logout') }}">Logout</a>
+                <form action="{{ url('logout') }}" method="post" class="inline-form">
+                    <input type="hidden" name="_csrf" value="{{ csrf_token }}">
+                    <button type="submit">Logout</button>
+                </form>
                 <a href="{{ url('create-post') }}">Write</a>
             {% endif %}
         </div>

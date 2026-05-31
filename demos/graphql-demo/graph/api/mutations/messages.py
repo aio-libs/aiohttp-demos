@@ -1,3 +1,5 @@
+import json
+
 import graphene
 
 from graph.auth.db_utils import select_user
@@ -31,14 +33,14 @@ class AddMessageMutation(graphene.Mutation):
             message = await create_message(sess, room_id, owner_id, body)
             owner = await select_user(sess, owner_id)
 
-        await app["redis_pub"].publish_json(
+        await app["redis_pub"].publish(
             f"chat:{room_id}",
-            {
+            json.dumps({
                 "body": body,
                 "id": message.id,
                 "username": owner.username,
                 "user_id": owner.id,
-            },
+            }),
         )
 
         return AddMessageMutation(is_created=True)
@@ -76,9 +78,9 @@ class StartTypingMessageMutation(graphene.Mutation):
         async with app["db"].begin() as sess:
             user = await select_user(sess, user_id)
 
-        await app["redis_pub"].publish_json(
+        await app["redis_pub"].publish(
             f"chat:typing:{room_id}",
-            {"username": user.username, "id": user.id},
+            json.dumps({"username": user.username, "id": user.id}),
         )
 
         return StartTypingMessageMutation(is_success=True)

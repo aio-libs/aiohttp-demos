@@ -52,22 +52,26 @@
             </div>
 
             <script type="text/javascript">
-                function responseToHtml(data) {
-                  let outStr = '';
-
-                  for (let i = 1; i < data['predictions'].length + 1; i++) {
-                    let item = data['predictions'][i - 1];
-                    const probability = item['probability'].toFixed(3);
-                    const label = item['label'];
-
-                    outStr += (
-                      "<p>" + i + "." +
-                      "<i>label:</i> " + label + "<br/>" +
-                      "<i>probability:</i> " + probability + "</p>"
-                    )
+                function renderPredictions(target, data) {
+                  while (target.firstChild) {
+                    target.removeChild(target.firstChild);
                   }
-
-                  return outStr
+                  const predictions = (data && data['predictions']) || [];
+                  predictions.forEach((item, i) => {
+                    const p = document.createElement('p');
+                    const labelTag = document.createElement('i');
+                    labelTag.textContent = 'label:';
+                    const probTag = document.createElement('i');
+                    probTag.textContent = 'probability:';
+                    p.appendChild(document.createTextNode((i + 1) + '.'));
+                    p.appendChild(labelTag);
+                    p.appendChild(document.createTextNode(' ' + item['label']));
+                    p.appendChild(document.createElement('br'));
+                    p.appendChild(probTag);
+                    p.appendChild(document.createTextNode(
+                      ' ' + Number(item['probability']).toFixed(3)));
+                    target.appendChild(p);
+                  });
                 }
                 function HandleBrowseClick(input_image) {
                     var fileinput = document.getElementById(input_image);
@@ -86,7 +90,7 @@
                   }).then(
                     response => response.json()
                   ).then(
-                    data => $datWrappaer.innerHTML = responseToHtml(data)
+                    data => renderPredictions($datWrappaer, data)
                   )
                 };
 
