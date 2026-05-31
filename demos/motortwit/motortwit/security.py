@@ -6,6 +6,7 @@ from aiohttp import web
 from aiohttp_security import authorized_userid
 from aiohttp_security.abc import AbstractAuthorizationPolicy
 from bson import ObjectId
+from bson.errors import InvalidId
 
 
 def generate_password_hash(password, salt_rounds=12):
@@ -29,7 +30,17 @@ class AuthorizationPolicy(AbstractAuthorizationPolicy):
         self.mongo = mongo
 
     async def authorized_userid(self, identity):
-        user = await self.mongo.user.find_one({'_id': ObjectId(identity)})
+        # ObjectId(None) silently mints a brand-new id, so guard explicitly
+        # rather than letting a missing/malformed cookie be treated as a hit.
+        if not isinstance(identity, str):
+            return None
+        try:
+            oid = ObjectId(identity)
+        except (InvalidId, TypeError):
+            # cookie value is malformed - treat as unauthenticated instead
+            # of bubbling up a 500 from bson.
+            return None
+        user = await self.mongo.user.find_one({'_id': oid})
         if user:
             return identity
         return None

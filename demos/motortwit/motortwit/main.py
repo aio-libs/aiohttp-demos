@@ -40,7 +40,7 @@ def setup_jinja(app):
 async def init(loop):
     conf = load_config(PROJ_ROOT / 'config' / 'config.yml')
 
-    app = web.Application(loop=loop)
+    app = web.Application()
     mongo = await setup_mongo(app, conf, loop)
 
     setup_jinja(app)
