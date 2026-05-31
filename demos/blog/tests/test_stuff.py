@@ -50,12 +50,12 @@ async def test_login_form(tables_and_data, client):
 async def test_login_view(tables_and_data, client):
     token = await _csrf_token(client, "/login")
     invalid_form = {
-        '_csrf': token,
+        "_csrf": token,
         'username': 'Joe',
         'password': '123'
     }
     valid_form = {
-        '_csrf': token,
+        "_csrf": token,
         'username': 'Adam',
         'password': 'adam'
     }
