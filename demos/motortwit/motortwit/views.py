@@ -100,7 +100,9 @@ class SiteHandler:
             await remember(
                 request, response, str(user['_id']),
                 httponly=True, samesite='Strict')
-            return response
+            # aiohttp deprecates returning an HTTPException from a handler;
+            # raise it so the Set-Cookie written by remember() is preserved.
+            raise response
 
         return {'error': error, 'form': form}
 
@@ -111,7 +113,9 @@ class SiteHandler:
     async def logout(self, request):
         response = redirect(request, 'public_timeline')
         await forget(request, response)
-        return response
+        # raise (not return) the redirect: returning an HTTPException is
+        # deprecated, and raising keeps the Set-Cookie written by forget().
+        raise response
 
     @aiohttp_jinja2.template('register.html')
     async def register(self, request):
