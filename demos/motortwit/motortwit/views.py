@@ -109,9 +109,6 @@ class SiteHandler:
     async def logout(self, request):
         response = redirect(request, 'public_timeline')
         await forget(request, response)
-        # raise (not return) the redirect: aiohttp deprecates returning an
-        # HTTPException from a handler. forget() has already attached the
-        # cookie-clearing header to this response object.
         raise response
 
     @aiohttp_jinja2.template('register.html')
