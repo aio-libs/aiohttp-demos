@@ -9,6 +9,6 @@ SQLalchemy==2.0.50
 
 # testing
 pytest==9.0.3
-pytest-aiohttp==1.1.0
+pytest-aiohttp==1.1.1
 pytest-asyncio==1.4.0
 flake8==7.3.0
