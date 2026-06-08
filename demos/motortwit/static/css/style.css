@@ -12,6 +12,10 @@ a:hover {
     color: #333;
 }
 
+form.inline-form {
+    display: inline;
+}
+
 input[type="text"],
 input[type="password"] {
     background: white;
