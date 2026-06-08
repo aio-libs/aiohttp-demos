@@ -1,35 +1,24 @@
+import asyncio
 import re
 
 import pytest
-from aiohttp import web
-from aiohttp_security import CookiesIdentityPolicy
-from aiohttp_security import setup as setup_security
 
 from motortwit.csrf import (
     CSRF_COOKIE_NAME,
     CSRF_FIELD_NAME,
     CSRF_HEADER_NAME,
-    csrf_middleware,
 )
-from motortwit.main import PROJ_ROOT, setup_jinja
-from motortwit.routes import setup_routes
-from motortwit.security import AuthorizationPolicy
-from motortwit.views import SiteHandler
+from motortwit.main import init
 
 _CSRF_INPUT_RE = re.compile(r'name="_csrf"\s+value="([^"]+)"')
 
 
 @pytest.fixture
 async def client(aiohttp_client):
-    # Build the app from the demo's real wiring (middleware, jinja context
-    # processor, templates, routes, handler) so the test exercises the
-    # actual CSRF integration. Mongo is unused by /login (GET) and /logout
-    # (POST), the two CSRF-relevant endpoints that don't hit the database,
-    # so it is left as None (CI has no MongoDB).
-    app = web.Application(middlewares=[csrf_middleware])
-    setup_jinja(app)
-    setup_security(app, CookiesIdentityPolicy(), AuthorizationPolicy(None))
-    setup_routes(app, SiteHandler(None), PROJ_ROOT)
+    # Boot the real app via main.init(). The CSRF endpoints exercised here
+    # (GET /login, POST /logout) never query Mongo, so the lazily created
+    # Mongo client is never contacted (CI has no MongoDB).
+    app, _, _ = await init(asyncio.get_running_loop())
     return await aiohttp_client(app)
 
 
