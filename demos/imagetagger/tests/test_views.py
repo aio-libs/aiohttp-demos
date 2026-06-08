@@ -17,7 +17,7 @@ async def test_predict(api):
     img = hotdog_path.read_bytes()
     data = FormData()
     data.add_field(
-        'file', img, filename='aircraft.jpg', content_type='image/img')
+        'file', img, filename='hotdog.jpg', content_type='image/jpeg')
 
     resp = await api.post('/predict', data=data)
     assert resp.status == 200, resp

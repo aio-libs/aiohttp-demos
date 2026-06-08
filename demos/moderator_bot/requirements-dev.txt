@@ -5,7 +5,7 @@ atomicwrites==1.4.1
 attrs==26.1.0
 certifi==2026.5.20
 chardet==7.4.3
-idna==3.17
+idna==3.18
 importlib-metadata==0.23 ; python_version < '3.8'
 joblib==1.5.3
 more-itertools==11.1.0
@@ -13,9 +13,9 @@ multidict==6.7.1
 numpy==2.4.6
 pluggy==1.6.0
 pytest==9.0.3
-pytest-aiohttp==1.1.0
+pytest-aiohttp==1.1.1
 pyyaml==6.0.3
-scikit-learn==1.8.0
+scikit-learn==1.9.0
 scipy==1.17.1
 six==1.17.0
 slack_sdk==3.42.0

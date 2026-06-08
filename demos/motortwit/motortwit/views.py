@@ -97,8 +97,10 @@ class SiteHandler:
             error = 'Invalid password'
         else:
             response = redirect(request, 'timeline')
-            await remember(request, response, str(user['_id']))
-            return response
+            await remember(
+                request, response, str(user["_id"]),
+                httponly=True, samesite="Strict")
+            raise response
 
         return {'error': error, 'form': form}
 
@@ -109,9 +111,6 @@ class SiteHandler:
     async def logout(self, request):
         response = redirect(request, 'public_timeline')
         await forget(request, response)
-        # raise (not return) the redirect: aiohttp deprecates returning an
-        # HTTPException from a handler. forget() has already attached the
-        # cookie-clearing header to this response object.
         raise response
 
     @aiohttp_jinja2.template('register.html')

@@ -44,7 +44,7 @@ def setup_jinja(app):
 async def init(loop):
     conf = load_config(PROJ_ROOT / 'config' / 'config.yml')
 
-    app = web.Application(loop=loop, middlewares=[csrf_middleware])
+    app = web.Application(middlewares=[csrf_middleware])
     mongo = await setup_mongo(app, conf, loop)
 
     setup_jinja(app)
