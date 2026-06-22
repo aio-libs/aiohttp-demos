@@ -16,7 +16,7 @@ pytest==9.1.1
 pytest-aiohttp==1.1.1
 pyyaml==6.0.3
 scikit-learn==1.9.0
-scipy==1.17.1
+scipy==1.18.0
 six==1.17.0
 slack_sdk==3.42.0
 urllib3==2.7.0
