@@ -10,7 +10,7 @@ importlib-metadata==0.23 ; python_version < '3.8'
 joblib==1.5.3
 more-itertools==11.1.0
 multidict==6.7.1
-numpy==2.4.6
+numpy==2.5.0
 pluggy==1.6.0
 pytest==9.1.0
 pytest-aiohttp==1.1.1
