@@ -7,4 +7,4 @@ SQLalchemy==2.0.54
 # For testing
 pytest==9.1.1
 pytest-aiohttp==1.1.1
-flake8==7.3.0
+flake8==7.4.1
