@@ -34,7 +34,7 @@
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-json": "5.0.0",
-    "eslint-plugin-prettier": "5.5.6",
+    "eslint-plugin-prettier": "5.5.7",
     "eslint-plugin-react": "7.37.5",
     "jest-cli": "30.5.2",
     "node-sass": "9.0.0",
