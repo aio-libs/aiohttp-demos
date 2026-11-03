@@ -11938,10 +11938,10 @@ posthtml@^0.15.1:
     posthtml-parser "^0.7.2"
     posthtml-render "^1.3.1"
 
-preact@11.0.1:
-  version "11.0.1"
-  resolved "https://registry.yarnpkg.com/preact/-/preact-11.0.1.tgz#8d2210dfbf70c4d6fcc368a0d2848c8837e09bb7"
-  integrity sha512-TNNwEq++jYNHy747LziCjPRVgEwnLSOIOAw/oYcjI3Tdnubx2EXtt76I0an8PATvUWtx/DX1kFIg1eFN+O/fkw==
+preact@11.1.1:
+  version "11.1.1"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-11.1.1.tgz#8f4c2dd333c0ba0d36b68ca4d8998d09854c02ec"
+  integrity sha512-vpFVfai437pbuLri7XVeslCPfrEZX6Z1S2gV+MOFrA/kji+NKUXvH7y01EnVjA1guLigfkVp77Sqipd4SIllCg==
 
 prelude-ls@^1.2.1:
   version "1.2.1"
